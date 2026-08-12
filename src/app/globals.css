@@ -1,0 +1,660 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   AUTO CLUSTER — DESIGN TOKENS
+   Single source of truth.
+
+   The palette was re-cut on request and no longer follows DESIGN_DIRECTION.md
+   §3, which argued for the logo-sampled indigo. That document is now out of
+   date on colour and type; §4 (layout, the spec pair, the label rail) still
+   holds, and no structure changed with this theme.
+
+   Every value is validated against WCAG 2.1. Ratios in the comments were
+   measured, not estimated.
+
+   If the visual direction changes, this file is the only place that needs
+   to change — no component hard-codes a colour.
+   ========================================================================== */
+
+@theme {
+  /* --- Brand blue: structure and text ------------------------------------
+     Re-cut on request: an all-white site whose text is the logo blue.
+
+     The masthead blue is #00A0E3. It measures 2.94:1 on white, so it
+     cannot legally carry text of any size (WCAG 1.4.3 wants 4.5:1 for
+     body, 3:1 for large). The text blue therefore holds the logo's exact
+     hue — 198° — and drops lightness until it passes. That is the same
+     move the palette already makes for the brand green below, and it is
+     why the site reads as the logo blue while remaining legible.
+
+     The logo artwork itself is untouched — see --color-logo-cyan, which
+     is still the true #00A0E3 and is still never used for text.
+
+     Every ratio below was measured against #FFFFFF, not estimated.      */
+  --color-brand-900: #00415c; /* 10.99:1 — AAA. deepest, skip-link       */
+  --color-brand-800: #00567a; /*  8.04:1 — AAA. HEADINGS                 */
+  --color-brand-700: #004f70; /*  8.93:1 — AAA                           */
+  --color-brand-600: #005d85; /*  7.23:1 — AAA. PRIMARY, card titles     */
+  --color-brand-400: #0073a3; /*  5.27:1 — AA.  meta on white            */
+  --color-brand-100: #d5ecf8; /* non-text: tints, selection              */
+  --color-brand-50: #eef7fc; /*  non-text: hover grounds                 */
+
+  /* --- Accent green: actions only ---------------------------------------
+     Brand green #009846 measures 3.76:1 and cannot legally carry white
+     text, so the *interactive* green is darkened. The brand original
+     survives untouched in the logo (--color-logo-green).                */
+  --color-accent-800: #0b6034; /* active.  7.67:1 — AAA */
+  --color-accent-700: #0f7a43; /* default. 5.41:1 — AA  */
+  --color-accent-300: #4fd98c; /* on dark grounds. 10.46:1 on brand-900 */
+
+  /* --- Ink: running text, black ------------------------------------------
+     The blue belongs to the headings. Everything set small — paragraphs,
+     table cells, captions, meta — is neutral black, which is what keeps a
+     page of specifications readable and stops the blue from becoming
+     wallpaper. Measured on white.                                       */
+  --color-ink-900: #16161a; /* body text.      17.02:1 — AAA */
+  --color-ink-700: #3a3b42; /* running text.   10.51:1 — AAA */
+  --color-ink-500: #585a63; /* secondary text.  6.48:1 — AA  */
+  --color-ink-400: #6d6f78; /* meta text.       4.51:1 — AA  */
+
+  /* --- Heading gradient --------------------------------------------------
+     Display headings run the logo's own two inks into each other: the
+     indigo of "AUTO" at the top into the blue of "CLUSTER" at the bottom.
+
+     The bright stop is the binding accessibility constraint, and it is why
+     it is #0090CC rather than the logo's own #00A0E3: every heading here
+     is large text (>=19px semibold or >=24px), so WCAG 1.4.3 wants 3:1,
+     and the true logo blue measures 2.94:1 — it would fail at the exact
+     end of the gradient. #0090CC measures 3.34:1 against the accent band
+     (the worse of the two grounds) and is visually next to it.          */
+  --heading-from: #393185; /* 10.03:1 on the band — the logo's AUTO indigo */
+  --heading-to: #0090cc; /*  3.34:1 on the band — AA large text */
+  /* h3 and h4 are weight 600, not 700, and run as small as 19px. WCAG's
+     "large text" concession wants 18.66px *bold*, and 600 is semibold —
+     so they are treated as normal text and must clear 4.5:1, not 3:1.
+     They get a darker terminal stop for that reason alone; the ramp is
+     otherwise identical, and at h3/h4 sizes the two are hard to tell
+     apart. h1/h2 are 700 weight and never below 26px, so they keep the
+     vivid end. */
+  --heading-to-sm: #0076a6; /* 4.73:1 on the band — AA normal */
+
+  /* --- Surfaces and rules ------------------------------------------------
+     White, as asked. The second surface is not grey but the faintest wash
+     of the same blue, which is what lets alternating bands and the footer
+     separate from the page without introducing a second colour or a grey
+     cast under blue text.                                                */
+  --color-paper: #ffffff;
+  --color-paper-2: #f1f8fc;
+  --color-rule: #cfe6f3; /* decorative hairlines — non-text, unmeasured */
+  /* Input borders carry meaning, so WCAG 1.4.11 wants 3:1 against the
+     ground they sit on. Measured against the *band* (#F1F8FC), not white,
+     because that is the worse of the two: 3.85:1 there, 4.13:1 on white.
+     Desaturated to 45% so it reads as a border and not as a rule of ink. */
+  --color-rule-strong: #3e85a3;
+
+  /* --- Status ------------------------------------------------------------ */
+  --color-success: #0f7a43; /* 5.41:1 */
+  --color-warning: #8a5b00; /* 5.87:1 */
+  --color-error: #b3261e; /* 6.54:1 */
+  --color-info: #1e5f9e; /* 6.59:1 */
+
+  /* --- Provenance flags (SpecTable) and build notes ----------------------
+     Also previously hard-coded. Re-cut warm to sit on the new paper.     */
+  --color-flag-ok-bg: #e4f0e8;
+  --color-flag-ok-fg: #0b5a2c;
+  --color-flag-ok-edge: #9cc4ab;
+  --color-flag-warn-bg: #f8f0dd;
+  --color-flag-warn-fg: #7a5000;
+  --color-flag-warn-edge: #d9bc7b;
+
+  /* --- Logo-only. Never used for text. -----------------------------------
+     Unchanged. These are the actual logo artwork, not theme colours.     */
+  --color-logo-green: #009846; /* 3.76:1 — fails AA, logo artwork only */
+  /* The "AUTO" ink, sampled from public/logos/logo-new-w.png rather than
+     eyeballed — 237px of the wordmark measure exactly #393185. Unlike the
+     other two logo colours this one is dark enough to use directly: 10.76:1
+     on white, and white on it is the same. It is the top of the heading
+     gradient and the fill of the primary button. */
+  --color-logo-indigo: #393185;
+  /* The true masthead blue, and the hue the whole text palette is cut from.
+     2.94:1 on white: it cannot carry text at any size. Nothing in the
+     components references it — the readable descendants above do. It stays
+     here as the record of what the brand blue actually is. */
+  --color-logo-cyan: #00a0e3;
+
+  /* --- Type --------------------------------------------------------------
+     Devanagari is not webfont-loaded (the subset was never requested);
+     the stack falls through to a system Devanagari face where present.  */
+  --font-display: var(--font-dm-sans), 'Helvetica Neue', Arial, sans-serif;
+  --font-body: var(--font-dm-sans), 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* --- Radius: soft. Cards and buttons read as surfaces, not rules. ------ */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px; /* cards — see components/ui/Card.tsx */
+
+  /* --- Shadow: a resting elevation, and a stronger lift on hover. --------
+     Raised on request — the 0.04-opacity resting shadow read as no shadow
+     at all against the white/near-white bands the cards sit on, so a card
+     with a thin edge and no shadow read as a flat rule rather than a
+     surface. Hover keeps a clear step up from the (now stronger) rest.
+
+     Coloured on request, in the same indigo→cyan pair as the heading and
+     button gradients — `box-shadow` cannot render an actual gradient, so
+     this is two shadows layered instead of one: indigo close to the edge,
+     cyan further out, which reads as a colour shift rather than a flat
+     grey shadow. Same direction as `gradient-edge`'s 120deg ramp. */
+  --shadow-card: 0 2px 5px rgb(57 49 133 / 0.1), 0 10px 24px rgb(0 160 227 / 0.12);
+  --shadow-hover: 0 4px 10px rgb(57 49 133 / 0.14), 0 18px 40px rgb(0 160 227 / 0.2);
+
+  /* --- Breakpoints -------------------------------------------------------- */
+  --breakpoint-xs: 375px;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    /* --- Page shell --------------------------------------------------------
+       The single definition of how wide the site is and how far it is held
+       off the viewport edge. Every full-width band on the site sizes its
+       inner content from these two values via <Container>, so the measure
+       changes here and nowhere else.
+
+       Edge to edge, on request: no ceiling at all, so the shell is the
+       viewport at every size including ultrawide. To put a ceiling back,
+       give --page-max a length (1920px was the previous value) — nothing
+       else has to change.
+
+       The gutter is the narrow margin that keeps type off the bezel rather
+       than a layout column: 20px on a phone, ~28px at 1900px, 40px at the
+       very top. It grows at 1.5vw, not 3.2vw, so it stays a hairline of
+       breathing room as the screen widens instead of reclaiming the space
+       the content is supposed to be using.
+       ------------------------------------------------------------------- */
+    --page-max: none;
+    /* Widened again on request — 24px/56px was still reading tight against
+       the window edge. Still a margin, not a layout column: 32px on a
+       phone, ~48px at 1710, 72px at the top, so the page stays effectively
+       edge-to-edge rather than returning to a centred measure. */
+    --page-gutter: clamp(2rem, 2.8vw, 4.5rem);
+
+    /* The sticky masthead measures 88px at every breakpoint, so a hero that
+       should fill the screen subtracts exactly this. Measured, not guessed
+       — it was 124px until the contact strip moved out of the header and
+       down below the footer, and it is the one number to change if the
+       header ever gains or loses a row. */
+    --header-h: 88px;
+
+    /* Full-height bands use svh, not vh: on mobile Safari and Chrome, vh is
+       the *largest* viewport (URL bar hidden), so a 100vh hero is taller
+       than the screen on load and pushes its own content out of view. */
+    --hero-min-h: calc(100svh - var(--header-h));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-body);
+    /* 17 -> 18. The page is now full-bleed to 1920px; 17px running text
+       against a 70px headline read as undersized at that measure. */
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* One h1 per page, strict h1 -> h2 -> h3. The current site marks up
+     machine names as h1 repeatedly; these defaults make the correct
+     hierarchy the path of least resistance. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    /* Solid fallback. Any browser without background-clip:text — and any
+       heading opting out via `text-solid` — renders this instead. */
+    color: var(--color-brand-800);
+
+    /* Top to bottom, so a three-line h1 arrives at the blue on its last
+       line the way the reference does.
+
+       Vertical rather than diagonal on purpose. A diagonal would sweep
+       across the element *box*, and a block-level h2 whose text is short
+       ("Timeline") sits in a box as wide as the container — the visible
+       glyphs would occupy only the first few percent of the ramp and read
+       as flat navy. A vertical ramp is bounded by the text's own height,
+       so it looks the same whatever the heading's measure. */
+    background-image: linear-gradient(
+      180deg,
+      var(--heading-from) 0%,
+      var(--heading-to) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Descender guard. `background-clip: text` paints the gradient only
+       within the element's own box, and these line-heights are tighter than
+       the font's natural extent — at h1 the tail of a "g" on the last line
+       falls 13.6px below the box and is simply not painted, so the letter
+       looks sliced off.
+
+       Each level gets exactly its own shortfall: DM Sans descends 0.232em,
+       and a line-height of L leaves (L-1)/2 of half-leading below the
+       baseline, so the gap is 0.232 - (L-1)/2, rounded up a touch.
+
+       Re-measured when the family changed — DM Sans descends deeper than
+       the Plus Jakarta Sans these were first cut for (0.232 vs 0.221), so
+       the old values had gone short and clipped again. If the display face
+       ever changes, re-measure: this constant is a property of the font,
+       not of the design.
+
+       The negative margin cancels the padding, so this changes what gets
+       painted without changing where anything sits — but only where the
+       element has no margin utility of its own, since those win. */
+    padding-bottom: var(--descender-guard);
+    margin-bottom: calc(-1 * var(--descender-guard));
+  }
+
+  h1 {
+    --descender-guard: 0.22em;
+  } /* lh 1.04 */
+  h2 {
+    --descender-guard: 0.18em;
+  } /* lh 1.12 */
+  h3 {
+    --descender-guard: 0.12em;
+  } /* lh 1.24 */
+  h4 {
+    --descender-guard: 0.09em;
+  } /* lh 1.30 */
+
+  /* High-contrast modes replace author colours but cannot see through a
+     transparent text fill, so hand the headings back to the system. */
+  @media (forced-colors: active) {
+    h1,
+    h2,
+    h3,
+    h4 {
+      background-image: none;
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+
+  /* The scale was topping out at 44/32/22/19, which on a 1710px screen read
+     as a document rather than a page — the h1 was barely twice the body.
+     Each step now roughly 1.5x the one below it at full size, so the
+     hierarchy is legible at a glance instead of by comparison.
+
+     Every step keeps its old value as the clamp *minimum*, so nothing gets
+     smaller on a phone — the growth is all at the desktop end. */
+  /* `text-wrap: balance` costs an extra layout pass per element and Chrome
+     only applies it up to a handful of lines. It matters on the display
+     headings, which wrap; it did nothing for the 31 card titles on the
+     equipment page but was being paid for on every one of them. */
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(34px, 4.6vw, 68px);
+    line-height: 1.04;
+    letter-spacing: -0.028em;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: clamp(26px, 2.6vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    /* Section headings share a measure with the prose beneath them. Without
+       this a section reads as one very wide line of title sitting over a
+       66ch paragraph, with the whole right half of the band empty — the
+       two never line up as a block.
+
+       28ch, measured not guessed: DM Sans has a wide figure, so 28ch at
+       42px comes out at ~828px against the prose's 66ch/18px = ~813px.
+       They read as one column. */
+    max-width: 28ch;
+  }
+
+  h3 {
+    font-size: clamp(20px, 1.5vw, 26px);
+    line-height: 1.24;
+    letter-spacing: -0.012em;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: clamp(19px, 1.15vw, 21px);
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  /* Semibold and small: darker terminal stop. See --heading-to-sm. */
+  h3,
+  h4 {
+    background-image: linear-gradient(
+      180deg,
+      var(--heading-from) 0%,
+      var(--heading-to-sm) 100%
+    );
+  }
+
+  /* Prose measure. DESIGN_DIRECTION.md §2 caps running text at 66ch. */
+  p {
+    max-width: 66ch;
+  }
+
+  /* Every interactive element gets a visible focus ring. Non-negotiable —
+     the current site has none. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent-700);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Digits line up in every table, spec list and stat band. */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+    color: var(--color-brand-900);
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@utility label {
+  /* The monospace label. Used wherever a label is a label — spec rows,
+     eyebrows, table headers, section rails. */
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-400);
+}
+
+/* If you ever add an edge-feathering mask so media can sit on the page
+   without a frame, do NOT define it here. Lightning CSS rewrites
+   `radial-gradient(... #000 48%, transparent 94%)` to `#000 0`, which
+   destroys the solid core and leaves the image fading from its exact
+   centre. Apply it as an inline style on the element instead. */
+
+/* Card collections size themselves from the space available rather than from
+   breakpoints. With the shell now fluid up to 1920px, a stepped
+   `sm:grid-cols-2 lg:grid-cols-3` either leaves three 580px cards stranded
+   on a wide screen or snaps hard at 1024px; auto-fit picks the column count
+   continuously instead, so one rule reads correctly at 360px and at 1920px.
+
+   The track floor is itself fluid, and that is the part that matters. A
+   fixed floor cannot serve both ends: 260px gives the two columns a 640px
+   tablet should have, but at 1920px it also allows six 280px cards, which
+   is too thin for a card carrying a description, a stat pair and standards
+   chips. Growing the floor with the viewport yields 1 / 2 / 3 / 4 columns
+   across 414 → 640 → 1280 → 1920px and holds at 4 beyond that.
+
+   The bounds are tuned against the *content* column, not the viewport: the
+   section label rail and its gap take ~190px out of the page before a card
+   grid sees any of it. Measured, not derived — see the audit in the commit
+   that introduced this.
+
+   The `min(100%, …)` wrapper is load-bearing: a bare `minmax(260px, 1fr)`
+   sets a hard 260px floor, which overflows any viewport narrower than that
+   plus its gutters. */
+@utility card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(16.25rem, 22vw, 23rem)), 1fr));
+  /* Every card the same size, not just every card in a row. Grid already
+     stretches items to the tallest in their own row; `1fr` rows make every
+     row the height of the tallest row, so a five-card grid no longer has a
+     short orphan underneath four tall ones. */
+  grid-auto-rows: 1fr;
+}
+
+/* The same idea at tile scale — name/role pairs, department chips, short
+   link lists — where a card floor would be far wider than the content. */
+@utility tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(13rem, 14vw, 17rem)), 1fr));
+}
+
+/* Ambient background for a section, in the brand's own gradient rather than
+   a flat wash — two soft radial stops, indigo top-left and cyan
+   bottom-right, echoing the same 120deg direction as `gradient-edge`. No
+   blur filter: the stops themselves fade out slowly enough to read as soft
+   light rather than a coloured block, so there is nothing here that needs
+   repainting per frame — it is a static background, painted once. */
+@utility section-glow {
+  background:
+    radial-gradient(60% 70% at 12% 0%, rgb(57 49 133 / 0.07), transparent 70%),
+    radial-gradient(60% 70% at 100% 100%, rgb(0 160 227 / 0.09), transparent 70%),
+    var(--color-paper);
+}
+
+/* Opt a heading out of the gradient.
+   Not every h2 on this site is display type — the footer column headings
+   and the contact-page spec labels are marked up as headings for document
+   structure but set as small mono labels, and a navy-to-blue ramp across
+   11.5px of uppercase mono is illegible mud. Same for status headings
+   (the green "Enquiry sent") and muted empty-state titles, where the
+   colour is carrying meaning that the gradient would overwrite.
+
+   Restores the fill to whatever `color` says, so a `text-*` utility on the
+   same element works normally again. */
+@utility text-solid {
+  background-image: none;
+  -webkit-text-fill-color: currentColor;
+  /* No gradient to clip, so the descender guard is dead weight. Only the
+     padding is dropped — the negative margin stays, because every heading
+     using this carries its own `m-0`/`mb-*` utility that overrides it, and
+     resetting margin here could beat those utilities depending on sort
+     order. */
+  padding-bottom: 0;
+}
+
+/* ==========================================================================
+   GRADIENT EDGES
+   A gradient in a border, which CSS has no direct property for. The trick is
+   two backgrounds on one element: an opaque fill clipped to the padding box,
+   and the gradient clipped to the border box, showing only where the
+   transparent border sits. Border radius is respected by both, so it works
+   on the rounded pill buttons without a wrapper element.
+
+   `--edge-fill` is what the inside of the shape is; every consumer sets it.
+
+   Cards used to have a running version of this (`gradient-edge-run`, an
+   animated conic gradient) — removed on request in favour of a border-free
+   card that relies on `--shadow-card`/`--shadow-hover` alone. That was the
+   only consumer of `@property --edge-angle` and `@keyframes edge-run`, so
+   both went with it; the primary button below never used either.
+   ========================================================================== */
+
+/* Static gradient edge — the primary button. */
+@utility gradient-edge {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--edge-fill), var(--edge-fill)) padding-box,
+    linear-gradient(120deg, var(--color-logo-indigo), var(--color-logo-cyan)) border-box;
+}
+
+@utility skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 12px 20px;
+  background: var(--color-brand-900);
+  color: #fff;
+  font-weight: 600;
+
+  &:focus {
+    left: 0;
+  }
+}
+
+/* ==========================================================================
+   MOTION
+   ========================================================================== */
+
+@layer base {
+  /* Scroll reveal.
+
+     The hidden state is scoped to `html.js`, which an inline script in
+     layout.tsx sets before first paint. Without JavaScript the class never
+     lands, the rule never matches, and every section renders visible — the
+     content is never held hostage by the animation.
+
+     Only `opacity` and `transform` are animated. Both are compositor
+     properties, so a page with forty of these still scrolls at 60fps. */
+  /* Reveal timing lives here so the whole site retunes from one place.
+
+     The easing matters as much as the duration. An expo-out curve puts
+     almost all the travel in the first fifth of the transition, which reads
+     as "already finished" no matter how long it runs; a cubic-out spreads
+     the movement out and is actually watchable. */
+  :root {
+    /* Was 900ms with a 120ms stagger, which meant the twelfth child of a
+       section did not finish arriving until 1.32s after it entered view.
+       That is not jank — every frame was on time — but it is a delay, and
+       it reads as one. Fast enough now to feel like the content was
+       already there. */
+    --reveal-duration: 320ms;
+    --reveal-ease: cubic-bezier(0.33, 1, 0.68, 1);
+    --reveal-travel: 10px;
+    --reveal-stagger: 35ms;
+  }
+
+  /* A block reveal. Stagger groups are excluded — there the children move,
+     not the container, and fading both compounds the opacities. */
+  .js [data-reveal]:not([data-stagger]):not([data-shown]) {
+    opacity: 0;
+    transform: translateY(var(--reveal-travel));
+  }
+
+  [data-reveal]:not([data-stagger]) {
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Staggered lists. The delay is per child, in CSS, so the component never
+     has to clone children to inject an index. Twelve covers every grid on
+     the site; anything past twelve arrives with the twelfth.
+
+     Both rules are written against `.js` so the shown rule carries the
+     higher specificity — with `:not([data-shown])` on the children the
+     hidden rule would outrank it and nothing would ever appear. */
+  .js [data-reveal][data-stagger] > * {
+    opacity: 0;
+    transform: translateY(var(--reveal-travel));
+  }
+
+  .js [data-reveal][data-stagger][data-shown] > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-reveal][data-stagger] > * {
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+  }
+
+  [data-reveal][data-stagger] > *:nth-child(1) { transition-delay: calc(var(--reveal-stagger) * 0); }
+  [data-reveal][data-stagger] > *:nth-child(2) { transition-delay: calc(var(--reveal-stagger) * 1); }
+  [data-reveal][data-stagger] > *:nth-child(3) { transition-delay: calc(var(--reveal-stagger) * 2); }
+  [data-reveal][data-stagger] > *:nth-child(4) { transition-delay: calc(var(--reveal-stagger) * 3); }
+  [data-reveal][data-stagger] > *:nth-child(5) { transition-delay: calc(var(--reveal-stagger) * 4); }
+  [data-reveal][data-stagger] > *:nth-child(6) { transition-delay: calc(var(--reveal-stagger) * 5); }
+  [data-reveal][data-stagger] > *:nth-child(7) { transition-delay: calc(var(--reveal-stagger) * 6); }
+  [data-reveal][data-stagger] > *:nth-child(8) { transition-delay: calc(var(--reveal-stagger) * 7); }
+  [data-reveal][data-stagger] > *:nth-child(9) { transition-delay: calc(var(--reveal-stagger) * 8); }
+  [data-reveal][data-stagger] > *:nth-child(10) { transition-delay: calc(var(--reveal-stagger) * 9); }
+  [data-reveal][data-stagger] > *:nth-child(11) { transition-delay: calc(var(--reveal-stagger) * 10); }
+  [data-reveal][data-stagger] > *:nth-child(n + 12) { transition-delay: calc(var(--reveal-stagger) * 11); }
+}
+
+/* ==========================================================================
+   EQUIPMENT MAP
+   The two effects that need to run continuously rather than once, so they
+   are CSS animations rather than GSAP tweens — the compositor can own them
+   outright and the main thread is not woken to keep them going.
+   ========================================================================== */
+
+/* Idle drift on a machine plate. Transform only, and applied to a wrapper
+   that nothing else transforms, so it cannot collide with the hover lift or
+   the entrance tween. Applied only at the `full` motion tier. */
+@keyframes map-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+.map-float {
+  animation: map-float 6s ease-in-out infinite;
+  /* Desynchronise the run so 30 plates do not rise and fall as one block.
+     A negative delay starts each element part-way through its own cycle
+     without delaying its start. */
+  animation-delay: calc(var(--float-offset, 0) * -1s);
+}
+
+/* Selection halo. Opacity and transform only — never box-shadow, which would
+   repaint the plate and its neighbours on every frame of the pulse. */
+@keyframes map-pulse {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.022);
+  }
+}
+
+.map-pulse {
+  animation: map-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Belt and braces: never leave a revealed element mid-transition. */
+  [data-reveal],
+  [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
