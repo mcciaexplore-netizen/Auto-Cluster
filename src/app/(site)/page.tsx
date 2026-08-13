@@ -241,7 +241,7 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Facilities                                                        */}
       {/* ---------------------------------------------------------------- */}
-      <Section tone="glow">
+      <Section tone="glow" border={false} compact>
         <h2>Auto Cluster facilities</h2>
         <p className="mt-4 text-ink-700">
           Auto Cluster provides its expertise to MSMEs looking for cost-effective
@@ -281,7 +281,7 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Venues                                                            */}
       {/* ---------------------------------------------------------------- */}
-      <Section tone="white">
+      <Section tone="white" compact>
         <h2>Auto Cluster venues</h2>
         <p className="mt-4 text-ink-700">
           Creating infrastructural support to promote innovation and collective learning.

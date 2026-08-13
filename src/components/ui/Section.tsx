@@ -42,6 +42,8 @@ export function Section({
   className,
   id,
   tone = 'paper',
+  border = true,
+  compact = false,
 }: {
   children: ReactNode
   className?: string
@@ -55,17 +57,27 @@ export function Section({
    * wash — two soft radial stops (indigo, cyan) instead of one flat tint.
    */
   tone?: 'paper' | 'white' | 'accent' | 'glow'
+  /** Set false where two adjacent sections should read as one continuous run rather than separate bands. */
+  border?: boolean
+  /** Roughly half the standard vertical rhythm — for a section that should sit close to its neighbour instead of at the site's usual pacing. */
+  compact?: boolean
 }) {
-  const tones = {
-    paper: 'bg-paper border-b border-rule',
-    white: 'bg-white border-b border-rule',
-    accent: 'bg-paper-2 border-y-2 border-rule',
-    glow: 'section-glow border-b border-rule',
+  const backgrounds = {
+    paper: 'bg-paper',
+    white: 'bg-white',
+    accent: 'bg-paper-2',
+    glow: 'section-glow',
+  }
+  const borders = {
+    paper: 'border-b border-rule',
+    white: 'border-b border-rule',
+    accent: 'border-y-2 border-rule',
+    glow: 'border-b border-rule',
   }
 
   return (
-    <section id={id} className={cn(tones[tone], className)}>
-      <Container className="py-20 md:py-28 xl:py-36">
+    <section id={id} className={cn(backgrounds[tone], border && borders[tone], className)}>
+      <Container className={compact ? 'py-10 md:py-14 xl:py-16' : 'py-20 md:py-28 xl:py-36'}>
         <Reveal className="min-w-0">{children}</Reveal>
       </Container>
     </section>
