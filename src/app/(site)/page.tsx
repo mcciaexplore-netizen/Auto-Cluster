@@ -130,11 +130,11 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Promoted by                                                       */}
       {/* ---------------------------------------------------------------- */}
-      {/* Continues the hero's own band and tone (no top padding, same
-          bg-white, the border moves down here) rather than opening a
-          separate section — these are the same "who stands behind this"
-          idea as the hero's eyebrow line above, just made concrete. */}
-      <div className="bg-white border-b border-rule">
+      {/* Continues the hero's own band and tone (no top padding, no rule)
+          rather than opening a separate section — these are the same "who
+          stands behind this" idea as the hero's eyebrow line above, just
+          made concrete. */}
+      <div className="bg-white">
         <Container className="pb-10 md:pb-12">
           <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
             Promoted and supported by
