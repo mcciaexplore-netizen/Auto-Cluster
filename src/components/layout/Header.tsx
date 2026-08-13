@@ -23,7 +23,7 @@ export function Header() {
   return (
     /* The contact strip that used to sit above this now closes the page,
        below the footer — see components/layout/ContactBar.tsx. */
-    <header className="sticky top-0 z-50 bg-white text-ink-700 border-b border-rule">
+    <header className="sticky top-0 z-50 bg-white text-ink-700">
       <Container className="flex items-center gap-6 py-3.5">
         <Link href="/" className="shrink-0" aria-label={`${site.name} — home`}>
           {/* The masthead sits in a sticky bar on every page, so it is the
