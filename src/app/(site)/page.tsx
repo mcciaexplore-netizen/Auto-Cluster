@@ -136,19 +136,20 @@ export default function HomePage() {
           idea as the hero's eyebrow line above, just made concrete. */}
       <div className="bg-paper-2 border-b border-rule">
         <Container className="pb-10 md:pb-12">
+          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
+            Promoted and supported by
+          </p>
           <Reveal as="ul" stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption}>
-                <div className="flex items-center gap-3 h-full px-4 pt-4 pb-3 bg-white border border-rule rounded-md">
-                  <Image
-                    src={p.src}
-                    alt={p.alt}
-                    width={p.width}
-                    height={p.height}
-                    className="h-10 w-auto shrink-0 object-contain"
-                  />
-                  <span className="text-[12.5px] leading-snug text-ink-500">{p.caption}</span>
-                </div>
+              <li key={p.caption} className="flex items-center gap-3">
+                <Image
+                  src={p.src}
+                  alt={p.alt}
+                  width={p.width}
+                  height={p.height}
+                  className="h-10 w-auto shrink-0 object-contain"
+                />
+                <span className="text-[13px] font-semibold leading-snug text-ink-900">{p.caption}</span>
               </li>
             ))}
           </Reveal>
