@@ -193,8 +193,14 @@
 
     /* Full-height bands use svh, not vh: on mobile Safari and Chrome, vh is
        the *largest* viewport (URL bar hidden), so a 100vh hero is taller
-       than the screen on load and pushes its own content out of view. */
-    --hero-min-h: calc(100svh - var(--header-h));
+       than the screen on load and pushes its own content out of view.
+
+       82svh, not 100svh: at the full window height the hero's centred
+       content left a band of empty bg-paper-2 below it before the next
+       section (the promoter logos) began, which read as a gap you had to
+       scroll an extra beat to clear rather than content that was simply
+       there. Still tall enough to read as a hero, not a banner. */
+    --hero-min-h: calc(82svh - var(--header-h));
   }
 
   html {
