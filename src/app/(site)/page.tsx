@@ -135,23 +135,20 @@ export default function HomePage() {
           separate section — these are the same "who stands behind this"
           idea as the hero's eyebrow line above, just made concrete. */}
       <div className="bg-paper-2 border-b border-rule">
-        <Container className="pb-16 md:pb-20">
-          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
-            Promoted and supported by
-          </p>
+        <Container className="pb-10 md:pb-12">
           <Reveal as="ul" stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption} className="flex flex-col gap-3">
-                <div className="h-24 flex items-center px-6 bg-white border border-rule rounded-md">
+              <li key={p.caption}>
+                <div className="flex items-center gap-3 h-full px-4 pt-4 pb-3 bg-white border border-rule rounded-md">
                   <Image
                     src={p.src}
                     alt={p.alt}
                     width={p.width}
                     height={p.height}
-                    className="h-12 w-auto object-contain"
+                    className="h-10 w-auto shrink-0 object-contain"
                   />
+                  <span className="text-[12.5px] leading-snug text-ink-500">{p.caption}</span>
                 </div>
-                <span className="text-[13px] leading-snug text-ink-500">{p.caption}</span>
               </li>
             ))}
           </Reveal>
