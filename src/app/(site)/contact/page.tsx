@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { site } from '@/content/site'
 import { departments, departmentLabels } from '@/lib/validation'
+import { serviceIdForCategory, serviceIdForDepartment } from '@/content/services'
+import { equipment } from '@/content/equipment'
+import { facilities } from '@/content/facilities'
 import { PageHero, Section } from '@/components/ui/Section'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { EmptyState } from '@/components/ui/Card'
@@ -15,16 +18,20 @@ export const metadata: Metadata = {
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ department?: string; machine?: string; facility?: string }>
+  searchParams: Promise<{ service?: string; department?: string; machine?: string; facility?: string }>
 }) {
   const params = await searchParams
   const { address } = site
 
-  const department = departments.includes(params.department as never)
-    ? (params.department as (typeof departments)[number])
-    : params.machine
-      ? 'testing'
-      : 'general'
+  const machine = params.machine ? equipment.find((e) => e.slug === params.machine) : undefined
+  const facility = params.facility ? facilities.find((f) => f.slug === params.facility) : undefined
+
+  const serviceId =
+    params.service ??
+    serviceIdForCategory(machine?.category) ??
+    serviceIdForCategory(facility?.category) ??
+    (params.department ? serviceIdForDepartment(params.department) : undefined) ??
+    'general'
 
   const subject = params.machine
     ? `Enquiry about ${params.machine.replace(/-/g, ' ')}`
@@ -46,8 +53,8 @@ export default async function ContactPage({
           One form for every department. We store your enquiry, route it to the right team
           and send you an acknowledgement.
         </p>
-        <div className="mt-8 max-w-[680px]">
-          <EnquiryForm defaultDepartment={department} defaultSubject={subject} />
+        <div className="mt-8 max-w-[960px]">
+          <EnquiryForm defaultServiceId={serviceId} defaultSubject={subject} />
         </div>
       </Section>
 

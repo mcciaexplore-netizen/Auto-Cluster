@@ -7,12 +7,19 @@ import { z } from 'zod'
  * (`forms.gle/xYZnEyN2NqiF3ySD6`) the client uses as a workaround, the 30
  * non-functional "Our Machines Form" instances, and the dead "Request a Quote"
  * modal.
+ *
+ * One shape per service `kind` — manufacturing and testing services collect
+ * different fields, per the requirement list. `venue` and `training` are not
+ * representable here: those services hand off to their own flow before a
+ * form is ever submitted (see EnquiryForm and src/content/services.ts), so
+ * there is nothing for this schema to validate for them.
  */
 
 export const departments = [
   'testing',
   'prototyping',
   'venue',
+  'training',
   'careers',
   'tenders',
   'general',
@@ -22,12 +29,13 @@ export const departmentLabels: Record<(typeof departments)[number], string> = {
   testing: 'Testing — environmental, rubber & polymer, metrology',
   prototyping: 'Prototyping — machining, 3D printing',
   venue: 'Venue hire — exhibition, auditorium, training hall',
+  training: 'Training programs',
   careers: 'Careers',
   tenders: 'Tenders and procurement',
   general: 'General enquiry',
 }
 
-export const enquirySchema = z.object({
+const base = {
   name: z.string().trim().min(2, 'Enter your name.').max(120),
 
   company: z.string().trim().max(160).optional().or(z.literal('')),
@@ -43,9 +51,9 @@ export const enquirySchema = z.object({
       'Enter a phone number we can reach you on — 10 digits, no country code needed.',
     ),
 
-  department: z.enum(departments, { message: 'Choose which team should receive this.' }),
+  /** src/content/services.ts id. Resolves to a department server-side. */
+  serviceId: z.string().min(1, 'Choose a service.'),
 
-  /** Set when the enquiry came from an equipment or facility page. */
   subject: z.string().trim().max(200).optional().or(z.literal('')),
 
   message: z
@@ -67,7 +75,50 @@ export const enquirySchema = z.object({
    * accepts silently.
    */
   website: z.string().optional(),
+
+  /**
+   * `Date.now()` captured when the form mounted, echoed back on submit. A
+   * submission that arrives less than a couple of seconds after the form
+   * rendered was not typed by a person — checked in the route handler, not
+   * here, since the threshold is a timing policy rather than a shape rule.
+   * Not a real bot challenge (no hCaptcha/Turnstile site key is configured
+   * yet); it catches the fastest, dumbest bots and nothing more.
+   */
+  formRenderedAt: z.number(),
+}
+
+const manufacturingSchema = z.object({
+  ...base,
+  kind: z.literal('manufacturing'),
+  partName: z.string().trim().min(1, 'Enter the part name.').max(200),
+  material: z.string().trim().min(1, 'Enter the material.').max(200),
+  quantity: z.string().trim().min(1, 'Enter a quantity.').max(50),
+  tolerance: z.string().trim().max(100).optional().or(z.literal('')),
+  deliveryDate: z.string().trim().min(1, 'Enter the delivery date you need.'),
+  /** Token from a prior POST /api/upload, if a drawing was attached. */
+  cadFileToken: z.string().optional().or(z.literal('')),
 })
+
+const testingSchema = z.object({
+  ...base,
+  kind: z.literal('testing'),
+  sampleDescription: z.string().trim().min(1, 'Describe the sample.').max(1000),
+  standardOrTest: z.string().trim().min(1, 'Enter the standard or test required.').max(300),
+  sampleCount: z.string().trim().min(1, 'Enter how many samples.').max(50),
+  nablScope: z.boolean().default(false),
+  cadFileToken: z.string().optional().or(z.literal('')),
+})
+
+const generalSchema = z.object({
+  ...base,
+  kind: z.literal('general'),
+})
+
+export const enquirySchema = z.discriminatedUnion('kind', [
+  manufacturingSchema,
+  testingSchema,
+  generalSchema,
+])
 
 export type EnquiryInput = z.infer<typeof enquirySchema>
 

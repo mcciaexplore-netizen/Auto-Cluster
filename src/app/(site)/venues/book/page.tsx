@@ -87,7 +87,7 @@ export default async function BookVenuePage({
           setup and teardown.
         </p>
         <div className="mt-8 max-w-[680px]">
-          <EnquiryForm defaultDepartment="venue" defaultSubject={subject} />
+          <EnquiryForm lockedServiceId="venue-hire" defaultSubject={subject} />
         </div>
       </Section>
     </>

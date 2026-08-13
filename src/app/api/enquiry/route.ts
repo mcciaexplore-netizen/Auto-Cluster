@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server'
 import { enquirySchema, fieldErrors } from '@/lib/validation'
-import { routeEnquiry, sendAcknowledgement, sendDepartmentNotification } from '@/lib/email'
+import { sendAcknowledgement, sendDepartmentNotification } from '@/lib/email'
+import { createEnquiry } from '@/server/enquiries'
 
 /**
  * POST /api/enquiry
  *
  *   zod re-validation server-side
- *   -> honeypot + rate limit
- *   -> persist
+ *   -> honeypot + time-trap + rate limit
+ *   -> resolve routing, persist, generate reference code
  *   -> email the routed department
  *   -> auto-acknowledge the sender
  *
@@ -16,7 +17,7 @@ import { routeEnquiry, sendAcknowledgement, sendDepartmentNotification } from '@
  * governed environment.
  */
 
-/** In-memory limiter. Replace with Redis or Postgres before production. */
+/** In-memory limiter. Fine for a single instance; replace with the database once connected. */
 const hits = new Map<string, { count: number; resetAt: number }>()
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_PER_WINDOW = 5
@@ -32,6 +33,8 @@ function rateLimited(ip: string): boolean {
   entry.count += 1
   return entry.count > MAX_PER_WINDOW
 }
+
+const MIN_FILL_TIME_MS = 2500
 
 export async function POST(request: Request) {
   const ip =
@@ -71,25 +74,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true }, { status: 202 })
   }
 
-  const to = routeEnquiry(enquiry.department)
+  // Timing trap. Same silent-accept reasoning as the honeypot above — a
+  // rejection would teach a bot exactly what tripped it.
+  if (Date.now() - enquiry.formRenderedAt < MIN_FILL_TIME_MS) {
+    return NextResponse.json({ ok: true }, { status: 202 })
+  }
 
+  let record
   try {
-    // TODO(payload): INSERT into the `enquiries` collection once the database
-    // is connected. Schema is defined in src/payload/collections/Enquiries.ts.
-    await Promise.all([
-      sendDepartmentNotification(to, enquiry),
-      sendAcknowledgement(enquiry),
-    ])
+    record = await createEnquiry(enquiry, {
+      source: request.headers.get('referer'),
+    })
   } catch (error) {
-    console.error('[enquiry] delivery failed', error)
+    console.error('[enquiry] persist failed', error)
     return NextResponse.json(
-      {
-        message:
-          'We could not send your enquiry. Try again, or call +91 20 6633 3700 and we will take the details.',
-      },
-      { status: 502 },
+      { message: 'We could not save your enquiry. Try again, or call +91 20 6633 3700.' },
+      { status: 500 },
     )
   }
 
-  return NextResponse.json({ ok: true })
+  try {
+    await Promise.all([sendDepartmentNotification(record), sendAcknowledgement(record)])
+  } catch (error) {
+    // The enquiry is already saved and has a reference number — a delivery
+    // failure here is a notification problem, not a lost enquiry.
+    console.error('[enquiry] delivery failed', error)
+  }
+
+  return NextResponse.json({ ok: true, referenceCode: record.referenceCode })
 }

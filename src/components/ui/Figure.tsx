@@ -22,6 +22,7 @@ export function Figure({
   image,
   caption,
   aspect,
+  fill = false,
   sizes = '(min-width: 768px) 50vw, 100vw',
   priority = false,
   className,
@@ -30,6 +31,14 @@ export function Figure({
   caption?: ReactNode
   /** e.g. `'16 / 9'`. Omit to keep the source proportions. */
   aspect?: string
+  /**
+   * Stretch to the height of whatever it sits beside instead of keeping the
+   * source proportions — for a grid row where the photo should match a
+   * sibling column's height rather than dictate its own. The caller supplies
+   * that height (a `lg:items-stretch` grid row, typically); `Figure` just
+   * fills it and crops.
+   */
+  fill?: boolean
   sizes?: string
   priority?: boolean
   className?: string
@@ -37,17 +46,23 @@ export function Figure({
   const flagged = image.needsPhotography && showBuildNotes
 
   return (
-    <figure className={cn('m-0 flex flex-col gap-2.5', className)}>
-      <div className="relative overflow-hidden rounded-md border border-rule bg-paper-2">
+    <figure className={cn('m-0 flex flex-col gap-2.5', fill && 'h-full', className)}>
+      <div
+        className={cn(
+          'relative overflow-hidden rounded-md border border-rule bg-paper-2',
+          fill && 'flex-1',
+        )}
+      >
         <Image
           src={image.src}
           alt={image.alt}
-          width={image.width ?? 1200}
-          height={image.height ?? 800}
+          {...(fill
+            ? { fill: true as const }
+            : { width: image.width ?? 1200, height: image.height ?? 800 })}
           sizes={sizes}
           priority={priority}
-          className={cn('block w-full h-auto', aspect && 'object-cover')}
-          style={aspect ? { aspectRatio: aspect } : undefined}
+          className={cn(fill ? 'object-cover' : 'block w-full h-auto', aspect && 'object-cover')}
+          style={aspect && !fill ? { aspectRatio: aspect } : undefined}
         />
         {flagged && (
           <span className="absolute left-2 top-2 font-mono text-[9.5px] tracking-[0.1em] uppercase bg-flag-warn-bg text-flag-warn-fg border border-flag-warn-edge rounded-sm px-1.5 py-0.5">

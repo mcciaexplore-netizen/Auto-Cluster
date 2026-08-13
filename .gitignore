@@ -14,6 +14,10 @@ media/
 *.db
 *.db-journal
 
+# interim file-backed store (src/server/store.ts) — gone once Postgres is
+# connected; see README.md "Connecting Payload"
+.data/
+
 # misc
 .DS_Store
 *.pem

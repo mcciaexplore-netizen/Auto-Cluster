@@ -6,7 +6,6 @@ import { site } from '@/content/site'
 import { expoTile, venuePhotos } from '@/content/images'
 import { PageHero, Prose, Section } from '@/components/ui/Section'
 import { Figure } from '@/components/ui/Figure'
-import { SpecTable } from '@/components/ui/SpecTable'
 import { ButtonLink } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/Card'
 
@@ -61,36 +60,26 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
 
       <Section tone="white">
         <h2>{venue.name}</h2>
-        <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_minmax(0,420px)] lg:items-start">
-          <Prose paragraphs={venue.intro} />
-          {photo && <Figure image={photo} sizes="(min-width: 1024px) 420px, 100vw" priority />}
+        <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_minmax(0,590px)] lg:items-stretch">
+          <div className="flex flex-col gap-8">
+            <Prose paragraphs={venue.intro} />
+            <ul className="grid gap-4 sm:grid-cols-2 list-none m-0 p-0">
+              {venue.highlights.map((h) => (
+                <li key={h.label} className="border border-rule rounded-md bg-white p-5">
+                  <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-400 block">
+                    {h.value ? h.label : 'Included'}
+                  </span>
+                  <span className="font-display font-semibold text-[18px] text-ink-900 block mt-1.5 tabular-nums">
+                    {h.value ?? h.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {photo && (
+            <Figure image={photo} sizes="(min-width: 1024px) 590px, 100vw" priority fill />
+          )}
         </div>
-      </Section>
-
-      <Section>
-        <h2>Specification</h2>
-        <p className="mt-4 text-ink-700">
-          Dimensions, capacity and facilities, as text you can copy into a proposal.
-        </p>
-        <div className="mt-8">
-          <SpecTable specs={venue.specs} caption={`${venue.name} · specification`} />
-        </div>
-      </Section>
-
-      <Section tone="white">
-        <h2 className="text-[22px]">Highlights</h2>
-        <ul className="mt-5 card-grid gap-4 list-none m-0 p-0">
-          {venue.highlights.map((h) => (
-            <li key={h.label} className="border border-rule rounded-md bg-white p-5">
-              <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-400 block">
-                {h.value ? h.label : 'Included'}
-              </span>
-              <span className="font-display font-semibold text-[18px] text-ink-900 block mt-1.5 tabular-nums">
-                {h.value ?? h.label}
-              </span>
-            </li>
-          ))}
-        </ul>
       </Section>
 
       {venue.expoTypes && (

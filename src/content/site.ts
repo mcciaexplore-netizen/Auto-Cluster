@@ -47,7 +47,7 @@ export const site = {
   video: {
     youtubeId: 'LI4k2qjh-Xw',
     title: "Auto Cluster | MD's Message",
-    poster: 'https://i.ytimg.com/vi/LI4k2qjh-Xw/hqdefault.jpg',
+    poster: 'https://i.ytimg.com/vi/LI4k2qjh-Xw/maxresdefault.jpg',
   },
 
   gtmId: process.env.NEXT_PUBLIC_GTM_ID,

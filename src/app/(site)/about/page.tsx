@@ -40,6 +40,7 @@ export default function AboutPage() {
         <h2>About Auto Cluster</h2>
         <Prose
           className="mt-5"
+          wide
           paragraphs={[
             'Located in the Chinchwad-Talegaon-Chakan automotive district of Pune, the Auto Cluster Development and Research Institute is a facility providing support to small and medium enterprises. It offers a common facility for validation, training, seminars, workshops and market promotional activities, especially for the automotive and engineering sector. The institute has helped establish Pune as host to some of the biggest events in the automobile sector.',
             // Source repeats the "supported by…" clause twice; stated once.
@@ -151,7 +152,7 @@ export default function AboutPage() {
 
       <Section id="md-message">
         <h2>Our MD&rsquo;s message</h2>
-        <div className="mt-6 max-w-[720px]">
+        <div className="mt-6">
           <a
             href={`https://www.youtube.com/watch?v=${site.video.youtubeId}`}
             className="group block relative border border-rule rounded-md overflow-hidden bg-paper-2 no-underline"
@@ -163,8 +164,8 @@ export default function AboutPage() {
             <img
               src={site.video.poster}
               alt=""
-              width={480}
-              height={360}
+              width={1280}
+              height={720}
               className="w-full h-auto opacity-80 group-hover:opacity-100 transition-opacity duration-150"
             />
             <span className="absolute inset-0 flex items-center justify-center">
@@ -194,9 +195,9 @@ export default function AboutPage() {
             named some faces and not others would be worse than none. The
             individual facility teams appear on their own pages. */}
         <Figure
-          className="mt-8 max-w-[900px]"
+          className="mt-8"
           image={aboutPhotos.team}
-          sizes="(min-width: 1024px) 900px, 100vw"
+          sizes="100vw"
           caption="The Auto Cluster team at Chinchwad."
         />
       </Section>

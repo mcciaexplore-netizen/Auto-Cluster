@@ -140,6 +140,7 @@ export type EnquiryDepartment =
   | 'testing'
   | 'prototyping'
   | 'venue'
+  | 'training'
   | 'careers'
   | 'tenders'
   | 'general'
