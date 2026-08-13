@@ -337,11 +337,16 @@ function Field({
         {label}
         {required && <span className="text-error"> *</span>}
       </label>
-      {hint && (
-        <p className="text-[12.5px] text-ink-400 m-0 max-w-none" id={`${id}-hint`}>
-          {hint}
-        </p>
-      )}
+      {/* Always rendered, even without a hint — a sibling field's "Optional"
+          line would otherwise push its input down a row while this one's
+          stays put, and the two no longer line up across the grid. */}
+      <p
+        className="text-[12.5px] text-ink-400 m-0 max-w-none"
+        id={hint ? `${id}-hint` : undefined}
+        aria-hidden={hint ? undefined : true}
+      >
+        {hint || '\u00A0'}
+      </p>
       {children}
       {error && (
         <p className="text-[13px] text-error m-0 max-w-none" id={`${id}-error`} role="alert">
@@ -370,9 +375,9 @@ function FileField({
       <label htmlFor="cadFile" className="text-[14px] font-semibold text-ink-900">
         {label}
       </label>
-      {hint && (
-        <p className="text-[12.5px] text-ink-400 m-0 max-w-none">{hint}</p>
-      )}
+      <p className="text-[12.5px] text-ink-400 m-0 max-w-none" aria-hidden={hint ? undefined : true}>
+        {hint || ' '}
+      </p>
       <input
         id="cadFile"
         type="file"

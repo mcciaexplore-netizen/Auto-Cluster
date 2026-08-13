@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { credentials, site } from '@/content/site'
+import { credentials, promoters, site } from '@/content/site'
 import { primaryFacilities } from '@/content/facilities'
 import { venues } from '@/content/venues'
 import { categories, equipment, getEquipmentByCategory } from '@/content/equipment'
@@ -57,7 +57,7 @@ export default function HomePage() {
           and "the image fills the band top to bottom" true at the same
           time, instead of fighting each other the way bottom-aligning two
           independently-sized columns did. */}
-      <div className="bg-paper-2 border-b border-rule flex min-h-[var(--hero-min-h)]">
+      <div className="bg-paper-2 flex min-h-[var(--hero-min-h)]">
         <Container className="w-full py-16 md:py-20">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
@@ -124,6 +124,37 @@ export default function HomePage() {
               />
             </Reveal>
           </div>
+        </Container>
+      </div>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Promoted by                                                       */}
+      {/* ---------------------------------------------------------------- */}
+      {/* Continues the hero's own band and tone (no top padding, same
+          bg-paper-2, the border moves down here) rather than opening a
+          separate section — these are the same "who stands behind this"
+          idea as the hero's eyebrow line above, just made concrete. */}
+      <div className="bg-paper-2 border-b border-rule">
+        <Container className="pb-16 md:pb-20">
+          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
+            Promoted and supported by
+          </p>
+          <Reveal as="ul" stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+            {promoters.map((p) => (
+              <li key={p.caption} className="flex flex-col gap-3">
+                <div className="h-24 flex items-center px-6 bg-white border border-rule rounded-md">
+                  <Image
+                    src={p.src}
+                    alt={p.alt}
+                    width={p.width}
+                    height={p.height}
+                    className="h-12 w-auto object-contain"
+                  />
+                </div>
+                <span className="text-[13px] leading-snug text-ink-500">{p.caption}</span>
+              </li>
+            ))}
+          </Reveal>
         </Container>
       </div>
 
