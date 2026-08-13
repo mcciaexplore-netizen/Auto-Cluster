@@ -57,7 +57,7 @@ export default function HomePage() {
           and "the image fills the band top to bottom" true at the same
           time, instead of fighting each other the way bottom-aligning two
           independently-sized columns did. */}
-      <div className="bg-paper-2 flex min-h-[var(--hero-min-h)]">
+      <div className="bg-white flex min-h-[var(--hero-min-h)]">
         <Container className="w-full py-16 md:py-20">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
@@ -131,10 +131,10 @@ export default function HomePage() {
       {/* Promoted by                                                       */}
       {/* ---------------------------------------------------------------- */}
       {/* Continues the hero's own band and tone (no top padding, same
-          bg-paper-2, the border moves down here) rather than opening a
+          bg-white, the border moves down here) rather than opening a
           separate section — these are the same "who stands behind this"
           idea as the hero's eyebrow line above, just made concrete. */}
-      <div className="bg-paper-2 border-b border-rule">
+      <div className="bg-white border-b border-rule">
         <Container className="pb-10 md:pb-12">
           <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
             Promoted and supported by
