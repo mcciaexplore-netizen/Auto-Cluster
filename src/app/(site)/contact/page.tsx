@@ -53,7 +53,7 @@ export default async function ContactPage({
           One form for every department. We store your enquiry, route it to the right team
           and send you an acknowledgement.
         </p>
-        <div className="mt-8 max-w-[960px]">
+        <div className="mt-8">
           <EnquiryForm defaultServiceId={serviceId} defaultSubject={subject} />
         </div>
       </Section>

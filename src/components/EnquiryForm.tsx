@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { enquirySchema, fieldErrors } from '@/lib/validation'
 import { services, getService } from '@/content/services'
 import { Button, ButtonLink } from '@/components/ui/Button'
+import { Reveal } from '@/components/motion/Reveal'
 import { cn } from '@/lib/cn'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
@@ -148,31 +149,7 @@ export function EnquiryForm({
   }
 
   return (
-    <div className={cn('grid gap-8', !lockedServiceId && 'lg:grid-cols-[260px_1fr] lg:items-start')}>
-      {!lockedServiceId && (
-        <nav aria-label="Choose a service" className="flex flex-col gap-2">
-          {services.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => setServiceId(s.id)}
-              aria-current={s.id === serviceId ? 'true' : undefined}
-              className={cn(
-                'text-left rounded-md border px-4 py-3 transition-colors duration-150',
-                s.id === serviceId
-                  ? 'border-brand-600 bg-brand-50'
-                  : 'border-rule bg-white hover:border-rule-strong',
-              )}
-            >
-              <span className="block text-[14.5px] font-semibold text-ink-900">{s.label}</span>
-              <span className="block mt-0.5 text-[12.5px] leading-snug text-ink-500">
-                {s.description}
-              </span>
-            </button>
-          ))}
-        </nav>
-      )}
-
+    <div className={cn('grid gap-8', !lockedServiceId && 'lg:grid-cols-[1fr_280px] lg:items-start')}>
       {!lockedServiceId && service.kind === 'venue' ? (
         <div className="border border-rule rounded-md bg-white p-6 flex flex-col gap-4">
           <h3 className="text-[18px] m-0">Venue hire has its own booking flow</h3>
@@ -298,6 +275,32 @@ export function EnquiryForm({
             </Button>
           </div>
         </form>
+      )}
+
+      {!lockedServiceId && (
+        <nav aria-label="Choose a service">
+          <Reveal as="div" stagger className="flex flex-col gap-2">
+            {services.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => setServiceId(s.id)}
+                aria-current={s.id === serviceId ? 'true' : undefined}
+                className={cn(
+                  'text-left rounded-md border px-4 py-3 transition-colors duration-150',
+                  s.id === serviceId
+                    ? 'border-brand-600 bg-brand-50'
+                    : 'border-rule bg-white hover:border-rule-strong',
+                )}
+              >
+                <span className="block text-[14.5px] font-semibold text-ink-900">{s.label}</span>
+                <span className="block mt-0.5 text-[12.5px] leading-snug text-ink-500">
+                  {s.description}
+                </span>
+              </button>
+            ))}
+          </Reveal>
+        </nav>
       )}
     </div>
   )
