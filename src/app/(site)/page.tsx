@@ -4,7 +4,7 @@ import { credentials, promoters, site } from '@/content/site'
 import { primaryFacilities } from '@/content/facilities'
 import { venues } from '@/content/venues'
 import { categories, equipment, getEquipmentByCategory } from '@/content/equipment'
-import { heroCollage, serviceTiles, venuePhotos } from '@/content/images'
+import { ctaBadges, heroCollage, serviceTiles, venuePhotos } from '@/content/images'
 import { Container, Prose, Section, Stat } from '@/components/ui/Section'
 import { ServiceCard } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
@@ -316,16 +316,36 @@ export default function HomePage() {
       {/* CTA                                                               */}
       {/* ---------------------------------------------------------------- */}
       <Section tone="accent">
-        <h2>Tell us what you need tested or made.</h2>
-        <p className="mt-4 text-ink-700">
-          One enquiry form, routed to the team that can answer it. We acknowledge every
-          enquiry we receive.
-        </p>
-        <div className="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href="/contact">Send an enquiry</ButtonLink>
-          <ButtonLink href={site.phone.href} variant="secondary">
-            Call {site.phone.display}
-          </ButtonLink>
+        <div className="grid lg:grid-cols-2 gap-10 lg:items-center">
+          <div>
+            <h2>Tell us what you need tested or made.</h2>
+            <p className="mt-4 text-ink-700">
+              One enquiry form, routed to the team that can answer it. We acknowledge every
+              enquiry we receive.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <ButtonLink href="/contact">Send an enquiry</ButtonLink>
+              <ButtonLink href={site.phone.href} variant="secondary">
+                Call {site.phone.display}
+              </ButtonLink>
+            </div>
+          </div>
+
+          {/* NABL/ISO badge collage — decorative reinforcement of the two
+              accreditation lines already in the copy elsewhere on the site,
+              so it carries an empty alt via `Reveal`'s wrapper rather than
+              repeating the marks' meaning a screen reader has already heard.
+              aspect-[3/2] matches the source file exactly (1536x1024), so
+              object-contain has nothing to letterbox. */}
+          <Reveal className="relative aspect-[3/2] w-full max-w-[560px] justify-self-center lg:justify-self-end">
+            <Image
+              src={ctaBadges.src}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 560px, 90vw"
+              className="object-contain"
+            />
+          </Reveal>
         </div>
       </Section>
     </>

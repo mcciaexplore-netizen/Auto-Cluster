@@ -253,6 +253,19 @@ export const heroCollage: ImageRef = {
   height: 1061,
 }
 
+/**
+ * The closing CTA's badge collage — NABL accreditation, ISO 9001:2015 and
+ * ISO/IEC 17025 shown together rather than as the small individual marks
+ * used on /about, since this is the section asking a visitor to act on
+ * that trust rather than explaining it.
+ */
+export const ctaBadges: ImageRef = {
+  src: '/images/home/certification-badges.png',
+  alt: 'NABL accredited testing laboratory, ISO 9001:2015 quality management and ISO/IEC 17025 testing and calibration marks',
+  width: 1536,
+  height: 1024,
+}
+
 /* ------------------------------------------------------------------------ */
 /* About                                                                     */
 /* ------------------------------------------------------------------------ */
