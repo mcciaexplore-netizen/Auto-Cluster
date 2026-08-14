@@ -135,27 +135,21 @@ export default function HomePage() {
           stands behind this" idea as the hero's eyebrow line above, just
           made concrete. */}
       <div className="bg-white">
-        <Container className="pb-10 md:pb-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 max-w-none">
+        <Container className="pb-10 md:pb-12">
+          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
             Promoted and supported by
           </p>
-          {/* Logos only, no captions — real alt text still carries the name
-              for screen readers. 2x2 matrix on request, pinned to the row's
-              right end rather than stretched across it. */}
-          <Reveal
-            as="ul"
-            stagger
-            className="grid grid-cols-2 gap-x-10 gap-y-5 list-none m-0 p-0 lg:justify-items-end"
-          >
+          <Reveal as="ul" stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption}>
+              <li key={p.caption} className="flex items-center gap-3">
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-10 w-auto object-contain"
+                  className="h-10 w-auto shrink-0 object-contain"
                 />
+                <span className="text-[13px] font-semibold leading-snug text-ink-900">{p.caption}</span>
               </li>
             ))}
           </Reveal>
