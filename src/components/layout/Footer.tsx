@@ -76,9 +76,9 @@ export function Footer() {
           <h2 className="text-solid font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6">
             Promoted and supported by
           </h2>
-          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption} className="flex flex-col gap-3">
+              <li key={p.caption} className="flex items-center gap-3">
                 {/* Always below the fold — lazy by default, and never a
                     render-blocking request the way the hot-linked originals
                     were. Dimensions are declared, so no layout shift. */}
@@ -87,9 +87,9 @@ export function Footer() {
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-14 w-auto object-contain object-left bg-white border border-rule rounded-sm p-1.5"
+                  className="h-10 w-auto shrink-0 object-contain"
                 />
-                <span className="text-[13px] leading-snug text-ink-500">{p.caption}</span>
+                <span className="text-[13px] font-semibold leading-snug text-ink-900">{p.caption}</span>
               </li>
             ))}
           </ul>
