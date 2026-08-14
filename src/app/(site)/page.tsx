@@ -315,7 +315,7 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* CTA                                                               */}
       {/* ---------------------------------------------------------------- */}
-      <Section tone="accent">
+      <Section tone="accent" compact>
         <div className="grid lg:grid-cols-2 gap-10 lg:items-center">
           <div>
             <h2>Tell us what you need tested or made.</h2>
@@ -337,12 +337,12 @@ export default function HomePage() {
               repeating the marks' meaning a screen reader has already heard.
               aspect-[3/2] matches the source file exactly (1536x1024), so
               object-contain has nothing to letterbox. */}
-          <Reveal className="relative aspect-[3/2] w-full max-w-[560px] justify-self-center lg:justify-self-end">
+          <Reveal className="relative aspect-[3/2] w-full max-w-[420px] justify-self-center lg:justify-self-end">
             <Image
               src={ctaBadges.src}
               alt=""
               fill
-              sizes="(min-width: 1024px) 560px, 90vw"
+              sizes="(min-width: 1024px) 420px, 90vw"
               className="object-contain"
             />
           </Reveal>
