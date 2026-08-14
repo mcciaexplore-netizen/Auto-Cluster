@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { facilities, getFacility } from '@/content/facilities'
 import { getEquipmentByCategory } from '@/content/equipment'
 import { site } from '@/content/site'
-import { facilityPhotos } from '@/content/images'
+import { facilityHeroImages, facilityPhotos } from '@/content/images'
 import { PageHero, Prose, Section } from '@/components/ui/Section'
 import { CardImage, Figure } from '@/components/ui/Figure'
 import { StandardList } from '@/components/ui/SpecTable'
@@ -56,6 +56,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
         eyebrow={facility.isAccredited ? site.accreditation.nabl : 'Facility'}
         title={facility.h1}
         subtitle={facility.h2}
+        image={facilityHeroImages[facility.slug]}
       >
         <div className="flex flex-wrap gap-3">
           <ButtonLink href={`/contact?facility=${facility.slug}`}>Send an enquiry</ButtonLink>

@@ -106,6 +106,21 @@ export function expoTile(name: string): ImageRef | undefined {
 /* ------------------------------------------------------------------------ */
 
 /**
+ * A facility page's hero illustration — opt-in (PageHero's `image` prop),
+ * populated only where one exists. Environmental Testing's is a climate
+ * chamber render rather than a photo of any single catalogue machine, so it
+ * lives here rather than as an equipment or facilityPhotos entry.
+ */
+export const facilityHeroImages: Partial<Record<string, ImageRef>> = {
+  'environmental-testing': {
+    src: '/images/facilities/environmental-testing-hero.png',
+    alt: 'A climate chamber with a vehicle inside, showing temperature and humidity readouts',
+    width: 1536,
+    height: 1024,
+  },
+}
+
+/**
  * Facility figures, keyed by facility slug.
  *
  * The team photographs are the only recent, full-resolution assets in the

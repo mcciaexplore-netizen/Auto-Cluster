@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react'
+import Image from 'next/image'
 import { cn } from '@/lib/cn'
 import { CountUp } from '@/components/motion/CountUp'
 import { Reveal } from '@/components/motion/Reveal'
+import type { ImageRef } from '@/lib/types'
 
 /**
  * Page gutter. One measure for the whole site.
@@ -111,11 +113,14 @@ export function PageHero({
   eyebrow,
   title,
   subtitle,
+  image,
   children,
 }: {
   eyebrow?: string
   title: string
   subtitle?: string
+  /** Opt-in — every other PageHero call site keeps its single-column layout unchanged. */
+  image?: ImageRef
   children?: ReactNode
 }) {
   return (
@@ -125,28 +130,45 @@ export function PageHero({
        to. 58svh is substantial without being an obstacle. */
     <div className="bg-paper-2 border-b border-rule flex items-center min-h-[58svh]">
       <Container className="w-full py-20 md:py-24">
-        {/* The hero is above the fold, so this reveals on mount rather than
-            on scroll — the observer fires immediately at this position.
-            Staggered so eyebrow, headline and subtitle arrive in reading
-            order. The stagger applies to direct children, so it wraps the
-            elements themselves, not the Container. */}
-        <Reveal stagger>
-          {eyebrow && (
-            <p className="font-mono text-[12px] tracking-[0.16em] uppercase text-brand-400 mb-6 max-w-none">
-              {eyebrow}
-            </p>
+        <div className={cn('grid gap-10 lg:gap-16 items-center', image && 'lg:grid-cols-2')}>
+          {/* The hero is above the fold, so this reveals on mount rather than
+              on scroll — the observer fires immediately at this position.
+              Staggered so eyebrow, headline and subtitle arrive in reading
+              order. The stagger applies to direct children, so it wraps the
+              elements themselves, not the Container. */}
+          <Reveal stagger>
+            {eyebrow && (
+              <p className="font-mono text-[12px] tracking-[0.16em] uppercase text-brand-400 mb-6 max-w-none">
+                {eyebrow}
+              </p>
+            )}
+            {/* No colour override — the h1 takes its gradient from the base
+                stylesheet. The measure widens with the type: 18ch held at
+                44px, but at 68px it forces a headline into five short lines. */}
+            <h1 className="max-w-[20ch]">{title}</h1>
+            {subtitle && (
+              <p className="mt-6 text-[clamp(16px,1.25vw,21px)] leading-relaxed text-ink-700 max-w-[58ch]">
+                {subtitle}
+              </p>
+            )}
+            {children && <div className="mt-10">{children}</div>}
+          </Reveal>
+
+          {/* Stays inside the Container's own gutter rather than bleeding to
+              the window edge the way the home hero's collage does — the
+              same right-hand padding the text has on its left. */}
+          {image && (
+            <Reveal className="relative w-full aspect-[3/2]">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-contain"
+              />
+            </Reveal>
           )}
-          {/* No colour override — the h1 takes its gradient from the base
-              stylesheet. The measure widens with the type: 18ch held at
-              44px, but at 68px it forces a headline into five short lines. */}
-          <h1 className="max-w-[20ch]">{title}</h1>
-          {subtitle && (
-            <p className="mt-6 text-[clamp(16px,1.25vw,21px)] leading-relaxed text-ink-700 max-w-[58ch]">
-              {subtitle}
-            </p>
-          )}
-          {children && <div className="mt-10">{children}</div>}
-        </Reveal>
+        </div>
       </Container>
     </div>
   )
