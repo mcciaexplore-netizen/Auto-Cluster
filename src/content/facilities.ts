@@ -111,6 +111,17 @@ export const facilities: Facility[] = [
       'Environmental testing measures the performance of equipment under specified environmental conditions — extreme high and low temperatures, blown and settling sand and dust, salt spray and salt fog, very high or low humidity, and more. Such tests are most commonly performed for aeronautical, space and automotive applications.',
       'In environmental testing, most parts, components and sub-assemblies are validated against national and international test standards. An environmental chamber, also called a climatic chamber, is used for these tests, exposing products to controlled conditions. At Auto Cluster we serve more than 200 MSME, OEM and MNC customers in environmental testing. We are also equipped to undertake special projects such as water drop testing.',
     ],
+    // Source ran items 2 and 3 together as one bullet, "High Low Cyclic
+    // Temperature Salt Spray" — split back into the two chambers it names.
+    // docs/audit/09-environmental-testing.md § Capabilities.
+    capabilities: [
+      'Thermal Shock',
+      'High Low Cyclic Temperature',
+      'Salt Spray',
+      'Water Spray',
+      'Dust Spray',
+      'Vibration Shaker with Coupled Chamber',
+    ],
     industries: [
       'Automotive component manufacturers',
       'Medical equipment manufacturers',

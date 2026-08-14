@@ -106,6 +106,14 @@ export interface Facility {
   h2: string
   summary: string
   intro: string[]
+  /**
+   * The facility's own "equipped with these chamber/machine types" list —
+   * present in the source for every manufacturing/testing facility, but
+   * only populated here where it is a clean, correctable list rather than
+   * a paragraph with an unresolved accuracy problem (docs/audit §
+   * Capabilities). See environmental-testing for the one currently in use.
+   */
+  capabilities?: string[]
   category?: EquipmentCategory
   isAccredited: boolean
   industries: string[]

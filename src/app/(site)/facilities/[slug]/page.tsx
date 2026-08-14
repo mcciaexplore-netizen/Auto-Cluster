@@ -6,7 +6,7 @@ import { getEquipmentByCategory } from '@/content/equipment'
 import { site } from '@/content/site'
 import { facilityPhotos } from '@/content/images'
 import { PageHero, Prose, Section } from '@/components/ui/Section'
-import { Figure } from '@/components/ui/Figure'
+import { CardImage, Figure } from '@/components/ui/Figure'
 import { StandardList } from '@/components/ui/SpecTable'
 import { ButtonLink } from '@/components/ui/Button'
 import { BuildNote } from '@/components/blocks/BuildNote'
@@ -97,6 +97,27 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
         </Section>
       )}
 
+      {facility.capabilities && facility.capabilities.length > 0 && (
+        <Section>
+          <h2 className="text-[22px]">Our {facility.name.toLowerCase()} capabilities</h2>
+          <p className="mt-4 text-ink-700">
+            Auto Cluster Development and Research Institute Pune is equipped with the
+            following chamber types.
+          </p>
+          <ul className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0">
+            {facility.capabilities.map((c) => (
+              <li key={c} className="relative pl-6 text-ink-700 text-[15px]">
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-[0.62em] w-2.5 h-px bg-rule-strong"
+                />
+                {c}
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
       {machines.length > 0 && (
         <Section>
           <h2>Equipment</h2>
@@ -111,7 +132,14 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
                   href={`/equipment/${m.slug}`}
                   className="group block h-full bg-white border border-rule rounded-md p-5 no-underline transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"
                 >
-                  <span className="block font-display font-semibold text-[17px] leading-tight text-brand-600">
+                  {m.image && (
+                    <CardImage
+                      image={{ ...m.image, alt: '' }}
+                      bleed="-mx-5 -mt-5 rounded-t-[5px]"
+                    />
+                  )}
+
+                  <span className="block mt-1 font-display font-semibold text-[17px] leading-tight text-brand-600">
                     {m.name}
                   </span>
                   {m.make && (
