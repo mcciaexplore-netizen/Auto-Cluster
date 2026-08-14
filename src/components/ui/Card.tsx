@@ -34,13 +34,13 @@ export function Card({
 /**
  * A whole-card link. The hover state lifts the card off the page.
  *
- * No border, same as `Card` — the shadow alone separates it from the page,
- * at rest and on hover both. The lift animates `transform` and an overlay's
- * `opacity` only — both run on the compositor. Animating `box-shadow`
- * directly repaints the card and its surroundings every frame, which is
- * visible as jank on the 30-card equipment grid, so the hover shadow lives
- * on a stacked pseudo-element that just fades in. `isolate` keeps that
- * overlay behind the content.
+ * Bordered, on request — a visible edge rather than the shadow alone doing
+ * the job of separating the card from the page. The lift animates
+ * `transform` and an overlay's `opacity` only — both run on the compositor.
+ * Animating `box-shadow` directly repaints the card and its surroundings
+ * every frame, which is visible as jank on the 30-card equipment grid, so
+ * the hover shadow lives on a stacked pseudo-element that just fades in.
+ * `isolate` keeps that overlay behind the content.
  */
 export function LinkCard({
   href,
@@ -55,7 +55,7 @@ export function LinkCard({
     <Link
       href={href}
       className={cn(
-        'group relative isolate bg-paper rounded-lg p-7 sm:p-8',
+        'group relative isolate bg-paper rounded-md border border-rule p-7 sm:p-8',
         'flex flex-col gap-4 no-underline shadow-[var(--shadow-card)]',
         'transition-transform duration-200 ease-out',
         'hover:-translate-y-0.5',
@@ -115,8 +115,12 @@ export function ServiceCard({
         </span>
       )}
 
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[20px] leading-tight">{title}</h3>
+      {/* min-h + line-clamp on both the title row and the description: a
+          card grid only reads as boxy if the divider below lands on the
+          same line for every card, not just wherever that card's own
+          title/description happened to wrap to. */}
+      <div className="flex items-start justify-between gap-3 min-h-[3.25rem]">
+        <h3 className="text-[20px] leading-tight line-clamp-2">{title}</h3>
         {badge && (
           <span className="font-mono text-[10.5px] tracking-[0.08em] text-brand-600 border border-brand-600 rounded-sm px-1.5 py-1 whitespace-nowrap shrink-0">
             {badge}
@@ -124,7 +128,9 @@ export function ServiceCard({
         )}
       </div>
 
-      <p className="text-[14.5px] leading-snug text-ink-500 m-0">{description}</p>
+      <p className="text-[14.5px] leading-snug text-ink-500 m-0 min-h-[3.75rem] line-clamp-3">
+        {description}
+      </p>
 
       {data && data.length > 0 && (
         <dl className="flex flex-wrap gap-x-6 gap-y-2 border-t border-rule pt-4 m-0">
