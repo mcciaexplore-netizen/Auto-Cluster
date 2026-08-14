@@ -14,8 +14,8 @@ export function Footer() {
   const { address } = site
 
   return (
-    <footer className="bg-paper-2 border-t border-rule text-ink-700">
-      <Container className="py-16">
+    <footer className="bg-white border-t border-rule text-ink-700">
+      <Container className="py-12">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {footerNav.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
@@ -72,7 +72,7 @@ export function Footer() {
         </div>
 
         {/* Promoters */}
-        <div className="mt-14 pt-8 border-t border-rule flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+        <div className="mt-10 pt-6 border-t border-rule flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <h2 className="text-solid font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400">
             Promoted and supported by
           </h2>
@@ -97,7 +97,7 @@ export function Footer() {
         </div>
 
         {/* Legal row */}
-        <div className="mt-12 pt-6 border-t border-rule flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 pt-5 border-t border-rule flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-mono text-[11.5px] text-ink-400 m-0 max-w-none">
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
