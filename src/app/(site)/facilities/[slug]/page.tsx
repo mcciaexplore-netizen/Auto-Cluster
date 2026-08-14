@@ -10,6 +10,7 @@ import { CardImage, Figure } from '@/components/ui/Figure'
 import { StandardList } from '@/components/ui/SpecTable'
 import { ButtonLink } from '@/components/ui/Button'
 import { BuildNote } from '@/components/blocks/BuildNote'
+import { cn } from '@/lib/cn'
 
 export function generateStaticParams() {
   return facilities.map((f) => ({ slug: f.slug }))
@@ -80,16 +81,21 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
 
           {/* Whatever photography exists for this facility — the team, the
               room, or a machine that has no catalogue record of its own.
-              Most facilities have one; the grid handles two without a
-              special case and leaves nothing behind when there are none. */}
+              Two columns only once there are two photos to fill them — one
+              photo alone in a sm:grid-cols-2 left a blank half behind it. */}
           {photos.length > 0 && (
-            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            <div
+              className={cn(
+                'mt-10 grid gap-5',
+                photos.length > 1 ? 'sm:grid-cols-2' : 'max-w-[520px]',
+              )}
+            >
               {photos.map((p) => (
                 <Figure
                   key={p.src}
                   image={p}
                   aspect="4 / 3"
-                  sizes="(min-width: 640px) 45vw, 100vw"
+                  sizes={photos.length > 1 ? '(min-width: 640px) 45vw, 100vw' : '520px'}
                 />
               ))}
             </div>
@@ -125,9 +131,13 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
             Every machine has a full specification page with make, model, capacity and
             applicable standards.
           </p>
-          <ul className="mt-8 card-grid gap-4 list-none m-0 p-0">
+          {/* flex-wrap, not card-grid: card-grid's auto-fit columns are
+              fixed for the whole grid, so a trailing row with fewer items
+              than a full row left empty column tracks behind it. grow lets
+              a short last row's cards widen to fill the row instead. */}
+          <ul className="mt-8 flex flex-wrap gap-4 list-none m-0 p-0">
             {machines.map((m) => (
-              <li key={m.slug}>
+              <li key={m.slug} className="grow basis-[16.25rem] max-w-[23rem]">
                 <Link
                   href={`/equipment/${m.slug}`}
                   className="group block h-full bg-white border border-rule rounded-md p-5 no-underline transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"
@@ -247,9 +257,13 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.team && facility.team.length > 0 && (
         <Section tone="white">
           <h2 className="text-[22px]">Meet the team</h2>
-          <ul className="mt-5 tile-grid gap-3 list-none m-0 p-0">
+          {/* flex-wrap, same reasoning as the Equipment list above — team
+              size varies a lot page to page, and tile-grid's fixed auto-fit
+              columns left a blank trailing row for the ones that didn't
+              divide evenly into a full row. */}
+          <ul className="mt-5 flex flex-wrap gap-3 list-none m-0 p-0">
             {facility.team.map((name) => (
-              <li key={name} className="border-b border-rule pb-3">
+              <li key={name} className="grow basis-[13rem] max-w-[17rem] border-b border-rule pb-3">
                 <span className="block text-[15px] font-semibold text-ink-900">{name}</span>
                 <span className="block font-mono text-[11px] tracking-[0.1em] uppercase text-ink-400 mt-1">
                   Designation pending
