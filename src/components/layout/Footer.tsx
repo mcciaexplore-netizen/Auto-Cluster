@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { footerNav, legalNav, promoters, site } from '@/content/site'
+import { footerNav, promoters, site } from '@/content/site'
 import { Container } from '@/components/ui/Section'
 
 /**
@@ -91,25 +91,6 @@ export function Footer() {
                   height={p.height}
                   className="h-10 w-auto object-contain"
                 />
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Legal row */}
-        <div className="mt-8 pt-5 border-t border-rule flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[11.5px] text-ink-400 m-0 max-w-none">
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
-          </p>
-          <ul className="list-none m-0 p-0 flex flex-wrap gap-x-6 gap-y-2">
-            {legalNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="font-mono text-[11.5px] text-ink-400 no-underline hover:text-brand-800 hover:underline"
-                >
-                  {item.label}
-                </Link>
               </li>
             ))}
           </ul>
