@@ -249,10 +249,13 @@ export default function HomePage() {
           tested, are of the highest quality, and meet the requirements of our clients.
         </p>
 
+        {/* Exactly 5 facilities, always — a fixed lg:grid-cols-5 rather than
+            card-grid's auto-fit, which wrapped the 5th card onto its own
+            row once four filled the first. */}
         <Reveal
           as="ul"
           stagger
-          className="mt-8 card-grid gap-5 list-none m-0 p-0"
+          className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 list-none m-0 p-0"
         >
           {primaryFacilities
             .filter((f) => f.category)
