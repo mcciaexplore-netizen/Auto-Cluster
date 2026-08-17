@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getVenue, venues } from '@/content/venues'
 import { site } from '@/content/site'
-import { expoTile, venuePhotos } from '@/content/images'
+import { venuePhotos } from '@/content/images'
 import { PageHero, Prose, Section } from '@/components/ui/Section'
 import { Figure } from '@/components/ui/Figure'
 import { ButtonLink } from '@/components/ui/Button'
@@ -82,47 +81,9 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
         </div>
       </Section>
 
-      {venue.expoTypes && (
-        <Section>
-          <h2>Types of exhibition</h2>
-          <p className="mt-4 text-ink-700">
-            All {venue.expoTypes.length} categories are bookable. Pick one to start a
-            request with it pre-selected.
-          </p>
-          {/* Each category carries the live site's own illustration for it.
-              They are category art, not photographs of this hall — the
-              Dental Expo tile is a dental surgery — so they are decorative
-              and the link text is the only thing announced. The image is
-              inside the anchor so the whole tile is one target. */}
-          <ul className="mt-8 card-grid gap-4 list-none m-0 p-0">
-            {venue.expoTypes.map((t) => {
-              const tile = expoTile(t)
-              return (
-                <li key={t}>
-                  <a
-                    href={`/venues/book?venue=${venue.slug}&expo=${encodeURIComponent(t)}`}
-                    className="group flex flex-col h-full bg-white border border-rule rounded-md overflow-hidden no-underline transition-colors duration-150 hover:border-brand-600"
-                  >
-                    {tile && (
-                      <Image
-                        src={tile.src}
-                        alt=""
-                        width={tile.width}
-                        height={tile.height}
-                        sizes="(min-width: 1280px) 22vw, (min-width: 768px) 33vw, 100vw"
-                        className="block w-full h-auto aspect-[3/2] object-cover border-b border-rule"
-                      />
-                    )}
-                    <span className="flex items-center flex-1 min-h-11 px-4 py-3 text-[14.5px] text-ink-900 group-hover:text-brand-600">
-                      {t}
-                    </span>
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </Section>
-      )}
+      {/* Types of exhibition moved to /events — browsing expo categories is
+          an events-page concern, not this venue page's. The section still
+          books through this same venue's flow (see events/page.tsx). */}
 
       <Section tone="white">
         <h2 className="text-[22px]">Documents</h2>

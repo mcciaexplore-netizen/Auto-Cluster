@@ -79,7 +79,7 @@ export function Section({
 
   return (
     <section id={id} className={cn(backgrounds[tone], border && borders[tone], className)}>
-      <Container className={compact ? 'py-10 md:py-14 xl:py-16' : 'py-20 md:py-28 xl:py-36'}>
+      <Container className={compact ? 'py-8 md:py-10 xl:py-12' : 'py-14 md:py-20 xl:py-24'}>
         <Reveal className="min-w-0">{children}</Reveal>
       </Container>
     </section>

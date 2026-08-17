@@ -4,6 +4,7 @@ import { categories, equipment } from '@/content/equipment'
 import { Container, PageHero, Section } from '@/components/ui/Section'
 import { StandardList } from '@/components/ui/SpecTable'
 import { CardImage } from '@/components/ui/Figure'
+import BorderGlow from '@/components/ui/BorderGlow'
 import type { EquipmentCategory } from '@/lib/types'
 
 export const metadata: Metadata = {
@@ -83,54 +84,69 @@ export default async function EquipmentPage({
             const incomplete = item.specs.some((s) => s.flag?.kind === 'missing')
             return (
               <li key={item.slug} className="grow basis-[16.25rem] max-w-[23rem]">
-                <Link
-                  href={`/equipment/${item.slug}`}
-                  className="group h-full bg-white border-2 border-rule-strong rounded-md p-6 flex flex-col gap-3 no-underline shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"
+                {/* BorderGlow now owns the card's border, background and
+                    shadow (see .equipment-card-glow in globals.css for the
+                    resting-state override) — the pointer-tracked glow
+                    replaces the old flat hover:border-brand-600 swap. */}
+                <BorderGlow
+                  className="equipment-card-glow h-full"
+                  backgroundColor="#ffffff"
+                  borderRadius={12}
+                  glowColor="199 90 55"
+                  colors={['#393185', '#0090cc', '#00a0e3']}
+                  edgeSensitivity={35}
+                  glowRadius={24}
+                  glowIntensity={0.8}
                 >
-                  {/* The machine, so the catalogue can be scanned by eye as
-                      well as by make and model. Decorative here: the name and
-                      the make sit directly beneath every one of them, so the
-                      alt text would be read out twice. */}
-                  {item.image && (
-                    <CardImage
-                      image={{ ...item.image, alt: '' }}
-                      bleed="-mx-6 -mt-6 rounded-t-[5px]"
-                    />
-                  )}
+                  <Link
+                    href={`/equipment/${item.slug}`}
+                    className="group h-full p-6 flex flex-col gap-3 no-underline"
+                  >
+                    {/* The machine, so the catalogue can be scanned by eye as
+                        well as by make and model. Decorative here: the name and
+                        the make sit directly beneath every one of them, so the
+                        alt text would be read out twice. */}
+                    {item.image && (
+                      <CardImage
+                        image={{ ...item.image, alt: '' }}
+                        bleed="-mx-6 -mt-6 rounded-t-[12px]"
+                      />
+                    )}
 
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-400">
-                      {categories.find((c) => c.id === item.category)?.label}
-                    </span>
-                    {item.isAccredited && (
-                      <span className="font-mono text-[10px] tracking-[0.08em] text-brand-600 border border-brand-600 rounded-sm px-1.5 py-0.5 shrink-0">
-                        NABL
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-ink-400">
+                        {categories.find((c) => c.id === item.category)?.label}
+                      </span>
+                      {item.isAccredited && (
+                        <span className="font-mono text-[10px] tracking-[0.08em] text-brand-600 border border-brand-600 rounded-sm px-1.5 py-0.5 shrink-0">
+                          NABL
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 className="text-[19px] leading-tight">{item.name}</h3>
+
+                    {(item.make || item.model) && (
+                      <p className="font-mono text-[12.5px] text-ink-500 m-0">
+                        {[item.make, item.model].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
+
+                    <p className="text-[14px] leading-snug text-ink-500 m-0">{item.summary}</p>
+
+                    {item.standards.length > 0 && <StandardList standards={item.standards.slice(0, 3)} />}
+
+                    {incomplete && (
+                      <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-warning">
+                        Specifications pending
                       </span>
                     )}
-                  </div>
 
-                  <h3 className="text-[19px] leading-tight">{item.name}</h3>
-
-                  {(item.make || item.model) && (
-                    <p className="font-mono text-[12.5px] text-ink-500 m-0">
-                      {[item.make, item.model].filter(Boolean).join(' · ')}
-                    </p>
-                  )}
-
-                  <p className="text-[14px] leading-snug text-ink-500 m-0">{item.summary}</p>
-
-                  {item.standards.length > 0 && <StandardList standards={item.standards.slice(0, 3)} />}
-
-                  {incomplete && (
-                    <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-warning">
-                      Specifications pending
+                    <span className="mt-auto pt-2 text-sm font-semibold text-brand-800 group-hover:underline underline-offset-4">
+                      View specification <span aria-hidden="true">→</span>
                     </span>
-                  )}
-
-                  <span className="mt-auto pt-2 text-sm font-semibold text-brand-800 group-hover:underline underline-offset-4">
-                    View specification <span aria-hidden="true">→</span>
-                  </span>
-                </Link>
+                  </Link>
+                </BorderGlow>
               </li>
             )
           })}
