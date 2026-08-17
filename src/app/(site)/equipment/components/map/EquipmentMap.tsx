@@ -75,7 +75,7 @@ export function EquipmentMap({
       className="relative bg-paper border-b border-rule overflow-hidden"
     >
       <div className="mx-auto w-full max-w-[var(--page-max)] px-[var(--page-gutter)] py-16 md:py-24">
-        <MapIntro machineCount={plottable.length} categoryCount={zones.length} />
+        <MapIntro />
 
         <MapCanvas
           zones={zones}

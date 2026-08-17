@@ -104,7 +104,7 @@ export default async function EquipmentDetailPage({
             </p>
           )}
 
-          <p className="mt-4 text-[15px] text-ink-500">{item.summary}</p>
+          <p className="mt-4 text-[17px] text-ink-500 max-w-[58ch]">{item.summary}</p>
         </Container>
       </div>
 

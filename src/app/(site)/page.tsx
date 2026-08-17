@@ -76,7 +76,7 @@ export default function HomePage() {
 
               <h1 className="max-w-[22ch]">{site.tagline}</h1>
 
-              <p className="mt-7 text-[clamp(16px,1.25vw,20px)] leading-relaxed text-ink-700 max-w-[46ch]">
+              <p className="mt-7 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[46ch]">
                 In the Chinchwad–Talegaon–Chakan automotive belt of Pune, ACDRI gives small and
                 medium enterprises access to the validation, machining and exhibition
                 infrastructure they cannot justify buying alone.

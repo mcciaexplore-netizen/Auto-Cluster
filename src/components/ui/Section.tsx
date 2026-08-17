@@ -147,7 +147,7 @@ export function PageHero({
                 44px, but at 68px it forces a headline into five short lines. */}
             <h1 className="max-w-[20ch]">{title}</h1>
             {subtitle && (
-              <p className="mt-6 text-[clamp(16px,1.25vw,21px)] leading-relaxed text-ink-700 max-w-[58ch]">
+              <p className="mt-6 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[58ch]">
                 {subtitle}
               </p>
             )}
