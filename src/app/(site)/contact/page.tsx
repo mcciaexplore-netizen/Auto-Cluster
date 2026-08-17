@@ -113,9 +113,16 @@ export default async function ContactPage({
 
       <Section tone="white">
         <h2 className="text-[22px]">Who handles what</h2>
-        <ul className="mt-5 tile-grid gap-3 list-none m-0 p-0">
+        {/* flex-wrap, not tile-grid: 7 departments don't divide evenly into
+            tile-grid's fixed column count, which left the trailing row's
+            empty tracks as a wide blank gap. grow fills a short row; centre
+            it once grow hits the width cap below. */}
+        <ul className="mt-5 flex flex-wrap justify-center gap-3 list-none m-0 p-0">
           {departments.map((d) => (
-            <li key={d} className="border border-rule rounded-md bg-white p-4">
+            <li
+              key={d}
+              className="grow basis-[13rem] max-w-[17rem] border border-rule rounded-md bg-white p-4"
+            >
               <span className="block font-display font-semibold text-[15px] text-brand-600">
                 {departmentLabels[d]}
               </span>

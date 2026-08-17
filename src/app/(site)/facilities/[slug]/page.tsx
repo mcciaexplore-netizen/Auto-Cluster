@@ -135,8 +135,11 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
           {/* flex-wrap, not card-grid: card-grid's auto-fit columns are
               fixed for the whole grid, so a trailing row with fewer items
               than a full row left empty column tracks behind it. grow lets
-              a short last row's cards widen to fill the row instead. */}
-          <ul className="mt-8 flex flex-wrap gap-4 list-none m-0 p-0">
+              a short last row's cards widen to fill the row, and
+              justify-center centres whatever growth the max-width cap below
+              stops from closing the row completely — a lone or short pair of
+              cards reads as centred, not stranded on the left. */}
+          <ul className="mt-8 flex flex-wrap justify-center gap-4 list-none m-0 p-0">
             {machines.map((m) => (
               <li key={m.slug} className="grow basis-[16.25rem] max-w-[23rem]">
                 <Link

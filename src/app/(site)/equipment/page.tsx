@@ -70,11 +70,19 @@ export default async function EquipmentPage({
       <Section>
         <h2 className="sr-only">Equipment</h2>
 
-        <ul className="card-grid gap-5 list-none m-0 p-0">
+        {/* flex-wrap, not card-grid: the catalogue's count varies by filter
+            and rarely divides evenly into a full row — `card-grid`'s auto-fit
+            columns are fixed for the whole grid, so a short last row left
+            empty column tracks behind it. `grow` lets a short row's cards
+            widen to fill it, and `justify-center` centres whatever growth
+            can't close (the max-width cap below stops a lone card from
+            stretching the full row width) instead of leaving it stranded on
+            the left. */}
+        <ul className="flex flex-wrap justify-center gap-5 list-none m-0 p-0">
           {shown.map((item) => {
             const incomplete = item.specs.some((s) => s.flag?.kind === 'missing')
             return (
-              <li key={item.slug}>
+              <li key={item.slug} className="grow basis-[16.25rem] max-w-[23rem]">
                 <Link
                   href={`/equipment/${item.slug}`}
                   className="group h-full bg-white border-2 border-rule-strong rounded-md p-6 flex flex-col gap-3 no-underline shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"

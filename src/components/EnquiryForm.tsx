@@ -310,8 +310,23 @@ export function EnquiryForm({
       )}
 
       {!lockedServiceId && !categoryPicker && (
-        <nav aria-label="Choose a service">
-          <Reveal as="div" stagger className="flex flex-col gap-2">
+        // The picker (ten cards, a constant ~935px) is reliably taller than
+        // the form (five fields for `general` at ~680px, more for
+        // manufacturing/testing). A shared grid row takes the height of the
+        // taller one regardless of alignment, so top-aligning both — same
+        // row, unequal content — always left that difference as a bare
+        // rectangle of page background in whichever column came up short.
+        // Capping the picker at roughly the shortest form's height and
+        // scrolling the rest internally keeps the row close to that height
+        // for every service; `sticky` then absorbs what's left for the
+        // taller (manufacturing/testing) forms, since a pinned column reads
+        // as a nav following the page rather than a hole in the layout.
+        <nav aria-label="Choose a service" className="lg:sticky lg:top-24">
+          <Reveal
+            as="div"
+            stagger
+            className="flex flex-col gap-2 lg:max-h-[calc(100svh-7rem)] lg:overflow-y-auto lg:pr-1"
+          >
             {services.map((s) => (
               <button
                 key={s.id}
