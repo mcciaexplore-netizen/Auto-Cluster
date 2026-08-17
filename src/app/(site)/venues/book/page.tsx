@@ -86,7 +86,7 @@ export default async function BookVenuePage({
           return. Two days before and two days after your booked dates are reserved for
           setup and teardown.
         </p>
-        <div className="mt-8 max-w-[680px]">
+        <div className="mt-8 max-w-[680px] mx-auto">
           <EnquiryForm lockedServiceId="venue-hire" defaultSubject={subject} />
         </div>
       </Section>

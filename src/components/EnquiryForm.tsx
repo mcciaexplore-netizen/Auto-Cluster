@@ -157,8 +157,13 @@ export function EnquiryForm({
   }
 
   return (
-    <div className={cn('grid gap-8', !lockedServiceId && 'lg:grid-cols-[1fr_280px] lg:items-start')}>
-      {!lockedServiceId && service.kind === 'venue' ? (
+    <div
+      className={cn(
+        'grid gap-8',
+        !lockedServiceId && !categoryPicker && 'lg:grid-cols-[1fr_280px] lg:items-start',
+      )}
+    >
+      {!lockedServiceId && !categoryPicker && service.kind === 'venue' ? (
         <div className="border border-rule rounded-md bg-white p-6 flex flex-col gap-4">
           <h3 className="text-[18px] m-0">Venue hire has its own booking flow</h3>
           <p className="text-ink-700 m-0">
@@ -205,6 +210,25 @@ export function EnquiryForm({
           <Field id="subject" label="Subject" error={errors.subject} hint="Optional">
             <input id="subject" name="subject" type="text" defaultValue={defaultSubject} className={inputCls(errors.subject)} />
           </Field>
+
+          {categoryPicker && (
+            <Field id="category" label="Machine category">
+              <select
+                id="category"
+                value={serviceId}
+                onChange={(e) => setServiceId(e.target.value)}
+                className={inputCls()}
+              >
+                {services
+                  .filter((s) => s.kind === 'manufacturing' || s.kind === 'testing')
+                  .map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.label}
+                    </option>
+                  ))}
+              </select>
+            </Field>
+          )}
 
           {formKind === 'manufacturing' && (
             <div className="grid gap-5 sm:grid-cols-2 border-t border-rule pt-5">
@@ -285,7 +309,7 @@ export function EnquiryForm({
         </form>
       )}
 
-      {!lockedServiceId && (
+      {!lockedServiceId && !categoryPicker && (
         <nav aria-label="Choose a service">
           <Reveal as="div" stagger className="flex flex-col gap-2">
             {services.map((s) => (

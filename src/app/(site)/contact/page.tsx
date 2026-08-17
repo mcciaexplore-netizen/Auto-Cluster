@@ -8,6 +8,7 @@ import { PageHero, Section } from '@/components/ui/Section'
 import { EnquiryForm } from '@/components/EnquiryForm'
 import { EmptyState } from '@/components/ui/Card'
 import { BuildNote } from '@/components/blocks/BuildNote'
+import { cn } from '@/lib/cn'
 
 export const metadata: Metadata = {
   title: 'Contact — Testing, Prototyping & Venue Enquiries',
@@ -53,8 +54,12 @@ export default async function ContactPage({
           One form for every department. We store your enquiry, route it to the right team
           and send you an acknowledgement.
         </p>
-        <div className="mt-8">
-          <EnquiryForm defaultServiceId={serviceId} defaultSubject={subject} />
+        <div className={cn('mt-8 mx-auto', params.machine ? 'max-w-[680px]' : 'max-w-[960px]')}>
+          <EnquiryForm
+            defaultServiceId={serviceId}
+            defaultSubject={subject}
+            categoryPicker={Boolean(params.machine)}
+          />
         </div>
       </Section>
 
