@@ -107,7 +107,18 @@ export function ServiceCard({
 }) {
   return (
     <LinkCard href={href} className="h-full">
-      {image && <CardImage image={{ ...image, alt: '' }} />}
+      {/* LinkCard's own radius is `rounded-md` — CardImage's default bleed
+          curves at `rounded-t-lg` instead, a size up, which left a sliver of
+          the card's background showing through at both top corners where
+          the image's tighter curve pulled in ahead of the border's. Matched
+          explicitly rather than changing the shared default, since other
+          CardImage callers are built for the `rounded-lg` `Card`. */}
+      {image && (
+        <CardImage
+          image={{ ...image, alt: '' }}
+          bleed="-mx-7 -mt-7 sm:-mx-8 sm:-mt-8 rounded-t-md"
+        />
+      )}
 
       {eyebrow && (
         <span className="self-start inline-flex items-center font-mono text-[10px] tracking-[0.12em] uppercase text-brand-600 bg-brand-50 border border-brand-600/20 rounded-full px-2.5 py-1">

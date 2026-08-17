@@ -149,7 +149,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
                   {m.image && (
                     <CardImage
                       image={{ ...m.image, alt: '' }}
-                      bleed="-mx-5 -mt-5 rounded-t-[5px]"
+                      bleed="-mx-5 -mt-5 rounded-t-md"
                     />
                   )}
 

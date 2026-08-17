@@ -408,29 +408,6 @@
   font-family: var(--font-heading-sub);
 }
 
-/* BorderGlow (components/ui/BorderGlow.tsx) ships a resting border of
-   `rgb(255 255 255 / 15%)` — a barely-visible hairline tuned for its own
-   dark default card, which all but disappears on this site's white cards.
-   Scoped overrides, not edits to that file, so BorderGlow.css stays a
-   faithful, unmodified port of the upstream component. */
-.equipment-card-glow {
-  border: none;
-  box-shadow: var(--shadow-card);
-}
-.equipment-card-glow:hover {
-  box-shadow: var(--shadow-hover);
-}
-/* BorderGlow's own overflow is `visible` — required so the outer glow can
-   extend past the card — which means nothing clips the machine photo to
-   the card's actual rounded corner. The photo bled flush to the edges at
-   its own smaller radius, so it just showed through square past where the
-   card visibly curves. Clip only this inner content layer, a sibling of
-   the glow, so the glow itself is untouched. */
-.equipment-card-glow .border-glow-inner {
-  overflow: hidden;
-  border-radius: inherit;
-}
-
 /* If you ever add an edge-feathering mask so media can sit on the page
    without a frame, do NOT define it here. Lightning CSS rewrites
    `radial-gradient(... #000 48%, transparent 94%)` to `#000 0`, which
