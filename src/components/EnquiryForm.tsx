@@ -25,15 +25,23 @@ type UploadState =
  * `lockedServiceId` is for pages that already know the service — /venues/book
  * embeds this with the picker hidden, exactly as it did before this form grew
  * one.
+ *
+ * `categoryPicker` is for pages that arrive already scoped to one machine —
+ * /contact?machine=… — where the full ten-option sidebar (venue hire,
+ * careers, tenders…) makes no sense next to a specific machine's enquiry.
+ * It swaps the sidebar for one inline `<select>` of just the five equipment
+ * categories, defaulted to the machine's own category but changeable.
  */
 export function EnquiryForm({
   defaultServiceId = 'general',
   defaultSubject = '',
   lockedServiceId,
+  categoryPicker = false,
 }: {
   defaultServiceId?: string
   defaultSubject?: string
   lockedServiceId?: string
+  categoryPicker?: boolean
 }) {
   const [serviceId, setServiceId] = useState(lockedServiceId ?? defaultServiceId)
   const [status, setStatus] = useState<Status>('idle')

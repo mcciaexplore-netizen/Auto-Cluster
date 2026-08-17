@@ -133,21 +133,21 @@ export function PageHero({
         <div className={cn('grid gap-10 lg:gap-16 items-center', image && 'lg:grid-cols-2')}>
           {/* The hero is above the fold, so this reveals on mount rather than
               on scroll — the observer fires immediately at this position.
-              Staggered so eyebrow, headline and subtitle arrive in reading
-              order. The stagger applies to direct children, so it wraps the
-              elements themselves, not the Container. */}
+              Staggered so the headline, the eyebrow and the subtitle arrive
+              in reading order. The stagger applies to direct children, so it
+              wraps the elements themselves, not the Container. */}
           <Reveal stagger>
-            {eyebrow && (
-              <p className="font-mono text-[12px] tracking-[0.16em] uppercase text-brand-400 mb-6 max-w-none">
-                {eyebrow}
-              </p>
-            )}
             {/* No colour override — the h1 takes its gradient from the base
                 stylesheet. The measure widens with the type: 18ch held at
                 44px, but at 68px it forces a headline into five short lines. */}
             <h1 className="max-w-[20ch]">{title}</h1>
+            {eyebrow && (
+              <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-4 max-w-none">
+                {eyebrow}
+              </p>
+            )}
             {subtitle && (
-              <p className="mt-6 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[58ch]">
+              <p className="mt-3 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[58ch]">
                 {subtitle}
               </p>
             )}

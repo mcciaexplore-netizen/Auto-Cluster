@@ -128,6 +128,8 @@
   --font-display: var(--font-dm-sans), 'Helvetica Neue', Arial, sans-serif;
   --font-body: var(--font-dm-sans), 'Noto Sans Devanagari', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Menlo, monospace;
+  /* The sub-heading line under a page's h1 only — see `font-poppins` below. */
+  --font-heading-sub: var(--font-poppins), 'Helvetica Neue', Arial, sans-serif;
 
   /* --- Radius: soft. Cards and buttons read as surfaces, not rules. ------ */
   --radius-sm: 6px;
@@ -397,6 +399,13 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-ink-400);
+}
+
+/* The sub-heading line under a page's h1 (see PageHero and its two
+   hand-rolled equivalents, the homepage hero and the 404 page) — the one
+   place on the site set in Poppins rather than DM Sans. */
+@utility font-poppins {
+  font-family: var(--font-heading-sub);
 }
 
 /* If you ever add an edge-feathering mask so media can sit on the page

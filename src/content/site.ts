@@ -126,7 +126,6 @@ export const mainNav: NavItem[] = [
         description: '30-workstation CAD/CAM training centre',
       },
       { label: 'Book a venue', href: '/venues/book' },
-      { label: 'Rate card', href: '/venues/rate-card' },
     ],
   },
   {

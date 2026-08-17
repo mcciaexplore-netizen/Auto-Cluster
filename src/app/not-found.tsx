@@ -16,11 +16,11 @@ export default function NotFound() {
   return (
     <main className="min-h-[70vh] flex items-center bg-paper-2">
       <div className="mx-auto w-full max-w-[var(--page-max)] px-[var(--page-gutter)] py-20">
-        <p className="font-mono text-[11.5px] tracking-[0.14em] uppercase text-brand-400 mb-5 max-w-none">
+        <h1 className="max-w-[16ch]">We could not find that page.</h1>
+        <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-4 max-w-none">
           Error 404
         </p>
-        <h1 className="max-w-[16ch]">We could not find that page.</h1>
-        <p className="mt-5 text-[17px] text-ink-700 max-w-[52ch]">
+        <p className="mt-3 text-[17px] text-ink-700 max-w-[52ch]">
           The link may be out of date, or the page may have moved during our site rebuild.
           Here is where most people are heading.
         </p>

@@ -7,6 +7,7 @@ import { Figure } from '@/components/ui/Figure'
 import { EmptyState } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
 import { BuildNote } from '@/components/blocks/BuildNote'
+import { showBuildNotes } from '@/lib/flags'
 
 export const metadata: Metadata = {
   title: 'About ACDRI — Government-Promoted Automotive Cluster Institute in Pune',
@@ -65,10 +66,14 @@ export default function AboutPage() {
         />
         {/* The marks sit beside the standard they stand for rather than in a
             row of logos at the foot of the page, which is where they were and
-            where they said nothing. Both are decorative: the accreditation is
-            spelled out in text on the same card. */}
+            where they said nothing. All three are decorative: the
+            accreditation is spelled out in text on the same card. The
+            certificate is the one 300×199 scan the source library has —
+            legible enough to show the issuing body and our name on it and
+            not enough to read the scope, so it sits at a readable thumbnail
+            size rather than blown up to match the badges. */}
         <ul className="mt-8 card-grid gap-4 list-none m-0 p-0">
-          <li className="border border-rule rounded-md bg-white p-6 flex items-start gap-4">
+          <li className="border border-rule rounded-md bg-paper-2 p-6 flex items-start gap-4">
             <Image
               src={badges.nabl.src}
               alt=""
@@ -86,7 +91,7 @@ export default function AboutPage() {
               </p>
             </div>
           </li>
-          <li className="border border-rule rounded-md bg-white p-6 flex items-start gap-4">
+          <li className="border border-rule rounded-md bg-paper-2 p-6 flex items-start gap-4">
             <Image
               src={badges.iso9001.src}
               alt=""
@@ -104,18 +109,32 @@ export default function AboutPage() {
               </p>
             </div>
           </li>
+          <li className="border border-rule rounded-md bg-paper-2 p-6 flex items-start gap-4">
+            <div className="relative shrink-0">
+              <Image
+                src={aboutPhotos.isoCertificate.src}
+                alt=""
+                width={aboutPhotos.isoCertificate.width}
+                height={aboutPhotos.isoCertificate.height}
+                className="w-20 h-auto rounded-sm border border-rule bg-white"
+              />
+              {aboutPhotos.isoCertificate.needsPhotography && showBuildNotes && (
+                <span className="absolute left-1 top-1 font-mono text-[8px] tracking-[0.08em] uppercase bg-flag-warn-bg text-flag-warn-fg border border-flag-warn-edge rounded-sm px-1 py-0.5 leading-none">
+                  Needs photo
+                </span>
+              )}
+            </div>
+            <div className="min-w-0">
+              <span className="label block">Certification record</span>
+              <span className="block mt-2 font-display font-semibold text-[20px] text-brand-600">
+                ISO 9001 certificate
+              </span>
+              <p className="mt-2 text-[14px] text-ink-500 m-0">
+                Issued by TÜV SÜD South Asia — the document behind the badge above.
+              </p>
+            </div>
+          </li>
         </ul>
-
-        {/* The certificate itself. Only a 300×199 scan exists, which is
-            legible enough to show the issuing body and our name on it and not
-            enough to read the scope — so it is presented at its own size with
-            the flag, not blown up to fill the column. */}
-        <Figure
-          className="mt-8 max-w-[300px]"
-          image={aboutPhotos.isoCertificate}
-          sizes="300px"
-          caption="The ISO 9001 certificate issued by TÜV SÜD South Asia."
-        />
 
         <div className="mt-6">
           <ButtonLink href="/facilities/nabl-scope" variant="secondary" size="sm">

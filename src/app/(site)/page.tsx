@@ -70,13 +70,13 @@ export default function HomePage() {
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
             >
-              <p className="font-mono text-[12px] tracking-[0.16em] uppercase text-brand-400 mb-6 max-w-none">
+              <h1 className="max-w-[22ch]">{site.tagline}</h1>
+
+              <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-4 max-w-none">
                 Promoted by Govt. of India · PCMC · Govt. of Maharashtra · MCCIA initiative
               </p>
 
-              <h1 className="max-w-[22ch]">{site.tagline}</h1>
-
-              <p className="mt-7 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[46ch]">
+              <p className="mt-3 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[46ch]">
                 In the Chinchwad–Talegaon–Chakan automotive belt of Pune, ACDRI gives small and
                 medium enterprises access to the validation, machining and exhibition
                 infrastructure they cannot justify buying alone.

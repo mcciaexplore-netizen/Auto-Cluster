@@ -4,9 +4,7 @@ import { categories, equipment } from '@/content/equipment'
 import { Container, PageHero, Section } from '@/components/ui/Section'
 import { StandardList } from '@/components/ui/SpecTable'
 import { CardImage } from '@/components/ui/Figure'
-import { EquipmentMap } from './components/map/EquipmentMap'
 import type { EquipmentCategory } from '@/lib/types'
-import type { MapMachine } from '@/lib/map-layout'
 
 export const metadata: Metadata = {
   title: 'Equipment Catalogue — 30 Machines with Full Specifications',
@@ -33,17 +31,6 @@ export default async function EquipmentPage({
   const shown = active
     ? equipment.filter((e) => e.category === active || e.alsoIn?.includes(active))
     : equipment
-  const mapMachines: MapMachine[] = equipment.map(
-    ({ slug, name, category, alsoIn, make, image, isAccredited }) => ({
-      slug,
-      name,
-      category,
-      alsoIn,
-      make,
-      image,
-      isAccredited,
-    }),
-  )
 
   return (
     <>
@@ -52,14 +39,6 @@ export default async function EquipmentPage({
         title="Every machine, with its specifications"
         subtitle={`${equipment.length} machines across prototype production, rapid prototyping, environmental testing, rubber and polymer testing, and metrology.`}
       />
-
-      {/* The map. Sits between the heading block and the filter bar: it is
-          the way into the catalogue, and the chips below are the way through
-          it. It renders every machine regardless of the active filter —
-          filtering it to six would contradict the one thing it says, that
-          these are one connected system — so `?category=` lights the matching
-          zone instead of hiding the rest. */}
-      <EquipmentMap machines={mapMachines} categories={categories} activeCategory={active ?? null} />
 
       {/* Filters are links, not JS — the catalogue works with scripting off. */}
       <div className="bg-white border-b border-rule">
