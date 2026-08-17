@@ -144,7 +144,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
               <li key={m.slug} className="grow basis-[16.25rem] max-w-[23rem]">
                 <Link
                   href={`/equipment/${m.slug}`}
-                  className="group block h-full bg-white border border-rule rounded-md p-5 no-underline transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"
+                  className="group block h-full bg-white rounded-md p-5 no-underline shadow-[var(--shadow-card)] transition-shadow duration-150 hover:shadow-[var(--shadow-hover)]"
                 >
                   {m.image && (
                     <CardImage

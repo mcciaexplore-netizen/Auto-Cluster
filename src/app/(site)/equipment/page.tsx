@@ -85,7 +85,7 @@ export default async function EquipmentPage({
               <li key={item.slug} className="grow basis-[16.25rem] max-w-[23rem]">
                 <Link
                   href={`/equipment/${item.slug}`}
-                  className="group h-full bg-white border-2 border-rule-strong rounded-md p-6 flex flex-col gap-3 no-underline shadow-[var(--shadow-card)] transition-[border-color,box-shadow] duration-150 hover:border-brand-600 hover:shadow-[var(--shadow-hover)]"
+                  className="group h-full bg-white rounded-md p-6 flex flex-col gap-3 no-underline shadow-[var(--shadow-card)] transition-shadow duration-150 hover:shadow-[var(--shadow-hover)]"
                 >
                   {/* The machine, so the catalogue can be scanned by eye as
                       well as by make and model. Decorative here: the name and
