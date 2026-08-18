@@ -227,6 +227,13 @@ export const promoters = [
     height: 112,
   },
   {
+    caption: 'Government of Maharashtra',
+    alt: 'Emblem of the Government of Maharashtra',
+    src: '/logos/maharashtra.png',
+    width: 156,
+    height: 112,
+  },
+  {
     caption: 'Pimpri-Chinchwad Municipal Corporation',
     alt: 'Logo of the Pimpri-Chinchwad Municipal Corporation',
     src: '/logos/pcmc.png',
@@ -237,13 +244,6 @@ export const promoters = [
     caption: 'Mahratta Chamber of Commerce, Industries and Agriculture',
     alt: 'Logo of the Mahratta Chamber of Commerce, Industries and Agriculture',
     src: '/logos/mccia.png',
-    width: 156,
-    height: 112,
-  },
-  {
-    caption: 'Government of Maharashtra',
-    alt: 'Emblem of the Government of Maharashtra',
-    src: '/logos/maharashtra.png',
     width: 156,
     height: 112,
   },

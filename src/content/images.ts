@@ -249,23 +249,19 @@ export const serviceTiles: Record<EquipmentCategory, ImageRef> = {
 /* ------------------------------------------------------------------------ */
 
 /**
- * The hero's collage: Shaniwar Wada's gate, a sugarcane field on the
- * Chinchwad–Talegaon–Chakan belt, a machining close-up and the shop floor —
- * Pune's civic identity and the region's agricultural base faceted together
- * with the manufacturing the institute actually does.
+ * The hero's collage: a CNC machining close-up, a robotic welding arm, a
+ * shop floor of machining centres, the institute's building exterior, and
+ * precision gears and machine parts — faceted into a gear-shaped mark that
+ * ties the image itself to the manufacturing it depicts.
  *
- * The source came in as a flat rectangle — a near-white background close to
- * but not exactly `--color-paper-2`, so it sat on the hero band as a
- * faintly visible box rather than blending into it. Background removed here
- * (a border-connected-component cut, not a naive colour threshold, so the
- * pale sky inside the fort and field photos was not mistaken for the pale
- * background around them) and re-saved with real alpha.
+ * Pre-faceted with a flat white background (no alpha channel), which sits
+ * cleanly on the hero band's own `bg-white` without a visible seam.
  */
 export const heroCollage: ImageRef = {
   src: '/images/home/hero-collage.png',
-  alt: 'A faceted collage: Shaniwar Wada’s fortified gate, a tractor hauling sugarcane through a field, a CNC machine cutting metal, and a shop floor of machining centres',
-  width: 1483,
-  height: 1061,
+  alt: 'A gear-shaped collage: a CNC machine cutting metal, a robotic arm welding a vehicle frame, a shop floor of machining centres, the institute’s building exterior, and precision gears and machine parts',
+  width: 1350,
+  height: 1165,
 }
 
 /**

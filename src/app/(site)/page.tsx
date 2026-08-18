@@ -65,7 +65,7 @@ export default function HomePage() {
               second, same reading order as the two-column version, and
               `lg:h-full` drops out so the stack just flows at its own
               height the way any other stacked section does. */}
-          <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 lg:h-full">
+          <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 xl:gap-16 lg:h-full">
             <Reveal
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
@@ -90,36 +90,34 @@ export default function HomePage() {
               </div>
             </Reveal>
 
-            {/* The collage's background is removed to real alpha (see
+            {/* The collage's own background is flat white (see
                 content/images.ts), so it sits directly on the band without
                 a frame or a visible box around it. `priority`: it is above
                 the fold on every viewport this wide enough to show it.
 
-                Bleeds past the container's own right gutter to the true
-                window edge on request — widened by exactly `--page-gutter`
-                and pulled right by the same amount, which is precisely the
-                padding it needs to cross to reach the edge.
+                Stays inside the container's own right gutter — same right
+                margin as the nav, the footer, every other section — rather
+                than bleeding to the true window edge.
 
                 `fill` + `object-contain` instead of the intrinsic
                 width/height: below `lg` the wrapper's height comes from
                 its own `aspect-*`, matching the image exactly, so this
-                renders the same as a plain sized image. At `lg` the
-                wrapper switches to the *grid row's* height — the same
-                height the copy is now centred against — and the image
-                scales up to fill that box on whichever axis runs out of
-                room first. It never has to exceed the band's own height to
-                do it, which is what kept the last, size-driven attempt at
-                "bigger" from overflowing the fold — this one is bounded by
-                a height the page already has, not adding one. */}
+                renders the same as a plain sized image. At `lg` the wrapper
+                switches to the *grid row's* height — the same height the
+                copy is now centred against — and the image scales up to
+                fill that box on whichever axis runs out of room first. The
+                column split is weighted toward the image (`1fr_1.2fr`)
+                rather than an even half, so it reads as the larger, more
+                visible element of the two. */}
             <Reveal
-              className="relative w-full aspect-[1483/1061] lg:aspect-auto lg:h-full lg:w-[calc(100%+var(--page-gutter))] lg:-mr-[var(--page-gutter)]"
+              className="relative w-full aspect-[1350/1165] lg:aspect-auto lg:h-full"
             >
               <Image
                 src={heroCollage.src}
                 alt={heroCollage.alt}
                 fill
                 priority
-                sizes="(min-width: 1024px) 55vw, 100vw"
+                sizes="(min-width: 1024px) 58vw, 100vw"
                 className="object-contain lg:object-right"
               />
             </Reveal>
@@ -147,7 +145,7 @@ export default function HomePage() {
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-10 w-auto shrink-0 object-contain"
+                  className="h-14 w-auto shrink-0 object-contain"
                 />
                 <span className="text-[13px] font-semibold leading-snug text-ink-900">{p.caption}</span>
               </li>
