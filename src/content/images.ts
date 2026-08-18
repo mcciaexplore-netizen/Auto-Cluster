@@ -1,5 +1,6 @@
 import type { EquipmentCategory, ImageRef } from '@/lib/types'
 import type { ExpoType } from '@/content/venues'
+import { categories as equipmentCategories } from '@/content/equipment'
 
 /**
  * The image manifest.
@@ -106,19 +107,19 @@ export function expoTile(name: string): ImageRef | undefined {
 /* ------------------------------------------------------------------------ */
 
 /**
- * A facility page's hero illustration — opt-in (PageHero's `image` prop),
- * populated only where one exists. Environmental Testing's is a climate
- * chamber render rather than a photo of any single catalogue machine, so it
- * lives here rather than as an equipment or facilityPhotos entry.
+ * A facility page's hero illustration — opt-in (PageHero's `image` prop).
+ *
+ * The same isometric machine illustrations used on the equipment mega-menu
+ * (src/content/equipment.ts `categories`), keyed by facility slug instead of
+ * category id — one asset, two placements, rather than a second render
+ * commissioned for the same five machines. Facilities with no equipment
+ * category (Design Centre, Skill Development, Incubation Centre, NABL
+ * scope) have no isometric figure and fall back to PageHero's single-column
+ * layout.
  */
-export const facilityHeroImages: Partial<Record<string, ImageRef>> = {
-  'environmental-testing': {
-    src: '/images/facilities/environmental-testing-hero.png',
-    alt: 'A climate chamber with a vehicle inside, showing temperature and humidity readouts',
-    width: 1536,
-    height: 1024,
-  },
-}
+export const facilityHeroImages: Partial<Record<string, ImageRef>> = Object.fromEntries(
+  equipmentCategories.map((c) => [c.facility, c.image]),
+)
 
 /**
  * Facility figures, keyed by facility slug.

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { enquirySchema, fieldErrors } from '@/lib/validation'
+import { enquirySchema, fieldErrors, applicantTypes, applicantTypeLabels } from '@/lib/validation'
 import { services, getService } from '@/content/services'
 import { Button, ButtonLink } from '@/components/ui/Button'
 import { Reveal } from '@/components/motion/Reveal'
@@ -96,7 +96,10 @@ export function EnquiryForm({
       payload.cadFileToken = upload.token
     }
     if (formKind === 'careers') {
-      if (upload.status === 'done') payload.resumeFileToken = upload.token
+      // Always a string, even unset — resumeFileToken is required, and a
+      // bare `z.string()` fails type validation on `undefined` with zod's
+      // generic "Required" rather than the field's own min-length message.
+      payload.resumeFileToken = upload.status === 'done' ? upload.token : ''
       // No separate subject field is shown for careers — the role applied
       // for carries the same job in the notification email's subject line.
       if (!data.subject) payload.subject = data.position
@@ -145,7 +148,9 @@ export function EnquiryForm({
   if (status === 'success') {
     return (
       <div role="status" className="border border-success rounded-md bg-white p-6 flex flex-col gap-3">
-        <h3 className="text-solid text-success text-[20px] m-0">Enquiry sent</h3>
+        <h3 className="text-solid text-success text-[20px] m-0">
+          {formKind === 'careers' ? 'Application sent' : 'Enquiry sent'}
+        </h3>
         {referenceCode && (
           <p className="m-0">
             Your reference number is{' '}
@@ -154,8 +159,10 @@ export function EnquiryForm({
           </p>
         )}
         <p className="text-ink-700 m-0">
-          We have sent an acknowledgement to your email address, and the right team will reply. If it
-          is urgent, call{' '}
+          {formKind === 'careers'
+            ? 'We have sent an acknowledgement to your email address. Our HR team reviews every application and will reach out if there is a fit.'
+            : 'We have sent an acknowledgement to your email address, and the right team will reply.'}{' '}
+          If it is urgent, call{' '}
           <a href="tel:+912066333700" className="text-brand-800">
             +91 20 6633 3700
           </a>
@@ -203,7 +210,12 @@ export function EnquiryForm({
               <input id="name" name="name" type="text" autoComplete="name" className={inputCls(errors.name)} />
             </Field>
 
-            <Field id="company" label="Company" error={errors.company} hint="Optional">
+            <Field
+              id="company"
+              label={formKind === 'careers' ? 'College / current employer' : 'Company'}
+              error={errors.company}
+              hint="Optional"
+            >
               <input id="company" name="company" type="text" autoComplete="organization" className={inputCls(errors.company)} />
             </Field>
 
@@ -216,9 +228,11 @@ export function EnquiryForm({
             </Field>
           </div>
 
-          <Field id="subject" label="Subject" error={errors.subject} hint="Optional">
-            <input id="subject" name="subject" type="text" defaultValue={defaultSubject} className={inputCls(errors.subject)} />
-          </Field>
+          {formKind !== 'careers' && (
+            <Field id="subject" label="Subject" error={errors.subject} hint="Optional">
+              <input id="subject" name="subject" type="text" defaultValue={defaultSubject} className={inputCls(errors.subject)} />
+            </Field>
+          )}
 
           {categoryPicker && (
             <Field id="category" label="Machine category">
@@ -279,11 +293,65 @@ export function EnquiryForm({
             </div>
           )}
 
+          {formKind === 'careers' && (
+            <div className="grid gap-5 sm:grid-cols-2 border-t border-rule pt-5">
+              <Field id="applicantType" label="You are" error={errors.applicantType} required>
+                <select
+                  id="applicantType"
+                  name="applicantType"
+                  defaultValue=""
+                  className={inputCls(errors.applicantType)}
+                >
+                  <option value="" disabled>
+                    Choose one
+                  </option>
+                  {applicantTypes.map((t) => (
+                    <option key={t} value={t}>
+                      {applicantTypeLabels[t]}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field id="position" label="Role you're applying for" error={errors.position} required>
+                <input
+                  id="position"
+                  name="position"
+                  type="text"
+                  placeholder="e.g. NABL test engineer, machine operator, graduate trainee"
+                  className={inputCls(errors.position)}
+                />
+              </Field>
+              <Field
+                id="education"
+                label="Highest qualification"
+                error={errors.education}
+                hint="Optional"
+                className="sm:col-span-2"
+              >
+                <input id="education" name="education" type="text" className={inputCls(errors.education)} />
+              </Field>
+              <FileField
+                id="resumeFileToken"
+                label="Résumé / CV"
+                hint="PDF or Word — up to 25MB."
+                required
+                error={errors.resumeFileToken}
+                upload={upload}
+                onChange={onFileChange}
+                className="sm:col-span-2"
+              />
+            </div>
+          )}
+
           <Field
             id="message"
-            label="What do you need?"
+            label={formKind === 'careers' ? 'Cover letter' : 'What do you need?'}
             error={errors.message}
-            hint="Anything above doesn't cover — deadline, budget, or context that helps us answer quickly."
+            hint={
+              formKind === 'careers'
+                ? "Why you'd be a good fit, your availability, and a portfolio or LinkedIn link if you have one."
+                : "Anything above doesn't cover — deadline, budget, or context that helps us answer quickly."
+            }
             required
           >
             <textarea id="message" name="message" rows={5} className={inputCls(errors.message)} />
@@ -299,7 +367,9 @@ export function EnquiryForm({
             <label htmlFor="consent" className="flex items-start gap-3 text-[14.5px] text-ink-700">
               <input id="consent" name="consent" type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent-700)]" />
               <span>
-                I agree that Auto Cluster may contact me about this enquiry.
+                {formKind === 'careers'
+                  ? 'I agree that Auto Cluster may contact me about this application and retain my details for future openings.'
+                  : 'I agree that Auto Cluster may contact me about this enquiry.'}
                 <span className="text-error"> *</span>
               </span>
             </label>
@@ -312,7 +382,11 @@ export function EnquiryForm({
 
           <div>
             <Button type="submit" loading={status === 'submitting'} disabled={upload.status === 'uploading'}>
-              {status === 'submitting' ? 'Sending…' : 'Send enquiry'}
+              {status === 'submitting'
+                ? 'Sending…'
+                : formKind === 'careers'
+                  ? 'Submit application'
+                  : 'Send enquiry'}
             </Button>
           </div>
         </form>
@@ -414,28 +488,37 @@ function Field({
 }
 
 function FileField({
+  id = 'cadFile',
   label,
   hint,
+  required,
+  error,
   upload,
   onChange,
   className,
 }: {
+  /** Matches the payload's token field name (e.g. `resumeFileToken`) so a
+   * server validation error can focus this input. */
+  id?: string
   label: string
   hint?: string
+  required?: boolean
+  error?: string
   upload: UploadState
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
 }) {
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <label htmlFor="cadFile" className="text-[14px] font-semibold text-ink-900">
+      <label htmlFor={id} className="text-[14px] font-semibold text-ink-900">
         {label}
+        {required && <span className="text-error"> *</span>}
       </label>
       <p className="text-[12.5px] text-ink-400 m-0 max-w-none" aria-hidden={hint ? undefined : true}>
         {hint || ' '}
       </p>
       <input
-        id="cadFile"
+        id={id}
         type="file"
         onChange={onChange}
         className="text-[13.5px] file:mr-3 file:min-h-11 file:px-4 file:rounded-md file:border file:border-rule-strong file:bg-white file:text-[13.5px] file:font-semibold file:cursor-pointer"
@@ -449,6 +532,11 @@ function FileField({
       {upload.status === 'error' && (
         <p className="text-[13px] text-error m-0" role="alert">
           {upload.message}
+        </p>
+      )}
+      {error && upload.status !== 'error' && (
+        <p className="text-[13px] text-error m-0" role="alert">
+          {error}
         </p>
       )}
     </div>

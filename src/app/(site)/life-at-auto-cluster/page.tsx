@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { PendingList, PendingPage } from '@/components/blocks/PendingPage'
+import { Section } from '@/components/ui/Section'
+import { ButtonLink } from '@/components/ui/Button'
 import { lifeCategories } from '@/content/life'
 
 export const metadata: Metadata = {
@@ -24,6 +26,18 @@ export default function LifeAtAutoClusterPage() {
           href: `/life-at-auto-cluster/${c.slug}`,
         }))}
       />
+
+      <Section tone="white">
+        <h2>Apply at Auto Cluster</h2>
+        <p className="mt-4 text-ink-700 max-w-[60ch]">
+          If our testing labs, machining facility and venues sound like somewhere you&rsquo;d
+          want to work, send us your résumé — students, fresh graduates and working
+          professionals are all welcome to apply.
+        </p>
+        <div className="mt-6">
+          <ButtonLink href="/careers#apply">Apply now</ButtonLink>
+        </div>
+      </Section>
     </PendingPage>
   )
 }

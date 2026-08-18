@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { logo, mainNav, site } from '@/content/site'
 import { categories as equipmentCategories } from '@/content/equipment'
-import { aboutPhotos, venuePhotos } from '@/content/images'
+import { aboutPhotos, facilityHeroImages, venuePhotos } from '@/content/images'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Section'
 import { cn } from '@/lib/cn'
@@ -25,6 +25,7 @@ function buildMegaItems(
   return children.map((c) => ({ label: c.label, href: c.href, image: imageFor(c) }))
 }
 
+const facilitiesNav = mainNav.find((i) => i.href === '/facilities')
 const venuesNav = mainNav.find((i) => i.href === '/venues')
 const aboutNav = mainNav.find((i) => i.href === '/about')
 const lifeNav = mainNav.find((i) => i.href === '/life-at-auto-cluster')
@@ -34,6 +35,18 @@ const equipmentMegaItems: MegaItem[] = equipmentCategories.map((c) => ({
   href: `/equipment?category=${c.id}`,
   image: c.image,
 }))
+
+/* Only the five facilities that are also an equipment category — the same
+   five isometric illustrations as the Equipment menu above, under their
+   facility names rather than a second set of figures. Design Centre, Skill
+   Development, Incubation Centre and NABL Scope have no equipment category
+   and so no illustration; keeping them out of this list rather than
+   showing them with no image (or the previous item's) is what keeps the
+   panel the same compact height as every other mega menu. All nine still
+   show on /facilities itself, via "View all facilities" below. */
+const facilitiesMegaItems: MegaItem[] = buildMegaItems(facilitiesNav?.children ?? [], (c) =>
+  facilityHeroImages[slugFromHref(c.href)],
+).filter((item) => item.image)
 
 /* Only the three venues with their own photograph; Book a venue and Rate
    card are actions, not spaces, and were never photographed as one. */
@@ -55,6 +68,7 @@ const aboutMegaItems: MegaItem[] = buildMegaItems(aboutNav?.children ?? [], (c) 
 const lifeMegaItems: MegaItem[] = buildMegaItems(lifeNav?.children ?? [], () => aboutPhotos.team)
 
 const megaMenus: Record<string, { items: MegaItem[]; viewAllLabel: string }> = {
+  '/facilities': { items: facilitiesMegaItems, viewAllLabel: 'View all facilities' },
   '/equipment': { items: equipmentMegaItems, viewAllLabel: 'View all machines' },
   '/venues': { items: venuesMegaItems, viewAllLabel: 'View all venues' },
   '/about': { items: aboutMegaItems, viewAllLabel: 'View full page' },

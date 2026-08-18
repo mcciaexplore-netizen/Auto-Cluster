@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { requireStaff } from '@/server/auth'
 import { ENQUIRY_STATUSES, getEnquiry } from '@/server/enquiries'
 import { getService } from '@/content/services'
+import { applicantTypeLabels, type ApplicantType } from '@/lib/validation'
 import { listAudit } from '@/server/audit'
 import { updateStatusAction } from '../../actions'
 
@@ -18,6 +19,14 @@ const FIELD_LABELS: Record<string, string> = {
   standardOrTest: 'Standard / test required',
   sampleCount: 'Sample count',
   nablScope: 'NABL scope required',
+  applicantType: 'Applicant type',
+  position: 'Applying for',
+  education: 'Education / qualification',
+}
+
+function fieldValue(key: string, value: string | boolean): string {
+  if (key === 'applicantType') return applicantTypeLabels[value as ApplicantType] ?? String(value)
+  return String(value)
 }
 
 export default async function StaffEnquiryDetailPage({
@@ -56,13 +65,23 @@ export default async function StaffEnquiryDetailPage({
         <Row label="Routed to" value={enquiry.routedTo} />
         <Row label="Source page" value={enquiry.source || '—'} />
         {Object.entries(enquiry.fields).map(([key, value]) => (
-          <Row key={key} label={FIELD_LABELS[key] ?? key} value={String(value)} />
+          <Row key={key} label={FIELD_LABELS[key] ?? key} value={fieldValue(key, value)} />
         ))}
         {enquiry.cadFileToken && (
           <Row
             label="Attachment"
             value={
               <a href={`/api/files/${enquiry.cadFileToken}`} className="text-brand-800 underline">
+                Download
+              </a>
+            }
+          />
+        )}
+        {enquiry.resumeFileToken && (
+          <Row
+            label="Résumé"
+            value={
+              <a href={`/api/files/${enquiry.resumeFileToken}`} className="text-brand-800 underline">
                 Download
               </a>
             }

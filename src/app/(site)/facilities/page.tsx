@@ -23,7 +23,14 @@ export default function FacilitiesPage() {
 
       <Section tone="glow">
         <h2 className="sr-only">All facilities</h2>
-        <ul className="card-grid gap-5 list-none m-0 p-0">
+        {/* `items-start`, against `card-grid`'s own default stretch: three of
+            these eight have no isometric figure (Design Centre, Skill
+            Development, Incubation Centre) — real content-pending pages,
+            not photography this project owns yet. Stretched to match a
+            row-mate that does have one, their card was mostly blank interior
+            below the "View facility" link. Left to their own height instead,
+            each card is only as tall as what it actually has to show. */}
+        <ul className="card-grid items-start gap-5 list-none m-0 p-0">
           {primaryFacilities.map((f) => {
             const machines = f.category ? getEquipmentByCategory(f.category) : []
             const data = [
