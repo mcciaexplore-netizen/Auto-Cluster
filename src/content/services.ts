@@ -18,7 +18,7 @@ import type { EnquiryDepartment } from '@/lib/types'
  * form that would pretend to be one.
  */
 
-export type ServiceKind = 'manufacturing' | 'testing' | 'venue' | 'training' | 'general'
+export type ServiceKind = 'manufacturing' | 'testing' | 'venue' | 'training' | 'careers' | 'general'
 
 export interface Service {
   id: string
@@ -81,9 +81,9 @@ export const services: Service[] = [
   {
     id: 'careers',
     label: 'Careers',
-    kind: 'general',
+    kind: 'careers',
     department: 'careers',
-    description: 'Open positions and general career enquiries.',
+    description: 'Apply for a role, or send a general career enquiry.',
   },
   {
     id: 'tenders',

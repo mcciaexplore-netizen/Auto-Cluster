@@ -58,31 +58,31 @@ export default function HomePage() {
           time, instead of fighting each other the way bottom-aligning two
           independently-sized columns did. */}
       <div className="bg-white flex min-h-[var(--hero-min-h)]">
-        <Container className="w-full py-16 md:py-20">
+        <Container className="w-full py-10 lg:py-6">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
               room for both side by side, so it stacks — copy first, image
               second, same reading order as the two-column version, and
               `lg:h-full` drops out so the stack just flows at its own
               height the way any other stacked section does. */}
-          <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 xl:gap-16 lg:h-full">
+          <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 lg:h-full">
             <Reveal
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
             >
               <h1 className="max-w-[22ch]">{site.tagline}</h1>
 
-              <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-4 max-w-none">
+              <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-3 max-w-none">
                 Promoted by Govt. of India · PCMC · Govt. of Maharashtra · MCCIA initiative
               </p>
 
-              <p className="mt-3 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[46ch]">
+              <p className="mt-2 text-[clamp(18px,1.4vw,23px)] leading-relaxed text-ink-700 max-w-[46ch]">
                 In the Chinchwad–Talegaon–Chakan automotive belt of Pune, ACDRI gives small and
                 medium enterprises access to the validation, machining and exhibition
                 infrastructure they cannot justify buying alone.
               </p>
 
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-6 flex flex-wrap gap-4">
                 <ButtonLink href="/contact">Send an enquiry</ButtonLink>
                 <ButtonLink href="/equipment" variant="secondary">
                   Browse {equipment.length} machines
@@ -105,10 +105,14 @@ export default function HomePage() {
                 renders the same as a plain sized image. At `lg` the wrapper
                 switches to the *grid row's* height — the same height the
                 copy is now centred against — and the image scales up to
-                fill that box on whichever axis runs out of room first. The
-                column split is weighted toward the image (`1fr_1.2fr`)
-                rather than an even half, so it reads as the larger, more
-                visible element of the two. */}
+                fill that box on whichever axis runs out of room first.
+
+                The column split stays an even half rather than favouring
+                the image: it was tried, and past ~1440px-wide viewports it
+                narrows the copy column enough to push the heading onto an
+                extra line, which adds far more height than the wider image
+                gains back — the "Promoted by" strip then loses more room
+                below the fold than it recovers above it. */}
             <Reveal
               className="relative w-full aspect-[1350/1165] lg:aspect-auto lg:h-full"
             >

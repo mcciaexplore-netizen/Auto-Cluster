@@ -114,9 +114,31 @@ const generalSchema = z.object({
   kind: z.literal('general'),
 })
 
+export const applicantTypes = ['student', 'graduate', 'professional'] as const
+export type ApplicantType = (typeof applicantTypes)[number]
+
+export const applicantTypeLabels: Record<ApplicantType, string> = {
+  student: 'Currently studying',
+  graduate: 'Fresh graduate',
+  professional: 'Working professional',
+}
+
+const careersSchema = z.object({
+  ...base,
+  kind: z.literal('careers'),
+  applicantType: z.enum(applicantTypes, {
+    message: 'Tell us which of these best describes you.',
+  }),
+  position: z.string().trim().min(2, 'Enter the role you are applying for.').max(200),
+  education: z.string().trim().max(200).optional().or(z.literal('')),
+  /** Token from a prior POST /api/upload. Required — a job application without a résumé isn't one. */
+  resumeFileToken: z.string().min(1, 'Attach your résumé.'),
+})
+
 export const enquirySchema = z.discriminatedUnion('kind', [
   manufacturingSchema,
   testingSchema,
+  careersSchema,
   generalSchema,
 ])
 

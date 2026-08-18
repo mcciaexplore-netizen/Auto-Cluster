@@ -1,4 +1,4 @@
-import { departmentLabels } from './validation'
+import { departmentLabels, applicantTypeLabels, type ApplicantType } from './validation'
 import { getService } from '@/content/services'
 import type { EnquiryRecord } from '@/server/enquiries'
 
@@ -63,8 +63,17 @@ function fieldLines(enquiry: EnquiryRecord): string[] {
     standardOrTest: 'Standard / test required',
     sampleCount: 'Sample count',
     nablScope: 'NABL scope required',
+    applicantType: 'Applicant type',
+    position: 'Applying for',
+    education: 'Education / qualification',
   }
-  return ['', ...entries.map(([key, value]) => `${(labels[key] ?? key).padEnd(24)}${value}`)]
+  const display = (key: string, value: string | boolean) =>
+    key === 'applicantType' ? applicantTypeLabels[value as ApplicantType] ?? value : value
+
+  return [
+    '',
+    ...entries.map(([key, value]) => `${(labels[key] ?? key).padEnd(24)}${display(key, value)}`),
+  ]
 }
 
 export async function sendDepartmentNotification(enquiry: EnquiryRecord): Promise<void> {
@@ -89,6 +98,9 @@ export async function sendDepartmentNotification(enquiry: EnquiryRecord): Promis
       ...fieldLines(enquiry),
       enquiry.cadFileToken
         ? `\nAttachment: ${process.env.NEXT_PUBLIC_SITE_URL ?? ''}/api/files/${enquiry.cadFileToken}`
+        : '',
+      enquiry.resumeFileToken
+        ? `\nRésumé:     ${process.env.NEXT_PUBLIC_SITE_URL ?? ''}/api/files/${enquiry.resumeFileToken}`
         : '',
       '',
       enquiry.message,

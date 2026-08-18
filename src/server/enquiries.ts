@@ -32,7 +32,7 @@ const FOLLOW_UP_AFTER_MS = 48 * 60 * 60 * 1000
 export interface EnquiryRecord extends Stamped {
   referenceCode: string
   serviceId: string
-  kind: 'manufacturing' | 'testing' | 'general'
+  kind: 'manufacturing' | 'testing' | 'careers' | 'general'
   department: EnquiryDepartment
   name: string
   company: string
@@ -44,6 +44,7 @@ export interface EnquiryRecord extends Stamped {
   /** Kind-specific fields (partName/material/… or sampleDescription/…), untyped here — src/content/services.ts + validation.ts own the real shape. */
   fields: Record<string, string | boolean>
   cadFileToken: string | null
+  resumeFileToken: string | null
   status: EnquiryStatus
   routedTo: string
   needsRoutingReview: boolean
@@ -68,6 +69,12 @@ function extraFields(input: EnquiryInput): Record<string, string | boolean> {
         standardOrTest: input.standardOrTest,
         sampleCount: input.sampleCount,
         nablScope: input.nablScope,
+      }
+    case 'careers':
+      return {
+        applicantType: input.applicantType,
+        position: input.position,
+        education: input.education || '',
       }
     case 'general':
       return {}
@@ -103,6 +110,7 @@ export async function createEnquiry(
     consentAt: new Date(now).toISOString(),
     fields: extraFields(input),
     cadFileToken: 'cadFileToken' in input ? input.cadFileToken || null : null,
+    resumeFileToken: 'resumeFileToken' in input ? input.resumeFileToken || null : null,
     status: 'new',
     routedTo,
     needsRoutingReview: needsReview,

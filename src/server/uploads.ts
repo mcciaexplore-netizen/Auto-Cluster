@@ -4,8 +4,9 @@ import path from 'node:path'
 import { findOne, insert, type Stamped } from './store'
 
 /**
- * Enquiry attachments — CAD files and drawings. "Stored securely, not
- * publicly accessible by guessing a link" rules out `public/`, which Next
+ * Enquiry attachments — CAD files and drawings, or a résumé on the careers
+ * form. "Stored securely, not publicly accessible by guessing a link" rules
+ * out `public/`, which Next
  * serves to anyone who has the path. Files instead live outside the web
  * root, in `.data/uploads/`, and the only way to one is `/api/files/[token]`
  * (see that route) presenting the random token issued at upload time — not
@@ -28,6 +29,9 @@ const ALLOWED_EXTENSIONS = new Set([
   '.png',
   '.jpg',
   '.jpeg',
+  // .doc/.docx: résumés, not CAD — added for the careers application form.
+  '.doc',
+  '.docx',
 ])
 
 export interface UploadRecord extends Stamped {

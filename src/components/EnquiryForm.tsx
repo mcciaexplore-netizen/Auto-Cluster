@@ -53,7 +53,10 @@ export function EnquiryForm({
   const formRenderedAt = useRef(Date.now())
 
   const service = getService(serviceId) ?? services[0]
-  const formKind = service.kind === 'manufacturing' || service.kind === 'testing' ? service.kind : 'general'
+  const formKind =
+    service.kind === 'manufacturing' || service.kind === 'testing' || service.kind === 'careers'
+      ? service.kind
+      : 'general'
 
   async function onFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
@@ -91,6 +94,12 @@ export function EnquiryForm({
     if (formKind === 'testing') payload.nablScope = data.nablScope === 'on'
     if ((formKind === 'manufacturing' || formKind === 'testing') && upload.status === 'done') {
       payload.cadFileToken = upload.token
+    }
+    if (formKind === 'careers') {
+      if (upload.status === 'done') payload.resumeFileToken = upload.token
+      // No separate subject field is shown for careers — the role applied
+      // for carries the same job in the notification email's subject line.
+      if (!data.subject) payload.subject = data.position
     }
 
     const parsed = enquirySchema.safeParse(payload)
