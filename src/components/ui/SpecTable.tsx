@@ -26,7 +26,7 @@ export function FlagChip({ kind, className }: { kind: SpecFlag['kind']; classNam
   return (
     <span
       className={cn(
-        'inline-block font-mono text-[9.5px] tracking-[0.1em] uppercase',
+        'inline-block font-mono text-[11px] tracking-[0.1em] uppercase',
         'px-1.5 py-0.5 rounded-sm border align-middle whitespace-nowrap',
         flagStyles[kind],
         className,
@@ -54,9 +54,9 @@ export function SpecTable({
   // cap is what keeps the 38% label column a sane width in absolute terms.
   return (
     <div className={cn('overflow-x-auto max-w-[54rem]', className)}>
-      <table className="w-full border-collapse text-[15px]">
+      <table className="w-full border-collapse text-[17px]">
         {caption && (
-          <caption className="label caption-top text-left pb-3 border-b-2 border-brand-900">
+          <caption className="font-mono text-[13px] font-medium tracking-[0.14em] uppercase text-ink-400 caption-top text-left pb-3 border-b-2 border-brand-900">
             {caption}
           </caption>
         )}
@@ -65,16 +65,16 @@ export function SpecTable({
             <tr key={spec.label} className="border-b border-rule last:border-b-0">
               <th
                 scope="row"
-                className="label text-left align-top w-[38%] py-4 pr-4 font-medium normal-nums"
+                className="font-mono text-[13px] font-medium tracking-[0.1em] uppercase text-ink-400 text-left align-top w-[38%] py-4 pr-4 normal-nums"
               >
                 {spec.label}
               </th>
               <td className="align-top py-4 tabular-nums text-ink-900">
                 {spec.value ? (
-                  <span className="font-mono text-[15px] leading-relaxed">
+                  <span className="font-mono text-[17px] leading-relaxed">
                     {spec.value}
                     {spec.unit && (
-                      <span className="ml-2 font-sans text-[13px] text-ink-500 normal-nums">
+                      <span className="ml-2 font-sans text-[14.5px] text-ink-500 normal-nums">
                         {spec.unit}
                       </span>
                     )}
@@ -84,7 +84,7 @@ export function SpecTable({
                 {spec.flag && (
                   <>
                     <FlagChip kind={spec.flag.kind} className={spec.value ? 'ml-2' : ''} />
-                    <span className="block mt-1.5 font-sans text-[12.5px] leading-snug text-ink-400 normal-nums">
+                    <span className="block mt-1.5 font-sans text-[14px] leading-snug text-ink-400 normal-nums">
                       {spec.flag.kind !== 'missing' && spec.flag.published && (
                         <>Published as &ldquo;{spec.flag.published}&rdquo;. </>
                       )}
@@ -99,7 +99,7 @@ export function SpecTable({
       </table>
 
       {hasFlags && (
-        <div className="mt-6 pt-4 border-t border-rule flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-ink-500">
+        <div className="mt-6 pt-4 border-t border-rule flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-ink-500">
           <span className="inline-flex items-center gap-1.5">
             <FlagChip kind="corrected" /> error in source, fixed
           </span>

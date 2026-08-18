@@ -99,16 +99,16 @@ export default async function EquipmentDetailPage({
           <h1>{item.name}</h1>
 
           {(item.make || item.model) && (
-            <p className="mt-2 font-mono text-[14px] text-ink-500">
+            <p className="mt-2 font-mono text-[15px] text-ink-500">
               {[item.make, item.model, item.machineType].filter(Boolean).join(' · ')}
             </p>
           )}
 
-          <p className="mt-4 text-[17px] text-ink-500 max-w-[58ch]">{item.summary}</p>
+          <p className="mt-4 text-[18px] text-ink-500 max-w-[58ch]">{item.summary}</p>
         </Container>
       </div>
 
-      <Section>
+      <Section compact>
         <h2 className="sr-only">Specification</h2>
 
         {/* The photograph leads the specification rather than the page. A
@@ -131,15 +131,15 @@ export default async function EquipmentDetailPage({
         </div>
 
         {item.rate && (
-          <div className="mt-8 border border-rule rounded-md bg-white p-6">
-            <h3 className="text-[17px] m-0">Indicative rate</h3>
-            <p className="mt-2 font-mono text-[20px] text-ink-900 tabular-nums m-0">
+          <div className="mt-6 border border-rule rounded-md bg-white p-6 shadow-[var(--shadow-card)]">
+            <h3 className="text-[19px] m-0">Indicative rate</h3>
+            <p className="mt-2 font-mono text-[24px] text-ink-900 tabular-nums m-0">
               {formatRupees(item.rate.min)} – {formatRupees(item.rate.max)}{' '}
-              <span className="font-sans text-[13px] text-ink-500">
+              <span className="font-sans text-[15px] text-ink-500">
                 {item.rate.uom.toLowerCase()}
               </span>
             </p>
-            <p className="mt-2 text-[13px] text-ink-500 m-0">
+            <p className="mt-2 text-[14.5px] text-ink-500 m-0">
               Core operation rate, effective 1 November 2025. The lower figure applies to
               MSMEs; MCCIA members receive a further 10% discount.{' '}
               <Link href="/venues/rate-card" className="text-brand-800">
@@ -152,17 +152,17 @@ export default async function EquipmentDetailPage({
       </Section>
 
       {(item.applications.length > 0 || item.standards.length > 0) && (
-        <Section tone="white">
+        <Section tone="white" compact>
           <div className="grid gap-10 md:grid-cols-2">
             {item.applications.length > 0 && (
               <div>
-                <h2 className="text-[22px]">Applications</h2>
+                <h2 className="text-[24px]">Applications</h2>
                 <ul className="mt-4 flex flex-col gap-2 list-none m-0 p-0">
                   {item.applications.map((a) => (
-                    <li key={a} className="relative pl-6 text-ink-700 text-[15px]">
+                    <li key={a} className="relative pl-6 text-ink-700 text-[16.5px]">
                       <span
                         aria-hidden="true"
-                        className="absolute left-0 top-[0.62em] w-2.5 h-px bg-rule-strong"
+                        className="absolute left-0 top-[0.7em] w-2.5 h-px bg-rule-strong"
                       />
                       {a}
                     </li>
@@ -173,7 +173,7 @@ export default async function EquipmentDetailPage({
 
             {item.standards.length > 0 && (
               <div>
-                <h2 className="text-[22px]">Test standards</h2>
+                <h2 className="text-[24px]">Test standards</h2>
                 <div className="mt-4">
                   <StandardList standards={item.standards} />
                 </div>
@@ -183,9 +183,9 @@ export default async function EquipmentDetailPage({
         </Section>
       )}
 
-      <Section tone="accent">
-        <h2 className="text-[24px]">Enquire about the {item.name}</h2>
-        <p className="mt-3 text-ink-700">
+      <Section tone="accent" compact>
+        <h2 className="text-[26px]">Enquire about the {item.name}</h2>
+        <p className="mt-3 text-[16px] text-ink-700">
           Tell us about your sample or part and we will confirm suitability, turnaround and
           cost.
         </p>
@@ -200,20 +200,20 @@ export default async function EquipmentDetailPage({
       </Section>
 
       {related.length > 0 && (
-        <Section>
-          <h2 className="text-[22px]">Related equipment</h2>
+        <Section compact>
+          <h2 className="text-[24px]">Related equipment</h2>
           <ul className="mt-5 card-grid gap-4 list-none m-0 p-0">
             {related.map((r) => (
               <li key={r.slug}>
                 <Link
                   href={`/equipment/${r.slug}`}
-                  className="block bg-white border border-rule rounded-md p-5 no-underline hover:border-brand-600 transition-colors duration-150"
+                  className="block bg-white rounded-md p-5 no-underline shadow-[var(--shadow-card)] transition-shadow duration-150 hover:shadow-[var(--shadow-hover)]"
                 >
-                  <span className="block font-display font-semibold text-[16px] text-brand-600">
+                  <span className="block font-display font-semibold text-[18px] text-brand-600">
                     {r.name}
                   </span>
                   {r.make && (
-                    <span className="block mt-1 font-mono text-[12px] text-ink-400">{r.make}</span>
+                    <span className="block mt-1 font-mono text-[13px] text-ink-400">{r.make}</span>
                   )}
                 </Link>
               </li>
