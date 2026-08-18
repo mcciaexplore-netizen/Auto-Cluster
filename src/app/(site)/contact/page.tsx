@@ -54,7 +54,20 @@ export default async function ContactPage({
           One form for every department. We store your enquiry, route it to the right team
           and send you an acknowledgement.
         </p>
-        <div className={cn('mt-8 mx-auto', params.machine ? 'max-w-[680px]' : 'max-w-[960px]')}>
+        {/* Left-aligned, not `mx-auto` — the page itself runs edge to edge
+            with no max width (see --page-max in globals.css), so a centred
+            wrapper here floated the form away from the "Send an enquiry"
+            heading above it on anything wider than ~1600px, with the gap
+            growing to hundreds of pixels on an ultrawide monitor. Starting
+            flush with the heading's own left edge instead keeps the two
+            reading as one block regardless of viewport width.
+
+            Only the machine-scoped case still caps its own width — that
+            layout has no sidebar to absorb extra space, so an uncapped form
+            would just stretch its inputs. The full picker+form layout below
+            caps the form internally (EnquiryForm's own grid columns) and
+            lets the picker fill whatever width is left instead. */}
+        <div className={cn('mt-8', params.machine && 'max-w-[680px]')}>
           <EnquiryForm
             defaultServiceId={serviceId}
             defaultSubject={subject}

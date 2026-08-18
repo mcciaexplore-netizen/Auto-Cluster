@@ -1,11 +1,23 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import Image from 'next/image'
 import { enquirySchema, fieldErrors, applicantTypes, applicantTypeLabels } from '@/lib/validation'
-import { services, getService } from '@/content/services'
+import { services, getService, CATEGORY_TO_SERVICE } from '@/content/services'
+import { categories as equipmentCategories } from '@/content/equipment'
 import { Button, ButtonLink } from '@/components/ui/Button'
 import { Reveal } from '@/components/motion/Reveal'
 import { cn } from '@/lib/cn'
+
+/** service.id -> its category's isometric illustration, for the five services
+ * that are also an equipment category. The other five (venue hire, training,
+ * careers, tenders, general) aren't machines and get no icon. */
+const SERVICE_ICON = Object.fromEntries(
+  Object.entries(CATEGORY_TO_SERVICE).map(([categoryId, serviceId]) => [
+    serviceId,
+    equipmentCategories.find((c) => c.id === categoryId)?.image,
+  ]),
+)
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
 type UploadState =
@@ -176,7 +188,11 @@ export function EnquiryForm({
     <div
       className={cn(
         'grid gap-8',
-        !lockedServiceId && !categoryPicker && 'lg:grid-cols-[1fr_280px] lg:items-start',
+        // The form column is capped (`minmax(0,640px)`, not `1fr`) so its
+        // inputs stay a readable width; the picker takes whatever is left
+        // (`1fr`), so it — not empty page background — is what reaches the
+        // container's right edge on a wide screen.
+        !lockedServiceId && !categoryPicker && 'lg:grid-cols-[minmax(0,640px)_1fr] lg:items-start',
       )}
     >
       {!lockedServiceId && !categoryPicker && service.kind === 'venue' ? (
@@ -393,42 +409,53 @@ export function EnquiryForm({
       )}
 
       {!lockedServiceId && !categoryPicker && (
-        // The picker (ten cards, a constant ~935px) is reliably taller than
-        // the form (five fields for `general` at ~680px, more for
-        // manufacturing/testing). A shared grid row takes the height of the
-        // taller one regardless of alignment, so top-aligning both — same
-        // row, unequal content — always left that difference as a bare
-        // rectangle of page background in whichever column came up short.
-        // Capping the picker at roughly the shortest form's height and
-        // scrolling the rest internally keeps the row close to that height
-        // for every service; `sticky` then absorbs what's left for the
-        // taller (manufacturing/testing) forms, since a pinned column reads
-        // as a nav following the page rather than a hole in the layout.
+        // The picker's own height no longer competes with the form's for
+        // top-of-column blank space the way it did as a fixed-width column
+        // (see the grid template above) — `auto-fill` reflows it into
+        // however many columns the now-flexible width holds, so it stays
+        // short and wide instead of tall and narrow. `sticky` still follows
+        // the page for whatever height it does end up at.
         <nav aria-label="Choose a service" className="lg:sticky lg:top-24">
+          <p className="font-mono text-[11px] tracking-[0.1em] uppercase text-ink-400 mb-3">
+            Choose a category
+          </p>
+          <p className="text-[13.5px] text-ink-500 mb-3 max-w-none">
+            Pick the one closest to your enquiry — the fields on the left adjust to match it.
+          </p>
           <Reveal
             as="div"
             stagger
-            className="flex flex-col gap-2 lg:max-h-[calc(100svh-7rem)] lg:overflow-y-auto lg:pr-1"
+            className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-2 lg:max-h-[calc(100svh-7rem)] lg:overflow-y-auto lg:pr-1"
           >
-            {services.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setServiceId(s.id)}
-                aria-current={s.id === serviceId ? 'true' : undefined}
-                className={cn(
-                  'text-left rounded-md border px-4 py-3 transition-colors duration-150',
-                  s.id === serviceId
-                    ? 'border-brand-600 bg-brand-50'
-                    : 'border-rule bg-white hover:border-rule-strong',
-                )}
-              >
-                <span className="block text-[14.5px] font-semibold text-ink-900">{s.label}</span>
-                <span className="block mt-0.5 text-[12.5px] leading-snug text-ink-500">
-                  {s.description}
-                </span>
-              </button>
-            ))}
+            {services.map((s) => {
+              const icon = SERVICE_ICON[s.id]
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setServiceId(s.id)}
+                  aria-current={s.id === serviceId ? 'true' : undefined}
+                  className={cn(
+                    'flex items-start gap-3 text-left rounded-md border px-4 py-3 transition-colors duration-150',
+                    s.id === serviceId
+                      ? 'border-brand-600 bg-brand-50'
+                      : 'border-rule bg-white hover:border-rule-strong',
+                  )}
+                >
+                  {icon && (
+                    <span className="relative shrink-0 size-10 rounded-sm bg-paper-2 overflow-hidden">
+                      <Image src={icon.src} alt="" fill sizes="40px" className="object-contain p-1" />
+                    </span>
+                  )}
+                  <span className="flex flex-col min-w-0">
+                    <span className="block text-[14.5px] font-semibold text-ink-900">{s.label}</span>
+                    <span className="block mt-0.5 text-[12.5px] leading-snug text-ink-500">
+                      {s.description}
+                    </span>
+                  </span>
+                </button>
+              )
+            })}
           </Reveal>
         </nav>
       )}

@@ -106,7 +106,7 @@ export function getService(id: string): Service | undefined {
 }
 
 /** Equipment/facility `category` id -> the matching service, for pages that link into the enquiry form from a specific machine or facility. */
-const CATEGORY_TO_SERVICE: Record<string, string> = {
+export const CATEGORY_TO_SERVICE: Record<string, string> = {
   prototype: 'prototype-production',
   'rapid-prototyping': 'rapid-prototyping',
   environmental: 'environmental-testing',

@@ -86,7 +86,10 @@ export default async function BookVenuePage({
           return. Two days before and two days after your booked dates are reserved for
           setup and teardown.
         </p>
-        <div className="mt-8 max-w-[680px] mx-auto">
+        {/* Left-aligned, not `mx-auto` — see the same fix on /contact for why:
+            the page runs edge to edge, so a centred wrapper here floats away
+            from the heading above it on anything wider than ~1600px. */}
+        <div className="mt-8 max-w-[680px]">
           <EnquiryForm lockedServiceId="venue-hire" defaultSubject={subject} />
         </div>
       </Section>
