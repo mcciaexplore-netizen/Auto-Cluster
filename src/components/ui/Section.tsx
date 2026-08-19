@@ -127,8 +127,17 @@ export function PageHero({
     /* Not full-height. The home hero fills the screen because it is the
        front door; making every subpage hero do the same would put a whole
        viewport of nothing between a visitor and the content they navigated
-       to. 58svh is substantial without being an obstacle. */
-    <div className="bg-paper-2 border-b border-rule flex items-center min-h-[58svh]">
+       to.
+
+       38svh, not 58svh: every call site passes an eyebrow and a subtitle,
+       whose actual content (with the Container's own py-20/py-24) already
+       runs to ~44svh at a common 900px-tall viewport — 58svh's floor sat
+       above that on every real page, forcing ~130px of pure padding beyond
+       what the copy needed. 38svh is comfortably below that natural height,
+       so it now works as an actual floor — a safety minimum for the rare
+       thin-content page — rather than the thing setting every page's
+       height regardless of how little it has to show. */
+    <div className="bg-paper-2 border-b border-rule flex items-center min-h-[38svh]">
       <Container className="w-full py-20 md:py-24">
         <div className={cn('grid gap-10 lg:gap-16 items-center', image && 'lg:grid-cols-2')}>
           {/* The hero is above the fold, so this reveals on mount rather than

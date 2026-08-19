@@ -76,10 +76,22 @@ export default async function ContactPage({
         </div>
       </Section>
 
-      <Section>
+      <Section compact>
         <h2>Address and contact</h2>
 
-        <div className="mt-6 grid gap-8 md:grid-cols-2">
+        {/* One text style throughout — 16px, the body sans — rather than
+            the address, the phone (previously font-mono) and the emails
+            each carrying their own size. Colour is the only thing that
+            still varies: ink-900 for the address (not a link), brand-800
+            for phone/email (are links), which is a real distinction worth
+            keeping rather than a leftover inconsistency. */}
+        {/* `items-start`: a grid row's cells stretch to the tallest one by
+            default. The map's own box was that tallest cell — 4:3, so
+            noticeably taller than the two text columns' natural height —
+            which stretched the address/phone/email columns down with it and
+            left visible blank space under their actual content. Left to its
+            own height instead, each column is only as tall as it needs. */}
+        <div className="mt-5 grid gap-8 items-start md:grid-cols-3">
           <div>
             <h3 className="text-solid label mb-3">Postal address</h3>
             <address className="not-italic text-[16px] leading-relaxed text-ink-900">
@@ -98,7 +110,7 @@ export default async function ContactPage({
               <h3 className="text-solid label mb-2">Phone</h3>
               <a
                 href={site.phone.href}
-                className="font-mono text-[17px] text-brand-800 no-underline hover:underline"
+                className="text-[16px] text-brand-800 no-underline hover:underline"
               >
                 {site.phone.display}
               </a>
@@ -108,18 +120,39 @@ export default async function ContactPage({
               <div className="flex flex-col gap-1.5">
                 <a
                   href={`mailto:${site.email.marketing}`}
-                  className="text-[15px] text-brand-800 no-underline hover:underline"
+                  className="text-[16px] text-brand-800 no-underline hover:underline"
                 >
                   {site.email.marketing}
                 </a>
                 <a
                   href={`mailto:${site.email.info}`}
-                  className="text-[15px] text-brand-800 no-underline hover:underline"
+                  className="text-[16px] text-brand-800 no-underline hover:underline"
                 >
                   {site.email.info}
                 </a>
               </div>
             </div>
+          </div>
+
+          <div>
+            <h3 className="text-solid label mb-3">Find us</h3>
+            <div className="rounded-md overflow-hidden border border-rule aspect-[2/1]">
+              <iframe
+                src={address.mapsEmbedSrc}
+                title={`Map showing ${address.organisation}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full border-0"
+              />
+            </div>
+            <a
+              href={address.mapsShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-[16px] text-brand-800 no-underline hover:underline"
+            >
+              Open in Google Maps ↗
+            </a>
           </div>
         </div>
       </Section>
@@ -152,12 +185,11 @@ export default async function ContactPage({
       </Section>
 
       <Section>
-        <h2 className="text-[22px]">Locate us</h2>
-        <div className="mt-5 max-w-[560px] flex flex-col gap-4">
-          <EmptyState
-            title="Map pending a Place ID"
-            body="An interactive map is coming shortly. We are at H-Block, Plot No. C-181, Chinchwad East, on the Mumbai–Pune Road. Call us and we will guide you in."
-          />
+        <h2 className="text-[22px]">Getting here</h2>
+        {/* The map itself now lives in "Address and contact" above — this
+            is what's still actually missing, not a second copy of the map
+            placeholder. */}
+        <div className="mt-5 max-w-[560px]">
           <EmptyState
             title="Directions, parking and opening hours"
             body="Driving directions, parking guidance and reception hours will be published here. For a sample drop-off, call ahead and we will confirm timings."

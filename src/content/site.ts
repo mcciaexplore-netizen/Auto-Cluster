@@ -36,6 +36,22 @@ export const site = {
     postalCode: '411 019',
     region: 'Maharashtra',
     country: 'India',
+    /**
+     * The verified Google Business listing, not a geocoded address string —
+     * resolved from the share link to its lat/lng so the embed points at
+     * the actual plotted pin rather than whatever a plain-text address
+     * search happens to guess.
+     */
+    mapsShareUrl: 'https://maps.app.goo.gl/5866wKibj3HxcfcMA',
+    // `lat,lng(Label)` — not a bare coordinate (didn't reliably plot a
+    // marker at every rendered size the responsive embed box ends up at)
+    // and not a name search either (matched a nearby hotel instead of us —
+    // real risk with a common-word name like "Auto Cluster" this close to
+    // other businesses). This pins the exact verified coordinate from the
+    // share link, which can't resolve to the wrong place, while still
+    // attaching our name so it shows a labelled marker rather than a bare
+    // dot.
+    mapsEmbedSrc: `https://www.google.com/maps?q=18.6386498,73.8015426(${encodeURIComponent('Auto Cluster Development and Research Institute')})&z=16&output=embed`,
   },
 
   accreditation: {

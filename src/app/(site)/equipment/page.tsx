@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { categories, equipment } from '@/content/equipment'
+import { serviceIdForCategory } from '@/content/services'
 import { Container, PageHero, Section } from '@/components/ui/Section'
 import { StandardList } from '@/components/ui/SpecTable'
 import { CardImage } from '@/components/ui/Figure'
@@ -55,10 +56,22 @@ export default async function EquipmentPage({
                   (e) => e.category === c.id || e.alsoIn?.includes(c.id),
                 ).length
                 return (
-                  <li key={c.id}>
+                  <li key={c.id} className="flex items-center gap-1.5">
                     <FilterChip href={`/equipment?category=${c.id}`} active={active === c.id}>
                       {c.label} {count}
                     </FilterChip>
+                    {/* Every category's own direct line to the enquiry form,
+                        pre-scoped to its service — filtering the list still
+                        just narrows what's shown; this is for the visitor
+                        who already knows they want, say, rubber & polymer
+                        testing and would rather not filter, scan, then find
+                        the enquiry link at the bottom of the page. */}
+                    <Link
+                      href={`/contact?service=${serviceIdForCategory(c.id) ?? 'general'}`}
+                      className="inline-flex items-center min-h-11 px-3 rounded-md border border-rule font-mono text-[11px] tracking-[0.06em] uppercase text-brand-800 no-underline hover:border-brand-600 hover:bg-paper-2"
+                    >
+                      Enquire
+                    </Link>
                   </li>
                 )
               })}
