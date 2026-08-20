@@ -23,7 +23,9 @@ interface Message {
 
 async function deliver(message: Message): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.EMAIL_FROM ?? 'Auto Cluster <no-reply@autoclusterpune.org>'
+  // `||`, not `??` — see content/site.ts's `url` for why an empty env var
+  // shouldn't pass straight through a nullish-coalescing fallback.
+  const from = process.env.EMAIL_FROM || 'Auto Cluster <no-reply@autoclusterpune.org>'
 
   if (!apiKey) {
     console.log('[email] RESEND_API_KEY not set — logging instead of sending.', message)

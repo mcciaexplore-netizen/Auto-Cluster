@@ -11,7 +11,12 @@ export const site = {
   abbr: 'ACDRI',
   tagline: 'Testing, prototyping and exhibition facilities for Indian manufacturing.',
 
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://autoclusterpune.org',
+  // `||`, not `??`: an env var set to an empty string on the host still
+  // isn't a usable URL, and `??` only falls back on null/undefined — an
+  // empty `NEXT_PUBLIC_SITE_URL` passed `??`'s fallback straight through to
+  // `new URL(site.url)` in layout.tsx, which threw `ERR_INVALID_URL` and
+  // failed the entire build (every page collects root metadata).
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://autoclusterpune.org',
 
   /** Header phone is `href="#"` today. It is a tel: link everywhere now. */
   phone: {
