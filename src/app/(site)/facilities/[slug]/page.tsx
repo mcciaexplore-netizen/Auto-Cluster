@@ -11,6 +11,7 @@ import { StandardList } from '@/components/ui/SpecTable'
 import { ButtonLink } from '@/components/ui/Button'
 import { BuildNote } from '@/components/blocks/BuildNote'
 import { cn } from '@/lib/cn'
+import styles from './facility.module.css'
 
 export function generateStaticParams() {
   return facilities.map((f) => ({ slug: f.slug }))
@@ -34,6 +35,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
 
   const machines = facility.category ? getEquipmentByCategory(facility.category) : []
   const photos = facilityPhotos[facility.slug] ?? []
+  const enhanced = Boolean(facility.category)
   const standards = [
     ...new Set([
       ...machines.flatMap((m) => m.standards),
@@ -52,21 +54,23 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
-      <PageHero
-        eyebrow={facility.isAccredited ? site.accreditation.nabl : 'Facility'}
-        title={facility.h1}
-        subtitle={facility.h2}
-        image={facilityHeroImages[facility.slug]}
-      >
-        <div className="flex flex-wrap gap-3">
-          <ButtonLink href={`/contact?facility=${facility.slug}`}>Send an enquiry</ButtonLink>
-          {machines.length > 0 && (
-            <ButtonLink href={`/equipment?category=${facility.category}`} variant="secondary">
-              {machines.length} machines
-            </ButtonLink>
-          )}
-        </div>
-      </PageHero>
+      <div className={enhanced ? styles.hero : undefined}>
+        <PageHero
+          eyebrow={facility.isAccredited ? site.accreditation.nabl : 'Facility'}
+          title={facility.h1}
+          subtitle={facility.h2}
+          image={facilityHeroImages[facility.slug]}
+        >
+          <div className="flex flex-wrap gap-3">
+            <ButtonLink href={`/contact?facility=${facility.slug}`}>Send an enquiry</ButtonLink>
+            {machines.length > 0 && (
+              <ButtonLink href={`/equipment?category=${facility.category}`} variant="secondary">
+                {machines.length} machines
+              </ButtonLink>
+            )}
+          </div>
+        </PageHero>
+      </div>
 
       {facility.pendingCapture && (
         <BuildNote variant="banner" question="CQ-67">
@@ -78,7 +82,17 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.intro.length > 0 && (
         <Section tone="white">
           <h2>About our {facility.name.toLowerCase()}</h2>
-          <Prose className="mt-5" paragraphs={facility.intro} />
+          {enhanced ? (
+            <div className={cn('mt-5', styles.aboutCopy)}>
+              {/* Preserve the section's original height while widening visible copy. */}
+              <div aria-hidden="true" className={styles.copyMeasure}>
+                <Prose paragraphs={facility.intro} />
+              </div>
+              <Prose wide paragraphs={facility.intro} />
+            </div>
+          ) : (
+            <Prose className="mt-5" paragraphs={facility.intro} />
+          )}
 
           {/* Whatever photography exists for this facility — the team, the
               room, or a machine that has no catalogue record of its own.
@@ -88,7 +102,8 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
             <div
               className={cn(
                 'mt-10 grid gap-5',
-                photos.length > 1 ? 'sm:grid-cols-2' : 'max-w-[520px]',
+                photos.length > 1 ? 'sm:grid-cols-2' : enhanced ? styles.singlePhoto : 'max-w-[520px]',
+                photos.length === 1 && ['rapid-prototyping', 'environmental-testing'].includes(facility.slug) && styles.uncroppedPhoto,
               )}
             >
               {photos.map((p) => (
@@ -96,7 +111,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
                   key={p.src}
                   image={p}
                   aspect="4 / 3"
-                  sizes={photos.length > 1 ? '(min-width: 640px) 45vw, 100vw' : '520px'}
+                  sizes={photos.length > 1 ? '(min-width: 640px) 45vw, 100vw' : enhanced ? '(min-width: 840px) 780px, 100vw' : '520px'}
                 />
               ))}
             </div>
@@ -107,11 +122,11 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.capabilities && facility.capabilities.length > 0 && (
         <Section>
           <h2 className="text-[22px]">Our {facility.name.toLowerCase()} capabilities</h2>
-          <p className="mt-4 text-ink-700">
+          <p className={cn("mt-4 text-ink-700", facility.slug === "environmental-testing" && "max-w-none")}>
             Auto Cluster Development and Research Institute Pune is equipped with the
             following chamber types.
           </p>
-          <ul className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0">
+          <ul className={facility.slug === "environmental-testing" ? cn("mt-5", styles.pointsGrid) : "mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0"}>
             {facility.capabilities.map((c) => (
               <li key={c} className="relative pl-6 text-ink-700 text-[15px]">
                 <span
@@ -132,16 +147,10 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
             Every machine has a full specification page with make, model, capacity and
             applicable standards.
           </p>
-          {/* flex-wrap, not card-grid: card-grid's auto-fit columns are
-              fixed for the whole grid, so a trailing row with fewer items
-              than a full row left empty column tracks behind it. grow lets
-              a short last row's cards widen to fill the row, and
-              justify-center centres whatever growth the max-width cap below
-              stops from closing the row completely — a lone or short pair of
-              cards reads as centred, not stranded on the left. */}
-          <ul className="mt-8 flex flex-wrap justify-center gap-4 list-none m-0 p-0">
+          {/* Fixed column tracks keep centered incomplete rows the same card size. */}
+          <ul className={enhanced ? cn("mt-8", styles.equipmentGrid) : "mt-8 flex flex-wrap justify-center gap-4 list-none m-0 p-0"}>
             {machines.map((m) => (
-              <li key={m.slug} className="grow basis-[16.25rem] max-w-[23rem]">
+              <li key={m.slug} className={enhanced ? styles.equipmentCard : "grow basis-[16.25rem] max-w-[23rem]"}>
                 <Link
                   href={`/equipment/${m.slug}`}
                   className="group block h-full bg-white rounded-md p-5 no-underline shadow-[var(--shadow-card)] transition-shadow duration-150 hover:shadow-[var(--shadow-hover)]"
@@ -227,7 +236,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.industries.length > 0 && (
         <Section tone="white">
           <h2 className="text-[22px]">Industries we serve</h2>
-          <ul className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0">
+          <ul className={enhanced ? cn("mt-5", styles.pointsGrid) : "mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0"}>
             {facility.industries.map((i) => (
               <li key={i} className="relative pl-6 text-ink-700 text-[15px]">
                 <span
@@ -244,7 +253,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.projects && facility.projects.length > 0 && (
         <Section>
           <h2 className="text-[22px]">Special projects undertaken</h2>
-          <ul className="mt-5 flex flex-col gap-3 list-none m-0 p-0">
+          <ul className={enhanced ? cn("mt-5", styles.pointsGrid) : "mt-5 flex flex-col gap-3 list-none m-0 p-0"}>
             {facility.projects.map((p) => (
               <li key={p} className="relative pl-6 text-ink-700 text-[15px] max-w-[66ch]">
                 <span

@@ -47,9 +47,6 @@ export default async function EquipmentDetailPage({
   if (!item) notFound()
 
   const category = categories.find((c) => c.id === item.category)
-  const related = equipment
-    .filter((e) => e.slug !== item.slug && e.category === item.category)
-    .slice(0, 3)
 
   const schema = {
     '@context': 'https://schema.org',
@@ -88,82 +85,72 @@ export default async function EquipmentDetailPage({
             </ol>
           </nav>
 
-          <div className="flex flex-wrap items-start gap-3 mb-2">
-            {item.isAccredited && (
-              <span className="font-mono text-[10.5px] tracking-[0.08em] text-brand-600 border border-brand-600 rounded-sm px-2 py-1">
-                {site.accreditation.nabl}
-              </span>
+          {/* Large uncropped photograph, with all machine details alongside it. */}
+          <div className={item.image ? 'grid gap-8 lg:gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start' : 'min-w-0'}>
+            {item.image && (
+              <Figure
+                image={item.image}
+                className="w-full min-w-0"
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                priority
+              />
             )}
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-start gap-3 mb-2">
+                {item.isAccredited && (
+                  <span className="font-mono text-[10.5px] tracking-[0.08em] text-brand-600 border border-brand-600 rounded-sm px-2 py-1">
+                    {site.accreditation.nabl}
+                  </span>
+                )}
+              </div>
+
+              <h1 className="text-[clamp(32px,3.4vw,56px)] [overflow-wrap:anywhere]">{item.name}</h1>
+
+              {(item.make || item.model) && (
+                <p className="mt-2 font-mono text-[15px] text-ink-500">
+                  {[item.make, item.model, item.machineType].filter(Boolean).join(' · ')}
+                </p>
+              )}
+
+              <p className="mt-3 text-[18px] text-ink-500 max-w-[58ch]">{item.summary}</p>
+              <div className="mt-6">
+                <h2 className="sr-only">Specification</h2>
+                <SpecTable specs={item.specs} caption="Specification · as verified against source" className="[&_th]:py-2.5 [&_td]:py-2.5 [&>div]:mt-4 [&>div]:pt-3" />
+              </div>
+
+            </div>
           </div>
-
-          <h1>{item.name}</h1>
-
-          {(item.make || item.model) && (
-            <p className="mt-2 font-mono text-[15px] text-ink-500">
-              {[item.make, item.model, item.machineType].filter(Boolean).join(' · ')}
-            </p>
+          {item.rate && (
+            <div className="mt-6 border border-rule rounded-md bg-white p-6 shadow-[var(--shadow-card)]">
+              <h3 className="text-[19px] m-0">Indicative rate</h3>
+              <p className="mt-2 font-mono text-[24px] text-ink-900 tabular-nums m-0">
+                {formatRupees(item.rate.min)} – {formatRupees(item.rate.max)}{' '}
+                <span className="font-sans text-[15px] text-ink-500">
+                  {item.rate.uom.toLowerCase()}
+                </span>
+              </p>
+              <p className="mt-2 text-[14.5px] text-ink-500 m-0">
+                Core operation rate, effective 1 November 2025. The lower figure applies to
+                MSMEs; MCCIA members receive a further 10% discount.{' '}
+                <Link href="/venues/rate-card" className="text-brand-800">
+                  Full rate card
+                </Link>
+                .
+              </p>
+            </div>
           )}
-
-          <p className="mt-4 text-[18px] text-ink-500 max-w-[58ch]">{item.summary}</p>
         </Container>
       </div>
 
-      <Section compact>
-        <h2 className="sr-only">Specification</h2>
-
-        {/* The photograph leads the specification rather than the page. A
-            machine record is read for its numbers, and a 500×333 asset from
-            2020 stretched across the top of the page would be the first thing
-            seen and the least useful thing on it. At this width it sits beside
-            the table on a wide screen and above it on a narrow one. */}
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          {item.image && (
-            <Figure
-              image={item.image}
-              className="lg:w-[340px] lg:shrink-0"
-              sizes="(min-width: 1024px) 340px, 100vw"
-              priority
-            />
-          )}
-          <div className="min-w-0 flex-1">
-            <SpecTable specs={item.specs} caption="Specification · as verified against source" />
-          </div>
-        </div>
-
-        {item.rate && (
-          <div className="mt-6 border border-rule rounded-md bg-white p-6 shadow-[var(--shadow-card)]">
-            <h3 className="text-[19px] m-0">Indicative rate</h3>
-            <p className="mt-2 font-mono text-[24px] text-ink-900 tabular-nums m-0">
-              {formatRupees(item.rate.min)} – {formatRupees(item.rate.max)}{' '}
-              <span className="font-sans text-[15px] text-ink-500">
-                {item.rate.uom.toLowerCase()}
-              </span>
-            </p>
-            <p className="mt-2 text-[14.5px] text-ink-500 m-0">
-              Core operation rate, effective 1 November 2025. The lower figure applies to
-              MSMEs; MCCIA members receive a further 10% discount.{' '}
-              <Link href="/venues/rate-card" className="text-brand-800">
-                Full rate card
-              </Link>
-              .
-            </p>
-          </div>
-        )}
-      </Section>
-
       {(item.applications.length > 0 || item.standards.length > 0) && (
         <Section tone="white" compact>
-          <div className="grid gap-10 md:grid-cols-2">
+          <div className={item.standards.length > 0 ? "grid gap-10 md:grid-cols-2" : "grid gap-10"}>
             {item.applications.length > 0 && (
               <div>
                 <h2 className="text-[24px]">Applications</h2>
-                <ul className="mt-4 flex flex-col gap-2 list-none m-0 p-0">
+                <ul className="mt-4 grid gap-4 sm:grid-cols-2 list-none m-0 p-0">
                   {item.applications.map((a) => (
-                    <li key={a} className="relative pl-6 text-ink-700 text-[16.5px]">
-                      <span
-                        aria-hidden="true"
-                        className="absolute left-0 top-[0.7em] w-2.5 h-px bg-rule-strong"
-                      />
+                    <li key={a} className="min-w-0 border border-rule rounded-md p-4 font-poppins text-[16px] font-medium leading-relaxed text-brand-800">
                       {a}
                     </li>
                   ))}
@@ -199,30 +186,7 @@ export default async function EquipmentDetailPage({
         </div>
       </Section>
 
-      {related.length > 0 && (
-        <Section compact>
-          <h2 className="text-[24px]">Related equipment</h2>
-          <ul className="mt-5 card-grid gap-4 list-none m-0 p-0">
-            {related.map((r) => (
-              <li key={r.slug}>
-                <Link
-                  href={`/equipment/${r.slug}`}
-                  className="block bg-white rounded-md p-5 no-underline shadow-[var(--shadow-card)] transition-shadow duration-150 hover:shadow-[var(--shadow-hover)]"
-                >
-                  <span className="block font-display font-semibold text-[18px] text-brand-600">
-                    {r.name}
-                  </span>
-                  {r.make && (
-                    <span className="block mt-1 font-mono text-[13px] text-ink-400">{r.make}</span>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
-
-      <script
+<script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />

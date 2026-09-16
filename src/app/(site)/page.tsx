@@ -1,14 +1,14 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import { credentials, promoters, site } from '@/content/site'
 import { primaryFacilities } from '@/content/facilities'
 import { venues } from '@/content/venues'
 import { categories, equipment, getEquipmentByCategory } from '@/content/equipment'
 import { ctaBadges, heroCollage, serviceTiles, venuePhotos } from '@/content/images'
-import { Container, Prose, Section, Stat } from '@/components/ui/Section'
+import { Container, Section, Stat } from '@/components/ui/Section'
 import { ServiceCard } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
 import { Reveal } from '@/components/motion/Reveal'
+import styles from './home.module.css'
 
 /**
  * Home.
@@ -18,27 +18,6 @@ import { Reveal } from '@/components/motion/Reveal'
  * ACDRI can evidence — the current site's five animated counters all render
  * `1 +` and stay off the page until real numbers arrive (CQ-57).
  */
-
-const audiences = [
-  {
-    href: '/facilities/environmental-testing',
-    heading: 'Get something tested',
-    body: 'Environmental chambers, rubber and polymer, metrology. NABL scope, standards and turnaround.',
-    cta: 'Choose a test',
-  },
-  {
-    href: '/facilities/prototype-production-facility',
-    heading: 'Get something made',
-    body: '3, 3+1 and 5-axis VMC, wire EDM and laser. SLA, SLS, FDM and vacuum casting.',
-    cta: 'See capabilities',
-  },
-  {
-    href: '/venues/book',
-    heading: 'Hire a venue',
-    body: '4,000 sq m of exhibition halls, a 172-seat auditorium and training rooms.',
-    cta: 'Check availability',
-  },
-]
 
 export default function HomePage() {
   return (
@@ -57,7 +36,7 @@ export default function HomePage() {
           and "the image fills the band top to bottom" true at the same
           time, instead of fighting each other the way bottom-aligning two
           independently-sized columns did. */}
-      <div className="bg-white flex min-h-[var(--hero-min-h)]">
+      <div className={`${styles.home} bg-white flex min-h-[var(--hero-min-h)]`}>
         <Container className="w-full py-10 lg:py-6">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
@@ -149,96 +128,14 @@ export default function HomePage() {
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-14 w-auto shrink-0 object-contain"
+                  className="h-20 w-auto shrink-0 object-contain"
                 />
-                <span className="text-[13px] font-semibold leading-snug text-ink-900">{p.caption}</span>
+                <span className="text-[16px] font-semibold leading-snug text-ink-900">{p.caption}</span>
               </li>
             ))}
           </Reveal>
         </Container>
       </div>
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Credentials                                                       */}
-      {/* ---------------------------------------------------------------- */}
-      {/* Its own band below the fold, no longer a footnote to the hero.
-          White against the hero's tint, so the two read as separate bands
-          without needing a rule between them.
-
-          Being below the fold is what makes the count-up work as intended:
-          the figures are still at zero when the band scrolls into view, so
-          the animation is seen rather than finishing off-screen. */}
-      <div className="bg-white border-b border-rule">
-        <Container className="py-16 md:py-20 xl:py-24">
-          <Reveal stagger className="grid gap-8 grid-cols-2 md:grid-cols-4">
-            {credentials.map((c) => (
-              <Stat
-                key={c.key}
-                label={c.key}
-                value={c.value}
-                note={c.note}
-                count={c.countUp}
-              />
-            ))}
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Audience router                                                   */}
-      {/* ---------------------------------------------------------------- */}
-      <div className="bg-white border-t-[3px] border-brand-600 border-b border-rule">
-        {/* Keeps the page gutter, so the row's left edge lines up with every
-            other band on the page. (This carried `px-0` before, which never
-            applied — `cn` does not merge, and Tailwind emits `.px-6` after
-            `.px-0`, so the gutter won regardless. Removed rather than made
-            to work: the alignment is worth more than the full bleed.) */}
-        <Container>
-          <Reveal as="ul" stagger className="grid md:grid-cols-3 list-none m-0 p-0">
-            {audiences.map((a) => (
-              <li key={a.href} className="border-b md:border-b-0 md:border-r border-rule last:border-0">
-                <Link
-                  href={a.href}
-                  className="group flex flex-col gap-2.5 h-full px-6 py-10 md:py-14 no-underline transition-colors duration-150 hover:bg-paper-2"
-                >
-                  <span className="font-display font-semibold text-[clamp(20px,1.5vw,26px)] leading-tight text-brand-600">
-                    {a.heading}
-                  </span>
-                  <span className="text-[15.5px] leading-relaxed text-ink-500">{a.body}</span>
-                  <span className="mt-1 text-sm font-semibold text-brand-800 group-hover:underline underline-offset-4">
-                    {a.cta} <span aria-hidden="true">→</span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* ---------------------------------------------------------------- */}
-      {/* Welcome — source copy, deduplicated                               */}
-      {/* ---------------------------------------------------------------- */}
-      <Section tone="white">
-        {/* Wide on request: at the container's full width the default 28ch/66ch
-            reading measure left this one section reading as a narrow column
-            with the whole right half of the band empty. */}
-        <h2 className="max-w-none">Welcome to Auto Cluster Development and Research Institute</h2>
-        <Prose
-          className="mt-5"
-          wide
-          paragraphs={[
-            'Located in the Chinchwad-Talegaon-Chakan automotive district of Pune, the Auto Cluster Development and Research Institute is a facility providing support to small and medium enterprises. It offers a common facility for validation, training, seminars, workshops and market promotional activities, especially for the automotive and engineering sector.',
-            // The source sentence repeats "supported by Government of Maharashtra
-            // and Pimpri Chinchwad Municipal Corporation" twice. Stated once.
-            'ACDRI is established under the Industrial Infrastructure Up-gradation Scheme (IIUS) of the Department of Industrial Policy and Promotion (DIPP), Ministry of Commerce and Industry, Government of India, supported by the Government of Maharashtra and the Pimpri Chinchwad Municipal Corporation, with the initiative of the Mahratta Chamber of Commerce, Industries and Agriculture (MCCIA).',
-          ]}
-        />
-        <div className="mt-6">
-          <ButtonLink href="/about" variant="secondary" size="sm">
-            About the institute
-          </ButtonLink>
-        </div>
-      </Section>
 
       {/* ---------------------------------------------------------------- */}
       {/* Facilities                                                        */}
@@ -316,6 +213,25 @@ export default function HomePage() {
           ))}
         </Reveal>
       </Section>
+
+      {/* ---------------------------------------------------------------- */}
+      {/* Credentials                                                       */}
+      {/* ---------------------------------------------------------------- */}
+      <div className="bg-white border-b border-rule">
+        <Container className="py-16 md:py-20 xl:py-24">
+          <Reveal stagger className="grid gap-8 grid-cols-2 md:grid-cols-4">
+            {credentials.map((c) => (
+              <Stat
+                key={c.key}
+                label={c.key}
+                value={c.value}
+                note={c.note}
+                count={c.countUp}
+              />
+            ))}
+          </Reveal>
+        </Container>
+      </div>
 
       {/* ---------------------------------------------------------------- */}
       {/* CTA                                                               */}

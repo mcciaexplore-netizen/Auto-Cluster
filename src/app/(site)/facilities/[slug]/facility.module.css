@@ -1,0 +1,114 @@
+/* Used only by the five facility detail pages with equipment categories. */
+.hero h1 {
+  transform: scale(1.08);
+  transform-origin: left bottom;
+}
+
+/* Keep the original copy's flow height; the visible text uses the full guttered width. */
+.aboutCopy {
+  display: grid;
+}
+.aboutCopy > * {
+  grid-area: 1 / 1;
+}
+.copyMeasure {
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.singlePhoto {
+  width: min(100%, 780px);
+  justify-self: stretch;
+  margin-inline: auto;
+}
+.singlePhoto img {
+  /* Original 520px frame minus its border, at the existing 4:3 ratio. */
+  height: min(388.5px, calc((100vw - 2 * var(--page-gutter) - 2px) * 0.75));
+  aspect-ratio: auto !important;
+  object-position: center 65%;
+}
+
+/* A close-fitting, unframed photo, only slightly wider than its native ratio. */
+.uncroppedPhoto {
+  width: min(100%, calc(min(388.5px, (100vw - 2 * var(--page-gutter) - 2px) * 0.75) * 1.18));
+}
+.uncroppedPhoto figure > div {
+  border: 0;
+  background: transparent;
+}
+.uncroppedPhoto img {
+  object-fit: fill;
+  object-position: center;
+}
+
+.equipmentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.equipmentCard {
+  grid-column: auto / span 2;
+  min-width: 0;
+}
+.pointsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px 24px;
+  padding: 0;
+  list-style: none;
+}
+.pointsGrid > li {
+  max-width: none;
+  padding: 16px;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--color-brand-800);
+  border: 1px solid var(--color-rule);
+  border-radius: 6px;
+}
+.pointsGrid > li > span[aria-hidden] {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .equipmentGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .equipmentCard:last-child:nth-child(2n + 1) {
+    grid-column-start: 2;
+  }
+  .pointsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .equipmentGrid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .equipmentCard:last-child:nth-child(2n + 1) {
+    grid-column-start: auto;
+  }
+  .equipmentCard:nth-last-child(1):nth-child(4n + 1) {
+    grid-column-start: 4;
+  }
+  .equipmentCard:nth-last-child(2):nth-child(4n + 1) {
+    grid-column-start: 3;
+  }
+  .equipmentCard:nth-last-child(3):nth-child(4n + 1) {
+    grid-column-start: 2;
+  }
+  .pointsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639px) {
+  .hero h1 {
+    transform: scale(1.04);
+  }
+}
