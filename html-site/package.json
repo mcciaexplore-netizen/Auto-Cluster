@@ -1,0 +1,19 @@
+{
+  "name": "autocluster-html",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Auto Cluster (ACDRI) website — plain HTML/CSS/JS build, Phase 1 scaffold",
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/css/styles.css",
+    "watch:css": "tailwindcss -i ./src/styles/input.css -o ./public/css/styles.css --watch",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
