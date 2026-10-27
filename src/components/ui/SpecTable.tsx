@@ -46,8 +46,6 @@ export function SpecTable({
   caption?: string
   className?: string
 }) {
-  const hasFlags = specs.some((s) => s.flag)
-
   // A spec table is a reading surface, not a layout that should fill the
   // page. It is two columns; run it to the full 1500px content column and a
   // label ends up half a metre from its value. Capped like prose, and the
@@ -97,20 +95,6 @@ export function SpecTable({
           ))}
         </tbody>
       </table>
-
-      {hasFlags && (
-        <div className="mt-6 pt-4 border-t border-rule flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-ink-500">
-          <span className="inline-flex items-center gap-1.5">
-            <FlagChip kind="corrected" /> error in source, fixed
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <FlagChip kind="verify" /> awaiting ACDRI confirmation
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <FlagChip kind="missing" /> data does not exist yet
-          </span>
-        </div>
-      )}
     </div>
   )
 }
