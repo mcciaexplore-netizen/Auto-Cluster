@@ -1,0 +1,3 @@
+export function StaffField({ name, label, value = '', type = 'text', required = true, readOnly = false }: { name: string; label: string; value?: string | number; type?: string; required?: boolean; readOnly?: boolean }) {
+  return <label className="flex flex-col gap-2 text-sm font-medium">{label}{type === 'textarea' ? <textarea name={name} defaultValue={value} required={required} rows={4} className="w-full border border-rule-strong rounded-md p-3 text-ink-900 bg-white font-normal" /> : <input name={name} type={type} defaultValue={value} required={required} readOnly={readOnly} step={type === 'number' ? '1' : undefined} className="min-h-11 w-full border border-rule-strong rounded-md p-3 text-ink-900 bg-white font-normal" />}</label>
+}
