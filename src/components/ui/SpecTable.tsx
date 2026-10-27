@@ -1,41 +1,16 @@
-import type { Spec, SpecFlag } from '@/lib/types'
+import type { Spec } from '@/lib/types'
 import { cn } from '@/lib/cn'
 
 /**
  * The specification table — the atomic unit of the whole site.
  *
- * Shows its working. The source material carries real technical errors
- * (`1100 M` of crosshead travel, `6000C` for 600 °C, a chamber listed as 6 mm
- * deep). We correct them and cite the published value beneath, rather than
- * amending silently. See DESIGN_DIRECTION.md §4.
+ * Values are shown as corrected where the source material carried a real
+ * technical error (`1100 M` of crosshead travel, `6000C` for 600 °C, a
+ * chamber listed as 6 mm deep) — see src/content/equipment.ts. The
+ * corrected-value provenance (chip + "published as" note) that used to
+ * surface that trail in the UI has been removed by request; the data itself
+ * still carries it for reference.
  */
-
-const flagStyles: Record<SpecFlag['kind'], string> = {
-  corrected: 'bg-flag-ok-bg text-flag-ok-fg border-flag-ok-edge',
-  verify: 'bg-flag-warn-bg text-flag-warn-fg border-flag-warn-edge',
-  missing: 'bg-paper-2 text-ink-500 border-rule-strong',
-}
-
-const flagLabels: Record<SpecFlag['kind'], string> = {
-  corrected: 'Corrected',
-  verify: 'Verify',
-  missing: 'Not supplied',
-}
-
-export function FlagChip({ kind, className }: { kind: SpecFlag['kind']; className?: string }) {
-  return (
-    <span
-      className={cn(
-        'inline-block font-mono text-[11px] tracking-[0.1em] uppercase',
-        'px-1.5 py-0.5 rounded-sm border align-middle whitespace-nowrap',
-        flagStyles[kind],
-        className,
-      )}
-    >
-      {flagLabels[kind]}
-    </span>
-  )
-}
 
 export function SpecTable({
   specs,
@@ -78,18 +53,6 @@ export function SpecTable({
                     )}
                   </span>
                 ) : null}
-
-                {spec.flag && (
-                  <>
-                    <FlagChip kind={spec.flag.kind} className={spec.value ? 'ml-2' : ''} />
-                    <span className="block mt-1.5 font-sans text-[14px] leading-snug text-ink-400 normal-nums">
-                      {spec.flag.kind !== 'missing' && spec.flag.published && (
-                        <>Published as &ldquo;{spec.flag.published}&rdquo;. </>
-                      )}
-                      {spec.flag.note}
-                    </span>
-                  </>
-                )}
               </td>
             </tr>
           ))}
