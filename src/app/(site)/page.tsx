@@ -23,7 +23,7 @@ export default function HomePage() {
           </div>
           <div className="relative aspect-[1350/1165]"><Image src={heroCollage.src} alt={heroCollage.alt} fill priority sizes="(min-width: 1024px) 48vw, 100vw" className="object-contain" /></div>
         </div>
-        <div className="border-t border-rule mt-10 pt-7"><p className="text-xs text-ink-500 mb-4">Promoted and supported by</p><ul className="flex flex-wrap gap-x-8 gap-y-5 list-none m-0 p-0">{promoters.map((p) => <li key={p.caption} className="flex items-center gap-3"><Image src={p.src} alt={p.alt} width={p.width} height={p.height} className="h-16 w-auto object-contain" /><span className="text-xs font-medium text-ink-700 max-w-[16ch]">{p.caption}</span></li>)}</ul></div>
+        <div className="border-t border-rule mt-10 pt-7"><p className="text-xs text-ink-500 mb-4">Promoted and supported by</p><ul className="flex flex-wrap gap-x-10 gap-y-6 list-none m-0 p-0">{promoters.map((p) => <li key={p.caption} className="flex items-center gap-3 w-[15rem]"><Image src={p.src} alt={p.alt} width={p.width} height={p.height} className="h-16 w-auto object-contain shrink-0" /><span className="text-xs font-medium text-ink-700">{p.caption}</span></li>)}</ul></div>
       </Container>
     </section>
     <Section compact><div className="grid md:grid-cols-2 gap-8 md:gap-16">{paths.map((p) => <article key={p.href} className="border-t-2 border-brand-600 pt-6"><h2 className="text-[28px]">{p.title}</h2><p className="mt-4 text-ink-700">{p.text}</p><Link href={p.href} className="inline-flex items-center min-h-11 mt-4 font-semibold">{p.link} →</Link></article>)}</div>
