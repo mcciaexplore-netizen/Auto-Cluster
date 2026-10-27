@@ -1,0 +1,11 @@
+.home {
+  margin-top: 0;
+}
+
+/* The Home marker scopes this footer adjustment to this page, including
+   after client-side navigation. Scaling preserves the footer's layout size;
+   the existing row gap and padding accommodate the larger logos. */
+:global(main):has(.home) + :global(footer) img {
+  transform: scale(1.4);
+  transform-origin: right center;
+}
