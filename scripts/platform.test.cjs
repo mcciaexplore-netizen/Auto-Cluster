@@ -16,6 +16,13 @@ Module._extensions['.ts'] = (module, file) => {
   const compiled = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } })
   module._compile(compiled.outputText, file)
 }
+// Force the local file-backed store (src/server/store-file.ts) regardless of
+// what's in the environment — this suite exercises store.ts's dispatcher by
+// its default path, isolated by chdir rather than by a disposable database.
+// All three names: store.ts's resolver (src/server/db.ts) checks each one.
+delete process.env.DATABASE_URI
+delete process.env.DATABASE_URL
+delete process.env.POSTGRES_URL
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'autocluster-platform-test-'))
 process.chdir(temporary)
 const { enquirySchema } = require('../src/lib/validation.ts')

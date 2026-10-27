@@ -1,20 +1,19 @@
 import { randomBytes, randomUUID } from 'node:crypto'
-import { mkdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { findOne, insert, type Stamped } from './store'
+import { fileBytesExist, readFileBytes, saveFileBytes } from './files'
 
 /**
  * Enquiry attachments — CAD files and drawings, or a résumé on the careers
  * form. "Stored securely, not publicly accessible by guessing a link" rules
  * out `public/`, which Next
- * serves to anyone who has the path. Files instead live outside the web
- * root, in `.data/uploads/`, and the only way to one is `/api/files/[token]`
- * (see that route) presenting the random token issued at upload time — not
- * the record's own id, so a leaked enquiry id in a log or URL doesn't also
- * leak the file.
+ * serves to anyone who has the path. Bytes live in Postgres (`stored_files`,
+ * see files.ts), and the only way to one is `/api/files/[token]` (see that
+ * route) presenting the random token issued at upload time — not the
+ * record's own id, so a leaked enquiry id in a log or URL doesn't also leak
+ * the file.
  */
 
-const UPLOAD_DIR = path.join(process.cwd(), '.data', 'uploads')
 const MAX_SIZE = 25 * 1024 * 1024 // 25MB — a STEP assembly or a scanned drawing set
 
 const ALLOWED_EXTENSIONS = new Set([
@@ -62,9 +61,8 @@ export async function saveUpload(file: File): Promise<UploadRecord> {
   const token = randomBytes(24).toString('base64url')
   const storedName = `${randomUUID()}${ext}`
 
-  await mkdir(UPLOAD_DIR, { recursive: true })
   const buffer = Buffer.from(await file.arrayBuffer())
-  await writeFile(path.join(UPLOAD_DIR, storedName), buffer)
+  await saveFileBytes(storedName, buffer)
 
   return insert<UploadRecord>('uploads', {
     token,
@@ -80,14 +78,9 @@ export async function getUploadByToken(token: string): Promise<UploadRecord | un
 }
 
 export async function readUploadFile(record: UploadRecord): Promise<Buffer> {
-  return readFile(path.join(UPLOAD_DIR, record.storedName))
+  return readFileBytes(record.storedName)
 }
 
 export async function uploadFileExists(record: UploadRecord): Promise<boolean> {
-  try {
-    await stat(path.join(UPLOAD_DIR, record.storedName))
-    return true
-  } catch {
-    return false
-  }
+  return fileBytesExist(record.storedName)
 }

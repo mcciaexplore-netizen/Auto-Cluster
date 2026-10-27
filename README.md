@@ -18,7 +18,7 @@ Run `npm test` for the isolated booking, event, payment-permission and document-
 
 ```bash
 npm install
-cp .env.example .env.local     # nothing is required for the site to run
+cp .env.example .env.local     # nothing is required for the site to run locally
 npm run dev                    # http://localhost:3000
 ```
 
@@ -28,8 +28,15 @@ npm start          # serve the build
 npm run typecheck  # tsc --noEmit
 ```
 
-No database or mail provider is needed for local development. Email delivery is skipped
-when `RESEND_API_KEY` is unset; private request contents and booking links are not logged.
+No database or mail provider is needed for local development. The operational store
+(staff accounts, enquiries, bookings, events, rates, uploads, audit log; see
+`src/server/store.ts`) falls back to local JSON files under `.data/db/` when
+`DATABASE_URI` is unset. **Set `DATABASE_URI` before deploying anywhere with a read-only
+filesystem (Vercel and most serverless hosts)** — without it, every page that touches the
+store crashes there, since there's no writable disk to fall back to. The schema is
+created automatically on first connect; see `.env.example` for details. Email delivery is
+skipped when `RESEND_API_KEY` is unset; private request contents and booking links are
+not logged.
 
 ---
 

@@ -12,10 +12,14 @@
  *   ADMIN_EMAIL=you@acdri.example ADMIN_PASSWORD=... ADMIN_NAME="Your Name" \
  *     node scripts/seed-admin.mjs
  *
- * Plain ESM, no `@/` imports — same reasoning as import-google-form.mjs.
- * The hashing here must match src/server/auth.ts exactly (scrypt, 64-byte
- * derived key, hex-encoded) or the account it creates won't be able to sign
- * in through the app.
+ * Writes to whichever backend src/server/store.ts would pick: the local
+ * `.data/db/staff-users.json` file when none of `DATABASE_URI`,
+ * `DATABASE_URL` or `POSTGRES_URL` is set (the normal case for local dev),
+ * or Postgres (`store_records`, collection 'staff-users') when one is —
+ * required on Vercel. Plain ESM, no `@/`
+ * imports — same reasoning as import-google-form.mjs. The hashing here must
+ * match src/server/auth.ts exactly (scrypt, 64-byte derived key,
+ * hex-encoded) or the account it creates won't be able to sign in.
  */
 
 import { randomBytes, randomUUID, scrypt } from 'node:crypto'
@@ -29,6 +33,68 @@ async function hashPassword(password) {
   const salt = randomBytes(16).toString('hex')
   const derived = await scryptAsync(password, salt, 64)
   return { hash: derived.toString('hex'), salt }
+}
+
+async function seedToFile(email, record, now) {
+  const dataDir = path.join(process.cwd(), '.data', 'db')
+  await mkdir(dataDir, { recursive: true })
+  const file = path.join(dataDir, 'staff-users.json')
+
+  let users = []
+  try {
+    users = JSON.parse(await readFile(file, 'utf-8'))
+  } catch {
+    users = []
+  }
+
+  const existingIndex = users.findIndex((u) => u.email.toLowerCase() === email)
+  const entry = {
+    id: existingIndex === -1 ? randomUUID() : users[existingIndex].id,
+    createdAt: existingIndex === -1 ? now : users[existingIndex].createdAt,
+    updatedAt: now,
+    ...record,
+  }
+  if (existingIndex === -1) users.push(entry)
+  else users[existingIndex] = entry
+
+  const tmp = `${file}.${randomUUID()}.tmp`
+  await writeFile(tmp, JSON.stringify(users, null, 2), 'utf-8')
+  await rename(tmp, file)
+  return existingIndex === -1
+}
+
+async function seedToPostgres(connectionString, email, record, now) {
+  const { Pool } = await import('pg')
+  const isLocal = /^(postgres(ql)?:\/\/)?[^@]*@?(localhost|127\.0\.0\.1)/.test(connectionString)
+  const pool = new Pool({
+    connectionString,
+    ssl: isLocal ? undefined : { rejectUnauthorized: false },
+  })
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS store_records (
+        collection text NOT NULL, id uuid NOT NULL, data jsonb NOT NULL,
+        created_at timestamptz NOT NULL, updated_at timestamptz NOT NULL,
+        PRIMARY KEY (collection, id)
+      );
+      CREATE INDEX IF NOT EXISTS store_records_collection_idx ON store_records (collection);
+    `)
+    const existing = await pool.query(
+      `SELECT id, created_at FROM store_records WHERE collection = 'staff-users' AND data->>'email' = $1`,
+      [email],
+    )
+    const id = existing.rows[0]?.id ?? randomUUID()
+    const createdAt = existing.rows[0]?.created_at ?? now
+    await pool.query(
+      `INSERT INTO store_records (collection, id, data, created_at, updated_at)
+       VALUES ('staff-users', $1, $2, $3, $4)
+       ON CONFLICT (collection, id) DO UPDATE SET data = $2, updated_at = $4`,
+      [id, JSON.stringify(record), createdAt, now],
+    )
+    return !existing.rows[0]
+  } finally {
+    await pool.end()
+  }
 }
 
 async function main() {
@@ -45,25 +111,9 @@ async function main() {
     process.exit(1)
   }
 
-  const dataDir = path.join(process.cwd(), '.data', 'db')
-  await mkdir(dataDir, { recursive: true })
-  const file = path.join(dataDir, 'staff-users.json')
-
-  let users = []
-  try {
-    users = JSON.parse(await readFile(file, 'utf-8'))
-  } catch {
-    users = []
-  }
-
   const { hash, salt } = await hashPassword(password)
   const now = new Date().toISOString()
-  const existingIndex = users.findIndex((u) => u.email.toLowerCase() === email)
-
   const record = {
-    id: existingIndex === -1 ? randomUUID() : users[existingIndex].id,
-    createdAt: existingIndex === -1 ? now : users[existingIndex].createdAt,
-    updatedAt: now,
     email,
     name,
     role: 'super-admin',
@@ -73,17 +123,12 @@ async function main() {
     active: true,
   }
 
-  if (existingIndex === -1) {
-    users.push(record)
-  } else {
-    users[existingIndex] = record
-  }
+  const databaseUrl = process.env.DATABASE_URI || process.env.DATABASE_URL || process.env.POSTGRES_URL
+  const created = databaseUrl
+    ? await seedToPostgres(databaseUrl, email, record, now)
+    : await seedToFile(email, record, now)
 
-  const tmp = `${file}.${randomUUID()}.tmp`
-  await writeFile(tmp, JSON.stringify(users, null, 2), 'utf-8')
-  await rename(tmp, file)
-
-  console.log(`${existingIndex === -1 ? 'Created' : 'Updated'} super-admin account for ${email}.`)
+  console.log(`${created ? 'Created' : 'Updated'} super-admin account for ${email}.`)
   console.log('Sign in at /staff/login. Set STAFF_SESSION_SECRET in .env.local first if you have not.')
 }
 
