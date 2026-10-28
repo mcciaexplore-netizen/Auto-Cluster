@@ -103,8 +103,8 @@ export default function CareersPage() {
             {site.phone.display}
           </a>{' '}
           or email{' '}
-          <a href={`mailto:${site.email.info}`} className="text-brand-800">
-            {site.email.info}
+          <a href={`mailto:${site.email.customerSupport}`} className="text-brand-800">
+            {site.email.customerSupport}
           </a>
           .
         </p>

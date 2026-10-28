@@ -130,15 +130,21 @@ export const venues: Venue[] = [
     name: 'Training and Seminar Hall',
     navLabel: 'Training & Seminar Hall',
     h1: 'Training and Seminar Halls in Pune',
-    h2: 'Seminar rooms and a 30-workstation CAD/CAM training centre',
+    h2: 'Seminar rooms and a CAD/CAM training centre',
     bookable: true,
-    summary:
-      'Training and seminar halls for industry events, alongside a CAD/CAM training centre with 30 workstations.',
+    summary: 'Training and seminar halls for industry events, alongside a CAD/CAM training centre.',
     intro: [
-      'Auto Cluster has training and seminar halls for events of various sizes. Alongside them is a CAD/CAM training centre with 30 workstations.',
+      'Auto Cluster has training and seminar halls for events of various sizes. Alongside them is a CAD/CAM training centre.',
     ],
     specs: [
-      { label: 'CAD/CAM workstations', value: '30' },
+      {
+        label: 'CAD/CAM workstations',
+        flag: {
+          kind: 'verify',
+          published: '30',
+          note: 'Does not appear in ACDRI’s own "Website Data" document — the only nearby figure there is an unrelated hall-seating count ("30 and 15"). Possible misattribution from the rebuild; withheld pending confirmation (CQ-68).',
+        },
+      },
       {
         label: 'Hall capacity',
         flag: {
@@ -151,10 +157,7 @@ export const venues: Venue[] = [
         flag: { kind: 'missing', note: 'Page not yet captured verbatim (CQ-67).' },
       },
     ],
-    highlights: [
-      { label: 'CAD/CAM workstations', value: '30' },
-      { label: 'Air conditioned' },
-    ],
+    highlights: [{ label: 'Air conditioned' }],
   },
 ]
 

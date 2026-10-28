@@ -13,7 +13,7 @@ import { transaction, update, type Stamped } from './store'
  */
 
 const COLLECTION = 'routing-map'
-const FALLBACK_EMAIL = process.env.EMAIL_FALLBACK || 'marketing@autoclusterpune.org'
+const FALLBACK_EMAIL = process.env.EMAIL_FALLBACK || 'customersupport@autoclusterpune.org'
 
 export interface RoutingMapEntry extends Stamped {
   serviceId: string

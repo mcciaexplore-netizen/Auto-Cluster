@@ -62,10 +62,10 @@ export function Footer() {
                 {site.email.marketing}
               </a>
               <a
-                href={`mailto:${site.email.info}`}
+                href={`mailto:${site.email.customerSupport}`}
                 className="text-ink-700 no-underline hover:text-brand-800 hover:underline"
               >
-                {site.email.info}
+                {site.email.customerSupport}
               </a>
             </div>
           </div>

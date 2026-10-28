@@ -14,20 +14,11 @@ Maintained throughout the build. Last updated at end of Phase 1 (design directio
 
 ## A. Contradictions in the current content
 
-### CQ-01 · Auditorium capacity: 170 or 172? `INTERIM`
-Three statements on the live site, two values:
-
-| Location | Value |
-|---|---|
-| Homepage service card | 170 |
-| Auditorium page, body copy | 170 |
-| Auditorium page, highlights block | **172** |
-
-**Interim:** using **172 `[VERIFY]`** — the highlights block is the specification block, and
-capacity is the kind of number that gets rounded down in prose. Two of three occurrences say
-170, so this could easily go the other way.
-**Also needed:** seating configurations (theatre / classroom / conference), since the new
-venue page has a capacity table.
+### CQ-01 · Auditorium seating configurations `INTERIM`
+**Capacity resolved:** ACDRI's own "Website Data" document states 174 twice, consistently,
+settling the old site's 170/172 split. Published as **174**.
+**Still needed:** seating configurations (theatre / classroom / conference), since the venue
+page has a capacity table.
 
 ### CQ-02 · Prototype Production: which axis configurations are real? `BLOCKER`
 The page's capabilities sentence and its own machine list disagree:
@@ -70,12 +61,6 @@ records. The gap reconciles as follows, and we need confirmation:
   no page at all — it is a real machine that is currently invisible. It should be published.
 - Two PPF machines (**3+1 Axis VMC**, **5 Axis VMC**) appear on the page with images but have
   no specification record anywhere.
-
-### CQ-07 · Which email address is for what? `BLOCKER`
-Three addresses appear across the site with no stated purpose: `marketing@`, `marketing2@`,
-`info@` (header shows the first two, footer shows the first and third). The new site routes
-enquiries by department — testing, prototyping, venue hire, careers, tenders, general. We need
-a destination address and, ideally, a named owner for each.
 
 ### CQ-08 · Board of directors — photo/name pairing `BLOCKER`
 In the current markup the A.K. Jindal photograph renders *above* the Gadgil name block, with
@@ -224,15 +209,6 @@ with **no download link on either**. We need:
 Most remaining photography dates from 2020. Anything not replaced ships with a visible
 `[NEEDS PHOTOGRAPHY]` placeholder rather than being upscaled.
 
-### CQ-57 · The five homepage statistics `BLOCKER`
-All five currently render as `1 +` — the real figures exist only as JavaScript animation
-targets and are invisible to crawlers. We need actual numbers for: clients (OEM / Tier 1 /
-MSME), projects, years of experience, machines, expert employees.
-
-**Until supplied, these tiles are not rendered at all.** We will publish the three figures that
-do have sources — 900+ RPL customers, 200+ environmental testing customers, 100+ exhibitions
-over ten years.
-
 ### CQ-58 · Are the rates still current? `BLOCKER for /venues/rate-card`
 The rate card is marked *"Effective from 1st Nov 2025"* — now nine months old. Confirm it is
 current, or supply the revision. Full transcription is in `docs/extracted/rate-card.md`.
@@ -300,12 +276,37 @@ The three on the homepage are 2018 consumer-style venue reviews ("Visited here f
 none carries a company or designation. They are retained verbatim for migration, but B2B
 testimonials from lab and machining customers would replace them to far better effect.
 
-### CQ-67 · Nine pages not yet captured `SCOPE · affects Phase 3–7 sequencing`
-The audit's second-pass list is still outstanding: Large Bed CMM services, Training & Seminar
-Hall, Skill Development, Incubation Centre, Life at Auto Cluster plus its five announcement
-sub-pages, Design Centre, Knowledge Centre, Careers. Large Bed CMM and Training & Seminar Hall
-are both commercial pages and are the priority — I will capture them from the live site before
-Phase 3 unless ACDRI is supplying replacement copy.
+### CQ-67 · Pages not yet captured `SCOPE · affects Phase 3–7 sequencing`
+**Resolved for three of the original nine** — Design Centre, Skill Development and Incubation
+Centre now carry real content transcribed from ACDRI's own "Website Data" document (still
+pending ACDRI's copy sign-off, but no longer blank stubs).
+
+Still outstanding: Large Bed CMM services, Training & Seminar Hall (hall capacity and floor
+area — see CQ-01), Life at Auto Cluster plus its five announcement sub-pages, Knowledge Centre,
+Careers. Large Bed CMM and Training & Seminar Hall are both commercial pages and are the
+priority — I will capture them from the live site before Phase 3 unless ACDRI is supplying
+replacement copy.
+
+### CQ-68 · Training & Seminar Hall — "30 CAD/CAM workstations" `INTERIM`
+This figure was already live on the site (no source noted) but does not appear anywhere in
+ACDRI's "Website Data" document — the only nearby number there is an unrelated hall-seating
+count ("30 and 15"), which is itself contradicted by a second figure ("10 and 35") in the same
+section. Possibly a misattribution from the rebuild.
+
+**Interim:** withheld from all visitor-facing copy (page title, summary, intro, highlights,
+nav description) pending confirmation. Flagged in the data as `kind: 'verify'`.
+
+### CQ-69 · Battery and Cell Testing Lab — new facility, no photography `ASSET · BLOCKER for /facilities/battery-cell-testing-lab`
+Not part of the original nine-page audit — this facility doesn't exist on the current live
+site at all. It was added from ACDRI's "Website Data" document (NABL-accredited EV cell,
+module and battery pack testing, −70 °C to +200 °C). Two gaps remain:
+- **No photography exists anywhere** — no asset in the raw image library (`Images/`, which has
+  a numbered folder for every other facility) and none in `src/content/images.ts`. The page
+  currently ships with no hero image or figure at all rather than a stock substitute.
+- **Copy is a transcription, not a confirmation.** The test-method breakdown (capacity &
+  efficiency, cycle life, DCIR, dynamic performance, thermal/environmental stress, BMS
+  integration, electrical abuse, mechanical integrity) is taken directly from the document but
+  has not been signed off by ACDRI as web copy.
 
 ---
 
@@ -359,9 +360,8 @@ If ACDRI can only action a few things, these unlock the most:
 
 1. **CQ-50 / CQ-53** — specifications and standards for the environmental chambers. Without
    these, the largest facility page and 6 of 30 equipment pages stay thin.
-2. **CQ-57** — the five real homepage numbers.
-3. **CQ-54** — the NABL scope document.
-4. **CQ-08** — board photograph pairings, so the About page can ship.
-5. **CQ-63** — export the Google Form responses. This one is time-sensitive and independent of
+2. **CQ-54** — the NABL scope document.
+3. **CQ-08** — board photograph pairings, so the About page can ship.
+4. **CQ-63** — export the Google Form responses. This one is time-sensitive and independent of
    everything else.
-6. **CQ-60** — the hosting/data-residency answer, because it is cheapest to act on now.
+5. **CQ-60** — the hosting/data-residency answer, because it is cheapest to act on now.

@@ -125,10 +125,10 @@ export default async function ContactPage({
                   {site.email.marketing}
                 </a>
                 <a
-                  href={`mailto:${site.email.info}`}
+                  href={`mailto:${site.email.customerSupport}`}
                   className="text-[16px] text-brand-800 no-underline hover:underline"
                 >
-                  {site.email.info}
+                  {site.email.customerSupport}
                 </a>
               </div>
             </div>

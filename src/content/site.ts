@@ -25,13 +25,19 @@ export const site = {
   },
 
   /**
-   * Three addresses appear across the current site with no stated purpose.
-   * Department routing lives in src/lib/email.ts. CONTENT_QUESTIONS.md CQ-07.
+   * Resolved CONTENT_QUESTIONS.md CQ-07 — ACDRI's own "Website Data" document
+   * states the purpose of each address directly: marketing@/marketing2@ are
+   * the general contact-page addresses; customersupport@ is where every
+   * other department's enquiry form should land; admin2@ is specifically for
+   * exhibition, auditorium and training-hall *bookings* (the venue-hire
+   * service — see EMAIL_TO_VENUE in .env.example). Department routing lives
+   * in src/server/routing.ts.
    */
   email: {
     marketing: 'marketing@autoclusterpune.org',
     marketing2: 'marketing2@autoclusterpune.org',
-    info: 'info@autoclusterpune.org',
+    customerSupport: 'customersupport@autoclusterpune.org',
+    admin2: 'admin2@autoclusterpune.org',
   },
 
   address: {
@@ -149,7 +155,7 @@ export const mainNav: NavItem[] = [
       {
         label: 'Training & Seminar Hall',
         href: '/venues/training-seminar-hall',
-        description: '30-workstation CAD/CAM training centre',
+        description: 'Seminar halls and a CAD/CAM training centre',
       },
       { label: 'Book a venue', href: '/venues/book' },
     ],
