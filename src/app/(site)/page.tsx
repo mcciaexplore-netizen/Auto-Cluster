@@ -124,21 +124,25 @@ export default function HomePage() {
           stands behind this" idea as the hero's eyebrow line above, just
           made concrete. */}
       <div className="bg-white">
-        <Container className="pb-10 md:pb-12">
-          <p className="font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400 mb-6 max-w-none">
-            Promoted and supported by
+        <Container className="pb-12 md:pb-16">
+          <p className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-8 max-w-none">
+            Promoted &amp; supported by
           </p>
-          <Reveal as="ul" stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+          <Reveal as="ul" stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption} className="flex items-center gap-3">
+              <li
+                key={p.caption}
+                className="group flex flex-col items-center gap-4 rounded-lg border border-rule p-6 text-center transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5"
+              >
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-20 w-auto shrink-0 object-contain"
+                  className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
-                <span className="text-[16px] font-semibold leading-snug text-ink-900">{p.caption}</span>
+                <hr className="w-full border-rule" />
+                <span className="text-[13px] font-medium leading-snug text-ink-700">{p.caption}</span>
               </li>
             ))}
           </Reveal>

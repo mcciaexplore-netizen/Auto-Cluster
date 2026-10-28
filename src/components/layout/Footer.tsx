@@ -72,25 +72,22 @@ export function Footer() {
         </div>
 
         {/* Promoters */}
-        <div className="mt-10 pt-6 border-t border-rule flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <h2 className="text-solid font-mono text-[11.5px] font-medium tracking-[0.14em] uppercase text-ink-400">
-            Promoted and supported by
+        <div className="mt-10 pt-8 border-t border-rule">
+          {/* Label above, logos full-width below */}
+          <h2 className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-6">
+            Promoted &amp; supported by
           </h2>
-          {/* Logos only, no captions — real alt text still carries the name
-              for screen readers. 2x2 matrix, pinned to the row's right end. */}
-          <ul className="grid grid-cols-2 gap-x-10 gap-y-5 list-none m-0 p-0 lg:justify-items-end">
+          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-6 list-none m-0 p-0">
             {promoters.map((p) => (
-              <li key={p.caption}>
-                {/* Always below the fold — lazy by default, and never a
-                    render-blocking request the way the hot-linked originals
-                    were. Dimensions are declared, so no layout shift. */}
+              <li key={p.caption} className="flex flex-col items-center gap-3 text-center">
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-10 w-auto object-contain"
+                  className="h-14 w-auto max-w-[110px] object-contain transition-transform duration-300 hover:scale-105"
                 />
+                <span className="text-[11px] font-medium leading-snug text-ink-500">{p.caption}</span>
               </li>
             ))}
           </ul>
