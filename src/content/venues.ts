@@ -132,9 +132,10 @@ export const venues: Venue[] = [
     h1: 'Training and Seminar Halls in Pune',
     h2: 'Seminar rooms and a CAD/CAM training centre',
     bookable: true,
-    summary: 'Training and seminar halls for industry events, alongside a CAD/CAM training centre.',
+    summary:
+      'Training and seminar halls — 30 and 15 person capacity — for industry events, alongside a CAD/CAM training centre.',
     intro: [
-      'Auto Cluster has training and seminar halls for events of various sizes. Alongside them is a CAD/CAM training centre.',
+      'Auto Cluster has training and seminar halls for events of various sizes, with 30 and 15 person capacity. Alongside them is a CAD/CAM training centre.',
     ],
     specs: [
       {
@@ -147,9 +148,11 @@ export const venues: Venue[] = [
       },
       {
         label: 'Hall capacity',
+        value: '30 and 15',
         flag: {
-          kind: 'missing',
-          note: 'Page not yet captured verbatim from the live site (CQ-67).',
+          kind: 'verify',
+          published: '10 and 35, in the document’s own highlights block',
+          note: 'ACDRI’s own "Website Data" document gives two different capacity pairs for what should be the same two halls — 30 and 15 in its body copy, 10 and 35 in its own highlights block. Showing the body-copy figure; awaiting confirmation on which pair is correct, and which hall is which (CQ-01).',
         },
       },
       {
@@ -157,7 +160,10 @@ export const venues: Venue[] = [
         flag: { kind: 'missing', note: 'Page not yet captured verbatim (CQ-67).' },
       },
     ],
-    highlights: [{ label: 'Air conditioned' }],
+    highlights: [
+      { label: 'Seating capacity', value: '30 and 15' },
+      { label: 'Air conditioned' },
+    ],
   },
 ]
 
