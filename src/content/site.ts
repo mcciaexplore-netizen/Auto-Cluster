@@ -280,40 +280,33 @@ export const logo = {
 /**
  * Statistics with a verifiable source, and only those.
  *
- * The current homepage animates five counters that all render `1 +` — the real
- * figures exist only as JS animation targets. Those five stay off the page
- * until ACDRI supplies numbers (CONTENT_QUESTIONS.md CQ-57).
+ * Resolved CONTENT_QUESTIONS.md CQ-57 — these four figures were supplied by
+ * ACDRI directly, replacing the earlier placeholder set.
  */
 export const credentials = [
   {
-    key: 'Accreditation',
-    value: '17025',
-    note: 'NABL ISO/IEC 17025:2017',
-    source: 'Rubber & Polymer Testing Lab page',
-    // Animated on request. Worth knowing: this is the ISO/IEC standard
-    // number, not a quantity, so it climbs 0 -> 17025 alongside three tiles
-    // that are genuine counts. Set to false to hold it static.
+    key: 'Number of Clients',
+    value: '6000+',
+    note: 'OEMs, Tier I and MSMEs',
+    source: 'Provided by ACDRI',
     countUp: true,
   },
   {
-    key: 'RPL customers',
-    value: '900+',
-    note: '100+ added each year',
-    source: 'Rubber & Polymer Testing Lab page',
+    key: 'Number of Projects',
+    value: '600+',
+    source: 'Provided by ACDRI',
     countUp: true,
   },
   {
-    key: 'Environmental testing',
-    value: '200+',
-    note: 'MSME, OEM and MNC customers',
-    source: 'Environmental Testing page',
+    key: 'Years of Experience',
+    value: '20+',
+    source: 'Provided by ACDRI',
     countUp: true,
   },
   {
-    key: 'Exhibitions hosted',
-    value: '100+',
-    note: 'over ten years',
-    source: 'Exhibition Centre page',
+    key: 'NABL Approved Tests',
+    value: '120+',
+    source: 'Provided by ACDRI',
     countUp: true,
   },
 ]
