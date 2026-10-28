@@ -246,13 +246,15 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
       {facility.team && facility.team.length > 0 && (
         <Section tone="white">
           <h2 className="text-[22px]">Meet the team</h2>
-          {/* flex-wrap, same reasoning as the Equipment list above — team
-              size varies a lot page to page, and tile-grid's fixed auto-fit
-              columns left a blank trailing row for the ones that didn't
-              divide evenly into a full row. */}
-          <ul className="mt-5 flex flex-wrap gap-3 list-none m-0 p-0">
+          {/* Fixed column tracks, same reasoning as the capabilities/industries
+              lists below — `grow` on a flex-wrap row stretched each card to
+              fill whatever space was left in its own row, so cards in
+              different rows ended up different widths and their borders
+              never lined up into a grid. A fixed grid keeps every card the
+              same size regardless of how the last row fills. */}
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 list-none m-0 p-0">
             {facility.team.map((name) => (
-              <li key={name} className="grow basis-[13rem] max-w-[17rem] border-b border-rule pb-3">
+              <li key={name} className="border-b border-rule pb-3">
                 <span className="block text-[15px] font-semibold text-ink-900">{name}</span>
                 <span className="block font-mono text-[11px] tracking-[0.1em] uppercase text-ink-400 mt-1">
                   Designation pending

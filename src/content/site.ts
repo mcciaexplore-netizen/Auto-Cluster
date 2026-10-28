@@ -9,7 +9,7 @@ export const site = {
   name: 'Auto Cluster Development and Research Institute',
   shortName: 'Auto Cluster',
   abbr: 'ACDRI',
-  tagline: 'Testing, prototyping and exhibition facilities for Indian manufacturing.',
+  tagline: 'Enabling research, development and prototyping for India’s MSMEs.',
 
   // `||`, not `??`: an env var set to an empty string on the host still
   // isn't a usable URL, and `??` only falls back on null/undefined — an
