@@ -49,7 +49,15 @@ export default function HomePage() {
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
             >
-              <h1 className="max-w-[22ch]">{site.tagline}</h1>
+              {/* The base h1 rule sizes against the full viewport (5.1vw), but
+                  from `lg` this heading sits in a column only half that
+                  width — at common laptop widths (~1024-1500px) that mismatch
+                  wrapped it across 4-5 short lines instead of 2-3, pushing
+                  the CTA below the fold. Below `lg` the column is full width
+                  again, so the base clamp is kept there. */}
+              <h1 className="max-w-[22ch] lg:text-[clamp(38px,3.6vw,76px)]">
+                {site.tagline}
+              </h1>
 
               <p className="font-poppins text-[13px] font-medium tracking-[0.1em] uppercase text-brand-400 mt-3 max-w-none">
                 Promoted by Govt. of India · PCMC · Govt. of Maharashtra · MCCIA initiative

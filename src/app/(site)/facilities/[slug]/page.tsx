@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation'
 import { facilities, getFacility } from '@/content/facilities'
 import { getEquipmentByCategory } from '@/content/equipment'
 import { site } from '@/content/site'
-import { facilityHeroImages, facilityPhotos } from '@/content/images'
+import { facilityHeroImages } from '@/content/images'
 import { PageHero, Prose, Section } from '@/components/ui/Section'
-import { CardImage, Figure } from '@/components/ui/Figure'
+import { CardImage } from '@/components/ui/Figure'
 import { StandardList } from '@/components/ui/SpecTable'
 import { ButtonLink } from '@/components/ui/Button'
 import { BuildNote } from '@/components/blocks/BuildNote'
@@ -34,7 +34,6 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
   if (!facility) notFound()
 
   const machines = facility.category ? getEquipmentByCategory(facility.category) : []
-  const photos = facilityPhotos[facility.slug] ?? []
   const enhanced = Boolean(facility.category)
   const standards = [
     ...new Set([
@@ -92,29 +91,6 @@ export default async function FacilityPage({ params }: { params: Promise<{ slug:
             </div>
           ) : (
             <Prose className="mt-5" paragraphs={facility.intro} />
-          )}
-
-          {/* Whatever photography exists for this facility — the team, the
-              room, or a machine that has no catalogue record of its own.
-              Two columns only once there are two photos to fill them — one
-              photo alone in a sm:grid-cols-2 left a blank half behind it. */}
-          {photos.length > 0 && (
-            <div
-              className={cn(
-                'mt-10 grid gap-5',
-                photos.length > 1 ? 'sm:grid-cols-2' : enhanced ? styles.singlePhoto : 'max-w-[520px]',
-                photos.length === 1 && ['rapid-prototyping', 'environmental-testing'].includes(facility.slug) && styles.uncroppedPhoto,
-              )}
-            >
-              {photos.map((p) => (
-                <Figure
-                  key={p.src}
-                  image={p}
-                  aspect="4 / 3"
-                  sizes={photos.length > 1 ? '(min-width: 640px) 45vw, 100vw' : enhanced ? '(min-width: 840px) 780px, 100vw' : '520px'}
-                />
-              ))}
-            </div>
           )}
         </Section>
       )}

@@ -17,31 +17,6 @@
   user-select: none;
 }
 
-.singlePhoto {
-  width: min(100%, 780px);
-  justify-self: stretch;
-  margin-inline: auto;
-}
-.singlePhoto img {
-  /* Original 520px frame minus its border, at the existing 4:3 ratio. */
-  height: min(388.5px, calc((100vw - 2 * var(--page-gutter) - 2px) * 0.75));
-  aspect-ratio: auto !important;
-  object-position: center 65%;
-}
-
-/* A close-fitting, unframed photo, only slightly wider than its native ratio. */
-.uncroppedPhoto {
-  width: min(100%, calc(min(388.5px, (100vw - 2 * var(--page-gutter) - 2px) * 0.75) * 1.18));
-}
-.uncroppedPhoto figure > div {
-  border: 0;
-  background: transparent;
-}
-.uncroppedPhoto img {
-  object-fit: fill;
-  object-position: center;
-}
-
 .equipmentGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

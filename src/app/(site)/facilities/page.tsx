@@ -29,8 +29,19 @@ export default function FacilitiesPage() {
             not photography this project owns yet. Stretched to match a
             row-mate that does have one, their card was mostly blank interior
             below the "View facility" link. Left to their own height instead,
-            each card is only as tall as what it actually has to show. */}
-        <ul className="card-grid items-start gap-5 list-none m-0 p-0">
+            each card is only as tall as what it actually has to show.
+
+            `gridAutoRows: 'auto'` overrides `card-grid`'s own `1fr` rows —
+            that rule makes every row match the tallest row (by design,
+            elsewhere, to avoid a short orphan card), but here it stretched
+            the short image-less row's *track* to match the tall image row
+            above it. `items-start` kept the cards themselves short, so that
+            stretch became a large blank gap before the footer instead of a
+            stretched card. */}
+        <ul
+          className="card-grid items-start gap-5 list-none m-0 p-0"
+          style={{ gridAutoRows: 'auto' }}
+        >
           {primaryFacilities.map((f) => {
             const machines = f.category ? getEquipmentByCategory(f.category) : []
             const data = [
