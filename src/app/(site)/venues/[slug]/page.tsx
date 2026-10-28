@@ -35,7 +35,7 @@ export default async function VenuePage({ params }: { params: Promise<{ slug: st
     '@type': 'EventVenue',
     name: `${site.shortName} ${venue.name}`,
     description: venue.summary,
-    ...(venue.slug === 'auditorium' && { maximumAttendeeCapacity: 172 }),
+    ...(venue.slug === 'auditorium' && { maximumAttendeeCapacity: 174 }),
     address: {
       '@type': 'PostalAddress',
       streetAddress: site.address.lines.join(', '),

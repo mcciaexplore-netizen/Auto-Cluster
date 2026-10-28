@@ -8,7 +8,7 @@ import { ServiceCard } from '@/components/ui/Card'
 export const metadata: Metadata = {
   title: 'Venues — Exhibition Halls, Auditorium and Training Rooms in Pune',
   description:
-    '4,000 sq m of exhibition space across two air-conditioned halls and an open display area, a 172-seat auditorium, and a 30-workstation CAD/CAM training centre in Chinchwad, Pune.',
+    '4,000 sq m of exhibition space across two air-conditioned halls and an open display area, a 174-seat auditorium, and a 30-workstation CAD/CAM training centre in Chinchwad, Pune.',
 }
 
 /** The Venues hub. `Services` is `href="#"` on the current site. */

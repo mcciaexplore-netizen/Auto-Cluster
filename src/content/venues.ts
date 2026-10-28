@@ -73,18 +73,18 @@ export const venues: Venue[] = [
     h2: 'Seated, air-conditioned auditorium with stage and VIP room',
     bookable: true,
     summary:
-      'A 172-seat air-conditioned auditorium with a 10.67 m stage, attached VIP room and power backup.',
+      'A 174-seat air-conditioned auditorium with a 10.67 m stage, attached VIP room and power backup.',
     intro: [
-      "Auto Cluster's auditorium has a built-in audio system and seats 172. Institutions, event managers, organisations, corporate companies and industry bodies all use this facility.",
+      "Auto Cluster's auditorium has a built-in audio system and seats 174. Institutions, event managers, organisations, corporate companies and industry bodies all use this facility.",
     ],
     specs: [
       {
         label: 'Seating capacity',
-        value: '172',
+        value: '174',
         flag: {
-          kind: 'verify',
-          published: '170 in the page body and on the homepage; 172 in the highlights block',
-          note: 'Two of three occurrences say 170. Using the specification block figure pending confirmation (CQ-01).',
+          kind: 'corrected',
+          published: '170 on the old site’s page body and homepage; 172 in its highlights block',
+          note: 'ACDRI’s own "Website Data" document states 174 twice, consistently, resolving the old site’s 170/172 split.',
         },
       },
       {
@@ -117,7 +117,7 @@ export const venues: Venue[] = [
       },
     ],
     highlights: [
-      { label: 'Seating capacity', value: '172' },
+      { label: 'Seating capacity', value: '174' },
       { label: 'Stage', value: '10.67 m × 5.06 m' },
       { label: 'Air conditioned' },
       { label: 'Attached VIP room and toilet' },

@@ -378,16 +378,89 @@ export const facilities: Facility[] = [
   },
 
   {
+    slug: 'battery-cell-testing-lab',
+    name: 'Battery and Cell Testing Lab',
+    navLabel: 'Battery & Cell Testing Lab',
+    h1: 'Battery and Cell Testing Lab in Pune',
+    h2: 'NABL-accredited testing and validation for EV cells, modules and battery packs',
+    isAccredited: true,
+    summary:
+      'NABL-accredited testing and validation for electric vehicle cells, modules and battery packs, from cell-level checks to pack-level abuse testing across −70 °C to +200 °C.',
+    intro: [
+      'As a NABL-accredited laboratory, Auto Cluster tests and validates electric vehicle cells, modules and battery packs — from individual cells to high-voltage automotive packs.',
+      'Testing runs on battery cyclers and environmental chambers covering −70 °C to +200 °C, producing compliant reports to support certification.',
+    ],
+    industries: [
+      'Electric vehicle manufacturers',
+      'Battery pack and module manufacturers',
+      'E-mobility component suppliers',
+    ],
+    tests: [
+      {
+        name: 'Capacity & Efficiency',
+        body: [
+          'Precise verification of charge/discharge rates, Coulombic efficiency and energy density at the cell level.',
+        ],
+      },
+      {
+        name: 'Cycle Life Analysis',
+        body: [
+          'Automated, long-term testing to simulate years of real-world battery degradation.',
+        ],
+      },
+      {
+        name: 'Internal Resistance (DCIR)',
+        body: ['Evaluation of internal resistance to optimise thermal management and performance.'],
+      },
+      {
+        name: 'Dynamic Performance',
+        body: ['Simulation of real-world drive cycles to test battery responses under stress.'],
+      },
+      {
+        name: 'Thermal & Environmental Stress',
+        body: [
+          'Pack performance evaluated inside specialised environmental chambers across extreme temperatures (−70 °C to +200 °C).',
+        ],
+      },
+      {
+        name: 'BMS Integration & Calibration',
+        body: [
+          'Validation of Battery Management System accuracy, overcharge protection and cell-balancing protocols.',
+        ],
+      },
+      {
+        name: 'Electrical Abuse',
+        body: ['Testing for overcharge, over-discharge and over-temperature protection.'],
+      },
+      {
+        name: 'Mechanical Integrity',
+        body: ['Resistance to vibration, shock and structural impact.'],
+      },
+    ],
+  },
+
+  {
     slug: 'design-centre',
     name: 'Design Centre',
     navLabel: 'Design Centre',
     h1: 'Design Centre',
     h2: 'Product design and development support for MSMEs',
     isAccredited: false,
-    summary: 'Design and development support for product concepts through to validation.',
-    intro: [],
-    industries: [],
-    pendingCapture: true,
+    summary:
+      'CAD design, reverse engineering and CAE/FEA simulation on SOLIDWORKS, Creo Parametric and ANSYS Workbench, supporting product development from digital modelling through validation.',
+    intro: [
+      'The Design Centre brings together CAD design, reverse engineering and CAE/FEA simulation on SOLIDWORKS, Creo Parametric and ANSYS Workbench — the complete journey from digital modelling to simulation, validation and optimisation.',
+      'Services span 3D modelling, 2D drafting, reverse engineering and sheet metal design, plus structural, modal, fatigue, CFD and crashworthiness simulation for faster, lower-risk product development.',
+    ],
+    industries: [
+      'Automotive',
+      'Electric Vehicles (EV)',
+      'Industrial Machinery',
+      'Manufacturing & Fabrication',
+      'Consumer Products',
+      'Startups',
+      'Other Engineering Industries',
+    ],
   },
 
   {
@@ -398,10 +471,12 @@ export const facilities: Facility[] = [
     h2: 'Training programmes for industry employees and students',
     isAccredited: false,
     summary:
-      'Training programmes improving confidence, competence and reliability for employees and students.',
-    intro: [],
+      'Soft-skills, 3D printing, rubber testing and welding training programmes, plus structured plant visits for engineering students.',
+    intro: [
+      'Auto Cluster upskills MSMEs and students through soft-skills, 3D printing and rubber testing modules, plus MoUs with educational institutes and an "Expert Guidance Series" of industry sessions — more than a thousand engineering students have visited to date.',
+      'Our Basic and Advance Welding Training Centres cover ARC, MIG and TIG welding on industry-standard Fronius and Fanuc equipment, from manual technique through to simulator-based and robotic welding.',
+    ],
     industries: [],
-    pendingCapture: true,
   },
 
   {
@@ -411,10 +486,13 @@ export const facilities: Facility[] = [
     h1: 'Incubation Centre',
     h2: 'Support for start-ups and new product development',
     isAccredited: false,
-    summary: 'Infrastructure and guidance for start-ups from concept through to validation.',
-    intro: [],
-    industries: [],
-    pendingCapture: true,
+    summary:
+      "ACDRI's PCMC-area incubation centre, inaugurated November 2019, supporting manufacturing, automobile and product start-ups through an 18-month programme.",
+    intro: [
+      'The first incubation centre in the PCMC area, supported by PCMC and the Mahratta Chamber of Commerce, Industries and Agriculture (MCCIA), was inaugurated by Shravan Hardikar, then Commissioner of PCMC, on 14 November 2019.',
+      'The 18-month, sector-agnostic programme has graduated 95 start-ups to date, with 15 still active, 345 jobs created and ₹33.5 crore in combined start-up revenue, backed by 22 mentors.',
+    ],
+    industries: ['Manufacturing', 'Automobile', 'Product-based start-ups'],
   },
 
   {

@@ -112,6 +112,11 @@ export const mainNav: NavItem[] = [
         href: '/facilities/large-bed-cmm-services',
         description: 'Co-ordinate measuring for dies and large parts',
       },
+      {
+        label: 'Battery & Cell Testing Lab',
+        href: '/facilities/battery-cell-testing-lab',
+        description: 'NABL-accredited EV cell, module and battery pack testing',
+      },
       { label: 'Design Centre', href: '/facilities/design-centre' },
       { label: 'Skill Development', href: '/facilities/skill-development' },
       { label: 'Incubation Centre', href: '/facilities/incubation-centre' },
@@ -139,7 +144,7 @@ export const mainNav: NavItem[] = [
       {
         label: 'Auditorium',
         href: '/venues/auditorium',
-        description: '172 seats, air conditioned, VIP room',
+        description: '174 seats, air conditioned, VIP room',
       },
       {
         label: 'Training & Seminar Hall',
@@ -195,6 +200,7 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
       { label: 'Environmental Testing', href: '/facilities/environmental-testing' },
       { label: 'Rubber & Polymer Testing', href: '/facilities/rubber-polymer-testing' },
       { label: 'Large Bed CMM & Metrology', href: '/facilities/large-bed-cmm-services' },
+      { label: 'Battery & Cell Testing Lab', href: '/facilities/battery-cell-testing-lab' },
       { label: 'Equipment catalogue', href: '/equipment' },
       { label: 'NABL scope', href: '/facilities/nabl-scope' },
     ],
