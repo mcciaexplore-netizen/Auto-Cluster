@@ -40,8 +40,18 @@ export default function HomePage() {
               room for both side by side, so it stacks — copy first, image
               second, same reading order as the two-column version, and
               `lg:h-full` drops out so the stack just flows at its own
-              height the way any other stacked section does. */}
-          <div className="grid lg:grid-cols-[3fr_2fr] gap-12 xl:gap-16 lg:h-full">
+              height the way any other stacked section does.
+
+              Column 1 is `auto`, not a fixed fraction: the copy is already
+              capped by its own `max-w-[22ch]`/`max-w-[46ch]`, so a fixed
+              `3fr` share only matters once the container is wider than
+              that cap — and since `--page-max` is `none` (this Container
+              runs edge-to-edge on wide viewports), `3fr` of the full window
+              width blows way past the copy's own cap, leaving a dead gap
+              of empty track between the copy and the image. `auto` sizes
+              the column to its (capped) content instead, so the image
+              column starts right after the text at any viewport width. */}
+          <div className="grid lg:grid-cols-[auto_1fr] gap-12 xl:gap-16 lg:h-full">
             <Reveal
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
@@ -84,28 +94,33 @@ export default function HomePage() {
                 than bleeding to the true window edge.
 
                 `fill` + `object-contain` instead of the intrinsic
-                width/height: below `lg` the wrapper's height comes from
-                its own `aspect-*`, matching the image exactly, so this
-                renders the same as a plain sized image. At `lg` the wrapper
-                switches to the *grid row's* height — the same height the
-                copy is now centred against — and the image scales up to
-                fill that box on whichever axis runs out of room first.
+                width/height: the wrapper's own `aspect-[1350/1165]` box
+                always matches the image's intrinsic ratio exactly, at
+                every breakpoint, so the box is sized from the column's
+                *width* rather than from the row's height.
 
-                The column split is 3:2 rather than even — a flex/auto-width
-                approach (sizing the image purely from its own aspect ratio
-                against the row's height) was tried first, but the row's
-                height isn't actually definite in this flex-col/flex-1
-                chain, so a percentage height on the image resolved to
-                `auto` instead and it rendered near its full intrinsic
-                1350×1165, blowing well past the fold. Back to a fixed grid
-                track (which *does* give the row a definite, bounded
-                height) — 3:2 instead of 1:1 because at the compact height
-                this band now runs, an even half left the image — bounded
-                by that height, not by the column's width — rendering
-                narrower than its column, with dead white space to its
-                left. 3:2 brings the column down close to the image's own
-                rendered width at this height instead. */}
-            <Reveal className="relative w-full aspect-[1350/1165] lg:aspect-auto lg:h-full">
+                That width is now a real, definite value — the text column
+                is `auto` (sized to its own capped content) and this one is
+                `1fr` (the rest of the row) — so letting the image grow
+                from that width is what actually makes it as large as the
+                layout can afford, instead of being capped to whatever
+                height the copy block happens to need.
+
+                That said, width-driven sizing alone has no ceiling on an
+                ultrawide window — it kept growing past the point where
+                its own aspect-driven height pushed the "Promoted &
+                supported by" strip below the fold, which breaks the
+                invariant that strip is built on (see the comment at that
+                section: it's kept in this same band specifically so it
+                shows without scrolling). So at `lg` this is driven by
+                *height* instead — `lg:h-[clamp(360px,calc(100svh-320px),600px)]`,
+                `320px` being the rest of the fold's fixed cost (header +
+                this band's own padding + the promoted-by strip itself) —
+                clamped so it still grows on a taller viewport, shrinks on
+                a shorter one, but never pushes that strip out of view.
+                `lg:w-auto` lets the aspect ratio size the width from that
+                height, rather than the reverse. */}
+            <Reveal className="relative w-full aspect-[1350/1165] lg:w-auto lg:h-[clamp(360px,calc(100svh-320px),600px)]">
               <Image
                 src={heroCollage.src}
                 alt={heroCollage.alt}
