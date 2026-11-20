@@ -25,18 +25,15 @@ export default function HomePage() {
       {/* ---------------------------------------------------------------- */}
       {/* Hero                                                              */}
       {/* ---------------------------------------------------------------- */}
-      {/* Fills the window. `--hero-min-h` is 100svh minus the 88px sticky
-          masthead, so the band ends exactly at the fold. `min-h`, not `h`:
-          on a short laptop the content still governs and the band grows.
-
-          Both the copy and the collage stretch to the band's full height
-          now (`h-full` down at the grid and its two columns), rather than
-          each sizing itself and leaving whatever gap is left over. That is
-          what makes "the copy sits at the vertical centre of the window"
-          and "the image fills the band top to bottom" true at the same
-          time, instead of fighting each other the way bottom-aligning two
-          independently-sized columns did. */}
-      <div className={`${styles.home} bg-white flex flex-col min-h-[var(--hero-min-h)]`}>
+      {/* Sized to its own content, not to a viewport-height minimum. It
+          used to carry a `min-h-[82svh]`-ish floor so a short copy+image
+          pairing wouldn't look like a mere banner, but now that the
+          promoted-by strip lives inside this same band too, the combined
+          content is tall enough on its own — the old floor just forced a
+          dead band of extra height below it (worse the taller the
+          viewport, since the floor is viewport-relative and the content
+          isn't) before the next section began. */}
+      <div className={`${styles.home} bg-white flex flex-col`}>
         <Container className="w-full py-8 lg:py-5 flex-1">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
@@ -44,7 +41,7 @@ export default function HomePage() {
               second, same reading order as the two-column version, and
               `lg:h-full` drops out so the stack just flows at its own
               height the way any other stacked section does. */}
-          <div className="grid lg:grid-cols-2 gap-12 xl:gap-16 lg:h-full">
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-12 xl:gap-16 lg:h-full">
             <Reveal
               stagger
               className="flex flex-col items-start text-left lg:h-full lg:justify-center"
@@ -55,7 +52,7 @@ export default function HomePage() {
                   wrapped it across 4-5 short lines instead of 2-3, pushing
                   the CTA below the fold. Below `lg` the column is full width
                   again, so the base clamp is kept there. */}
-              <h1 className="max-w-[22ch] lg:text-[clamp(38px,3.6vw,76px)]">
+              <h1 className="max-w-[22ch] lg:text-[clamp(34px,3.0vw,60px)]">
                 {site.tagline}
               </h1>
 
@@ -94,22 +91,28 @@ export default function HomePage() {
                 copy is now centred against — and the image scales up to
                 fill that box on whichever axis runs out of room first.
 
-                The column split stays an even half rather than favouring
-                the image: it was tried, and past ~1440px-wide viewports it
-                narrows the copy column enough to push the heading onto an
-                extra line, which adds far more height than the wider image
-                gains back — the "Promoted by" strip then loses more room
-                below the fold than it recovers above it. */}
-            <Reveal
-              className="relative w-full aspect-[1350/1165] lg:aspect-auto lg:h-full"
-            >
+                The column split is 3:2 rather than even — a flex/auto-width
+                approach (sizing the image purely from its own aspect ratio
+                against the row's height) was tried first, but the row's
+                height isn't actually definite in this flex-col/flex-1
+                chain, so a percentage height on the image resolved to
+                `auto` instead and it rendered near its full intrinsic
+                1350×1165, blowing well past the fold. Back to a fixed grid
+                track (which *does* give the row a definite, bounded
+                height) — 3:2 instead of 1:1 because at the compact height
+                this band now runs, an even half left the image — bounded
+                by that height, not by the column's width — rendering
+                narrower than its column, with dead white space to its
+                left. 3:2 brings the column down close to the image's own
+                rendered width at this height instead. */}
+            <Reveal className="relative w-full aspect-[1350/1165] lg:aspect-auto lg:h-full">
               <Image
                 src={heroCollage.src}
                 alt={heroCollage.alt}
                 fill
                 priority
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                className="object-contain lg:object-right"
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="object-contain lg:object-left"
               />
             </Reveal>
           </div>
@@ -119,11 +122,15 @@ export default function HomePage() {
             same min-h) rather than a separate section below it, so it
             shows in the first fold alongside the hero copy instead of
             requiring a scroll to reach. */}
-        <Container className="w-full pb-6 lg:pb-4">
+        <Container className="w-full pb-1.5 lg:pb-0.5">
           <p className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-4 max-w-none">
             Promoted &amp; supported by
           </p>
-          <Reveal as="ul" stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+          <Reveal
+            as="ul"
+            stagger
+            className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0"
+          >
             {promoters.map((p) => (
               <li
                 key={p.caption}
