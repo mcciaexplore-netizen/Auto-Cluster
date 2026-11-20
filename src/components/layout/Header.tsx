@@ -85,6 +85,7 @@ const megaMenus: Record<string, { items: MegaItem[]; viewAllLabel: string }> = {
 export function Header() {
   const [open, setOpen] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
 
   return (
     /* The contact strip that used to sit above this now closes the page,
@@ -111,19 +112,35 @@ export function Header() {
             {mainNav.slice(0, 6).map((item) => {
               const mega = megaMenus[item.href]
               return (
-                <li key={item.href} className="relative group">
+                <li
+                  key={item.href}
+                  className="relative"
+                  onMouseEnter={() => mega && setOpenMenu(item.href)}
+                  onMouseLeave={() => setOpenMenu((cur) => (cur === item.href ? null : cur))}
+                  onBlur={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpenMenu(null)
+                  }}
+                >
                   <Link
                     href={item.href}
+                    onFocus={() => mega && setOpenMenu(item.href)}
                     className="block py-2 text-[14.5px] text-ink-700 no-underline hover:text-brand-800"
                   >
                     {item.label}
                   </Link>
 
-                  {mega && (
+                  {/* Only the active item's panel is ever mounted, so two
+                      adjacent 640px-wide panels can never paint over each
+                      other mid-transition when the pointer moves quickly
+                      between nav items — the previous CSS-only
+                      group-hover/group-focus-within toggle left both
+                      visible during their 150ms opacity fade. */}
+                  {mega && openMenu === item.href && (
                     <NavMegaMenu
                       items={mega.items}
                       viewAllHref={item.href}
                       viewAllLabel={mega.viewAllLabel}
+                      onClose={() => setOpenMenu(null)}
                     />
                   )}
                 </li>
@@ -264,10 +281,12 @@ function NavMegaMenu({
   items,
   viewAllHref,
   viewAllLabel,
+  onClose,
 }: {
   items: MegaItem[]
   viewAllHref: string
   viewAllLabel: string
+  onClose: () => void
 }) {
   const firstWithImage = items.find((i) => i.image) ?? items[0]
   const [hoveredHref, setHoveredHref] = useState(firstWithImage.href)
@@ -279,14 +298,7 @@ function NavMegaMenu({
   }
 
   return (
-    <div
-      className={cn(
-        'absolute left-0 top-full pt-2 w-[640px] invisible opacity-0',
-        'group-hover:visible group-hover:opacity-100',
-        'group-focus-within:visible group-focus-within:opacity-100',
-        'transition-opacity duration-150',
-      )}
-    >
+    <div className="absolute left-0 top-full pt-2 w-[640px]">
       <div className="flex bg-white border border-rule rounded-md shadow-[var(--shadow-hover)] overflow-hidden">
         <ul className="w-[280px] shrink-0 border-r border-rule p-2 list-none m-0 flex flex-col">
           {items.map((item, i) => (
@@ -295,6 +307,7 @@ function NavMegaMenu({
                 href={item.href}
                 onMouseEnter={() => handleEnter(item)}
                 onFocus={() => handleEnter(item)}
+                onClick={onClose}
                 className={cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-sm no-underline',
                   hoveredHref === item.href ? 'bg-paper-2' : 'hover:bg-paper-2',
@@ -311,6 +324,7 @@ function NavMegaMenu({
           <li className="mt-1 pt-2 border-t border-rule">
             <Link
               href={viewAllHref}
+              onClick={onClose}
               className="block px-3 py-2 text-[13px] font-semibold text-brand-800 no-underline hover:underline underline-offset-4"
             >
               {viewAllLabel} →

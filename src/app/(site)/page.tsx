@@ -36,8 +36,8 @@ export default function HomePage() {
           and "the image fills the band top to bottom" true at the same
           time, instead of fighting each other the way bottom-aligning two
           independently-sized columns did. */}
-      <div className={`${styles.home} bg-white flex min-h-[var(--hero-min-h)]`}>
-        <Container className="w-full py-10 lg:py-6">
+      <div className={`${styles.home} bg-white flex flex-col min-h-[var(--hero-min-h)]`}>
+        <Container className="w-full py-8 lg:py-5 flex-1">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
               room for both side by side, so it stacks — copy first, image
@@ -114,32 +114,27 @@ export default function HomePage() {
             </Reveal>
           </div>
         </Container>
-      </div>
 
-      {/* ---------------------------------------------------------------- */}
-      {/* Promoted by                                                       */}
-      {/* ---------------------------------------------------------------- */}
-      {/* Continues the hero's own band and tone (no top padding, no rule)
-          rather than opening a separate section — these are the same "who
-          stands behind this" idea as the hero's eyebrow line above, just
-          made concrete. */}
-      <div className="bg-white">
-        <Container className="pb-12 md:pb-16">
-          <p className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-8 max-w-none">
+        {/* Promoted by — kept inside the hero band itself (same wrapper,
+            same min-h) rather than a separate section below it, so it
+            shows in the first fold alongside the hero copy instead of
+            requiring a scroll to reach. */}
+        <Container className="w-full pb-6 lg:pb-4">
+          <p className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-4 max-w-none">
             Promoted &amp; supported by
           </p>
-          <Reveal as="ul" stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+          <Reveal as="ul" stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
             {promoters.map((p) => (
               <li
                 key={p.caption}
-                className="group flex flex-col items-center gap-4 rounded-lg border border-rule p-6 text-center transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5"
+                className="group flex flex-col items-center gap-3 rounded-lg border border-rule p-4 text-center transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5"
               >
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
                 <hr className="w-full border-rule" />
                 <span className="text-[13px] font-medium leading-snug text-ink-700">{p.caption}</span>
