@@ -106,20 +106,30 @@ export default function HomePage() {
                 layout can afford, instead of being capped to whatever
                 height the copy block happens to need.
 
-                That said, width-driven sizing alone has no ceiling on an
-                ultrawide window, so this is still driven by *height*
-                instead — `lg:h-[clamp(328px,calc(100svh-348px),660px)]` —
-                clamped so it still grows on a taller viewport, shrinks on
-                a shorter one, but without ballooning the hero band itself
-                (that's handled by the Container's own `py` now instead).
-                The box has no explicit `justify-self`/`align-self`, so as
-                a sized (non-stretching) grid item it anchors to the top
-                left of its cell by default — growing this height (and the
-                width that follows from it via the aspect ratio) extends
-                the box further right and further down from that same
-                fixed corner. `lg:w-auto` lets the aspect ratio size the
-                width from that height, rather than the reverse. */}
-            <Reveal className="relative w-full aspect-[1350/1165] lg:w-auto lg:h-[clamp(328px,calc(100svh-348px),660px)]">
+                A fixed pixel/`svh` clamp was tried here next, so the image
+                could be sized independently of the text. The two tracks'
+                heights then only matched by coincidence — on a narrower
+                window the text wraps to more lines and grows taller than
+                the clamped image, and the row (sized to the taller track)
+                left a visible gap of dead space below the image before
+                the promoted-by strip.
+
+                `lg:h-full` was the next attempt — a percentage height
+                doesn't contribute to the row's own auto-height
+                calculation, so in principle the row sizes itself to the
+                text column alone and this box just stretches down to
+                match. In practice, grid items default to
+                `justify-self: stretch` on any axis left `auto`, and
+                `lg:w-auto` is exactly that — so the box's *width* stretched
+                to the full `1fr` track first, `aspect-ratio` turned that
+                into a height from the stretched width (overriding the
+                percentage height instead of the other way around), and
+                the row ballooned to fit that huge box, pushing the
+                promoted-by strip off-screen. `lg:justify-self-start` kills
+                that default width-stretch, so `w-auto` is actually free to
+                size from the (percentage, row-matching) height via the
+                aspect ratio, the way the comment above always assumed. */}
+            <Reveal className="relative w-full aspect-[1350/1165] lg:w-auto lg:h-full lg:justify-self-start">
               <Image
                 src={heroCollage.src}
                 alt={heroCollage.alt}
