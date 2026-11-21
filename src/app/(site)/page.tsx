@@ -146,7 +146,7 @@ export default function HomePage() {
             same min-h) rather than a separate section below it, so it
             shows in the first fold alongside the hero copy instead of
             requiring a scroll to reach. */}
-        <Container className="w-full pb-1.5 lg:pb-0.5">
+        <Container className="w-full pb-10 lg:pb-14">
           <p className="font-mono text-[10.5px] font-semibold tracking-[0.18em] uppercase text-brand-600 mb-4 max-w-none">
             Promoted &amp; supported by
           </p>
