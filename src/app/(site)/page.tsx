@@ -34,7 +34,7 @@ export default function HomePage() {
           viewport, since the floor is viewport-relative and the content
           isn't) before the next section began. */}
       <div className={`${styles.home} bg-white flex flex-col`}>
-        <Container className="w-full py-8 lg:py-5 flex-1">
+        <Container className="w-full py-8 lg:py-10 flex-1">
           {/* Two columns on request: copy on the left, the collage on the
               right, rather than one centred column. Below `lg` there isn't
               room for both side by side, so it stacks — copy first, image
@@ -107,20 +107,19 @@ export default function HomePage() {
                 height the copy block happens to need.
 
                 That said, width-driven sizing alone has no ceiling on an
-                ultrawide window — it kept growing past the point where
-                its own aspect-driven height pushed the "Promoted &
-                supported by" strip below the fold, which breaks the
-                invariant that strip is built on (see the comment at that
-                section: it's kept in this same band specifically so it
-                shows without scrolling). So at `lg` this is driven by
-                *height* instead — `lg:h-[clamp(360px,calc(100svh-320px),600px)]`,
-                `320px` being the rest of the fold's fixed cost (header +
-                this band's own padding + the promoted-by strip itself) —
+                ultrawide window, so this is still driven by *height*
+                instead — `lg:h-[clamp(328px,calc(100svh-348px),660px)]` —
                 clamped so it still grows on a taller viewport, shrinks on
-                a shorter one, but never pushes that strip out of view.
-                `lg:w-auto` lets the aspect ratio size the width from that
-                height, rather than the reverse. */}
-            <Reveal className="relative w-full aspect-[1350/1165] lg:w-auto lg:h-[clamp(360px,calc(100svh-320px),600px)]">
+                a shorter one, but without ballooning the hero band itself
+                (that's handled by the Container's own `py` now instead).
+                The box has no explicit `justify-self`/`align-self`, so as
+                a sized (non-stretching) grid item it anchors to the top
+                left of its cell by default — growing this height (and the
+                width that follows from it via the aspect ratio) extends
+                the box further right and further down from that same
+                fixed corner. `lg:w-auto` lets the aspect ratio size the
+                width from that height, rather than the reverse. */}
+            <Reveal className="relative w-full aspect-[1350/1165] lg:w-auto lg:h-[clamp(328px,calc(100svh-348px),660px)]">
               <Image
                 src={heroCollage.src}
                 alt={heroCollage.alt}
@@ -149,17 +148,26 @@ export default function HomePage() {
             {promoters.map((p) => (
               <li
                 key={p.caption}
-                className="group flex flex-col items-center gap-3 rounded-lg border border-rule p-4 text-center transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5"
+                className="group flex flex-col items-center gap-3 rounded-lg border border-rule p-4 lg:px-2 text-center transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5"
               >
                 <Image
                   src={p.src}
                   alt={p.alt}
                   width={p.width}
                   height={p.height}
-                  className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 />
                 <hr className="w-full border-rule" />
-                <span className="text-[13px] font-medium leading-snug text-ink-700">{p.caption}</span>
+                {/* `lg:whitespace-nowrap` + a touch smaller at `lg`: at 4
+                    columns the longest caption ("Mahratta Chamber of
+                    Commerce, Industries and Agriculture") was wrapping to
+                    two lines even though the card had the width for it at
+                    13px — this keeps every caption on one line at `lg`
+                    without changing the wrap-as-needed behaviour below it,
+                    where the cards are much narrower (2-up). */}
+                <span className="text-[13px] lg:text-[12px] font-bold leading-snug text-ink-700 lg:whitespace-nowrap">
+                  {p.caption}
+                </span>
               </li>
             ))}
           </Reveal>
